@@ -1,4 +1,4 @@
-<img src="src/assets/logo.png" height="300">
+<img src="public/assets/logo.png" height="300">
 
 # Change Log
 ## 1.0.0 - 13/07/2020
