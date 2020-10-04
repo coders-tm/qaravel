@@ -15,7 +15,7 @@ export default {
   modules: {},
   async init () {
     console.func('services/core:init()', arguments)
-    if (Cookies.has('app-gdpr-accept') !== true) {
+    if (Cookies.has('qaravel-gdpr-accept') !== true) {
       Notify.create({
         message: 'We use cookies to improve user experience, manage user sessions and analyze website traffic. By clicking “Accept” you consent to store on your device all the technologies described in our Cookie Policy. Please read our Terms and Conditions and Privacy Policy for full details by clicking the Learn More button.',
         multiline: true,
@@ -26,7 +26,7 @@ export default {
           label: 'Accept',
           color: 'yellow',
           handler () {
-            Cookies.set('app-gdpr-accept', true, {
+            Cookies.set('qaravel-gdpr-accept', true, {
               expires: 5 * 365
             })
           }
@@ -36,7 +36,7 @@ export default {
           color: 'grey',
           noDismiss: true,
           handler () {
-            openURL('#')
+            openURL(process.env.COOKIE_URL)
           }
         }
         ]
