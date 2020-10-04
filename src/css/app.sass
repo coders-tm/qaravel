@@ -1,0 +1,95 @@
+// app global css in Sass form
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-100.eot')
+    src: url('./fonts/montserrat-v14-latin-100.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-100.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-100.woff') format('woff'),url('./fonts/montserrat-v14-latin-100.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-100.svg#Montserrat') format('svg')
+    font-weight: 100
+    font-style: normal
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-300.eot')
+    src: url('./fonts/montserrat-v14-latin-300.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-300.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-300.woff') format('woff'),url('./fonts/montserrat-v14-latin-300.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-300.svg#Montserrat') format('svg')
+    font-weight: 300
+    font-style: normal
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-regular.eot')
+    src: url('./fonts/montserrat-v14-latin-regular.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-regular.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-regular.woff') format('woff'),url('./fonts/montserrat-v14-latin-regular.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-regular.svg#Montserrat') format('svg')
+    font-weight: 400
+    font-style: normal
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-500.eot')
+    src: url('./fonts/montserrat-v14-latin-500.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-500.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-500.woff') format('woff'),url('./fonts/montserrat-v14-latin-500.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-500.svg#Montserrat') format('svg')
+    font-weight: 500
+    font-style: normal
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-700.eot')
+    src: url('./fonts/montserrat-v14-latin-700.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-700.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-700.woff') format('woff'),url('./fonts/montserrat-v14-latin-700.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-700.svg#Montserrat') format('svg')
+    font-weight: 700
+    font-style: normal
+
+@font-face
+    font-family: 'Montserrat'
+    src: url('./fonts/montserrat-v14-latin-900.eot')
+    src: url('./fonts/montserrat-v14-latin-900.eot?#iefix') format('embedded-opentype'),url('./fonts/montserrat-v14-latin-900.woff2') format('woff2'),url('./fonts/montserrat-v14-latin-900.woff') format('woff'),url('./fonts/montserrat-v14-latin-900.ttf') format('truetype'),url('./fonts/montserrat-v14-latin-900.svg#Montserrat') format('svg')
+    font-weight: 900
+    font-style: normal
+
+// Font size 1 - 100
+@for $i from 1 through 100
+    .fs-#{$i}
+        font-size: #{$i}px
+        line-height: 1
+
+// Lineheight 1 - 100
+@for $i from 0 through 100
+    .lh-#{$i}
+        line-height: #{$i}px
+
+// border-radius 1 - 100
+@for $i from 0 through 100
+    .br-#{$i}
+        border-radius: #{$i}px
+
+// Font weights
+$font-weights: 300, 400, 500, 600, 700, 800, 900
+@each $font-weight in $font-weights
+    .fw-#{$font-weight}
+        font-weight: #{$font-weight}
+
+body
+    font-family: Montserrat, Helvetica, Arial, sans-serif
+    color: #333333
+    font-size: 12px
+.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6, h1, h2, h3, h4, h5, h6
+    color: #333333
+    font-family: Montserrat, Helvetica, Arial, sans-serif
+    clear: both
+
+.bg-gm-pink
+    color: $gm-pink-text
+    background: $gm-pink
+
+.text-gm-pink
+    color: $gm-pink
+
+.bg-gm-blue
+    background: $gmBlueLight
+    color: white
+
+.text-gm-blue
+    color: $gmBlueLight
+
+.logo-min
+  display: none
+
+.q-drawer--mini
+  .logo-full
+    display: none
+
+.q-drawer--mini
+  .logo-min
+    display: block
+
