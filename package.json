@@ -6,13 +6,6 @@
 	"cordovaId": "com.coderstm.qaravel",
 	"capacitorId": "",
   "author": "DepokSarkar <depokbsmrstu@gmail.com>",
-  "ssh": {
-		"user": "jnelectrical",
-		"server": "83.223.113.48",
-		"folders": {
-			"live": "~/public_html"
-		}
-	},
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
