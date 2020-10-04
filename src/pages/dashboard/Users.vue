@@ -10,7 +10,7 @@
             <div class="col-sm-6 col-xs-12 self-center">
               <div class="q-gutter-sm">
                 <q-btn color="primary" @click="$refs.users.exportTable()" flat round icon="archive">
-                  <q-tooltip content-class="bg-primary" anchor="top middle" self="bottom middle" :offset="[5, 5]">Export to csv</q-tooltip>
+                  <tooltip position="top">Export to csv</tooltip>
                 </q-btn>
               </div>
             </div>
