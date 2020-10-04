@@ -46,12 +46,15 @@ export default {
   app: {
     v: version
   },
-  error (message) {
-    this.Vue.$q.notify({
-      color: 'negative',
-      position: 'bottom-right',
-      message: message,
-      icon: 'report_problem'
+  error (msg, o) {
+    console.func('services/core:error()', arguments)
+    this.Vue.$q.dialog({
+      component: 'BaseAlert',
+      msg: msg,
+      icon: 'error',
+      title: o && o.title ? o.title : 'Application Error'
+    }).onOk(() => {
+      console.log('OK')
     })
   },
   random (min, max) {
@@ -266,12 +269,5 @@ export default {
     console.func('services/core:user()', arguments)
     const user = this.store.state.SessionData.user
     return user && key ? user[key] : user
-  },
-  getErrror (props) {
-    const errors = null
-    props.forEach((error, index) => {
-      errors[index] = error.join(', ')
-    })
-    return errors
   }
 }

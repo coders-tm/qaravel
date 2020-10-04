@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,14 +25,17 @@ class AuthController extends Controller
             return response()->json($user, 200);
         } else {
             return response()->json([
-                'Your username and password it worng. Please try again with correct login info.'
+              'message' => 'Your username and password it worng. Please try again with correct login info.'
             ], 403);
         }
     }
 
     public function logout()
     {
-        # code...
+      Auth::guard('web')->logout();
+      return response()->json([
+        'message' => 'You have been successfully logged out!'
+      ], 200);
     }
 
     public function me()

@@ -80,8 +80,8 @@ export default {
   data () {
     return {
       form: {
-        email: '',
-        password: '',
+        email: 'admin@example.com',
+        password: 'password',
         remember: false
       },
       isPwd: true,
@@ -100,7 +100,11 @@ export default {
         this.visible = false
       }).catch(error => {
         this.visible = false
-        this.errors = error.errors
+        if (error.errors) {
+          this.errors = error.errors
+        } else {
+          this.$core.error(error.message)
+        }
       })
     },
     pwdChanged () {
