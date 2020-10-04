@@ -7,7 +7,7 @@
     :label="title"
     header-class="text-white"
     expand-icon-class="text-white"
-    active-class="bg-primary"
+    active-class="bg-cyan-7"
     @click="active = !active"
     :to="route"
   >
@@ -16,7 +16,7 @@
       tag="a"
       :to="{ name: item.route }"
       class="text-white"
-      active-class="bg-heather text-black"
+      active-class="bg-cyan-6 text-black"
     >
       <q-item-section avatar style="min-width: auto" class="q-pr-md">
         <q-icon :name="item.icon"></q-icon>
@@ -33,7 +33,7 @@
     tag="a"
     :to="{ name: route }"
     class="text-white"
-    active-class="bg-primary"
+    active-class="bg-cyan-7"
   >
     <q-item-section avatar style="min-width: auto" class="q-pr-md">
       <q-icon :name="icon"></q-icon>

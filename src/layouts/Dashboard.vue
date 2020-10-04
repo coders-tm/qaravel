@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="LHr lpR lfr" class="bg-light-cloud">
+  <q-layout view="LHr lpR lfr" class="bg-grey-3">
     <q-header class="bg-white shadow-2 text-primary">
       <q-toolbar style="height:70px">
         <q-btn
@@ -78,9 +78,9 @@
       :mini="miniState"
       @mouseover="mouseOver"
       @mouseout="mouseOver"
-      show-if-above bordered :width="250" side="left" content-class="bg-dark text-white"
+      show-if-above bordered :width="250" side="left" content-class="bg-secondary text-white"
     >
-      <div @click="$router.push({ name: 'Dashboard' })" class="cursor-pointer full-width row wrap justify-center logo q-pa-sm" style="min-height: 70px">
+      <div @click="$router.push({ name: 'Dashboard' })" class="bg-dark cursor-pointer full-width row wrap justify-center logo q-pa-sm" style="min-height: 70px">
         <img class="logo-full self-center" width="150px" src="assets/logo-alt.png" />
         <img class="logo-min self-center" width="150px" src="assets/icon-alt.png" />
       </div>
@@ -101,7 +101,7 @@
       <q-toolbar style="height: 70px">
           <div class="text-body q-mr-md">Copyright © 2020 | <b>{{appName}}.</b></div>
           <q-space class="gt-xs"></q-space>
-          <div class="text-body">Powered by <a href="/app">CodersTM</a></div>
+          <div class="text-body">Powered by <a href="/">CodersTM</a></div>
       </q-toolbar>
     </q-footer>
 

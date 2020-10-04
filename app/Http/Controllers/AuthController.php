@@ -20,9 +20,7 @@ class AuthController extends Controller
         );
         if (Auth::attempt($request->only(['email', 'password']))) {
             $user = Auth::user();
-            $user->roles = $user->roles;
-            $user->permissions = $user->permissions;
-            return response()->json($user, 200);
+            return response()->json($user->load('roles', 'permissions'), 200);
         } else {
             return response()->json([
               'message' => 'Your username and password it worng. Please try again with correct login info.'
@@ -41,8 +39,6 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
-        $user->roles = $user->roles;
-        $user->permissions = $user->permissions;
-        return response()->json($user, 200);
+        return response()->json($user->load('roles', 'permissions'), 200);
     }
 }
