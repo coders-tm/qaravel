@@ -24,9 +24,7 @@
     "start:test": "echo $npm_package_ssh_folders_live",
     "start:queue": "php artisan queue:work --timeout=36000 --sansdaemon",
     "start:web": "quasar dev",
-    "push:git": "clear && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\"",
-    "push:live": "clear && echo Starting Live Push && yarn build:web && yarn sync:live && echo Finished Live Push",
-    "sync:live": "echo Starting File Sync && rsync -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * $npm_package_ssh_user@$npm_package_ssh_server:$npm_package_ssh_folders_live && echo Finished File Sync"
+    "push": "clear && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\""
   },
   "dependencies": {
 		"@fortawesome/fontawesome-pro": "^5.13.0",
