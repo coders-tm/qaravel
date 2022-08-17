@@ -67,6 +67,8 @@ module.exports = function (ctx) {
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
 
+      ignorePublicFolder: true,
+
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack (cfg) {
         cfg.module.rules.push({
@@ -75,6 +77,10 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+      },
+      chainWebpack (chain) {
+        // chain.output.publicPath = '/statics/'
+        // console.log('chain.output.publicPath', chain.output.publicPath())
       }
     },
 
