@@ -1,34 +1,29 @@
-import axios from 'axios'
-import core from '../services/core'
-import api from '../services/api'
-import { colors } from 'quasar'
-import _ from 'lodash'
+import { boot } from 'quasar/wrappers';
+import axios from 'axios';
+import core from '../services/core';
+import api from '../services/api';
+import { colors } from 'quasar';
 
-// "async" is optional
-export default async ({
-  Vue,
-  store
-}) => {
-  console.core(`Loading ${process.env.APP_NAME} services`)
+// "async" is optional;
+// more info on params: https://v2.quasar.dev/quasar-cli/boot-files
+export default boot(async ({ app, store }) => {
+  console.core(`Loading ${process.env.APP_NAME} services`);
 
-  //    Vue prototypes setup    //
-  Vue.prototype.$core = core
-  Vue.prototype.$api = api
-  Vue.prototype.$user = store.state.app.user
-  Vue.prototype.$_ = _
-  Vue.prototype.$colors = colors
+  //    app prototypes setup    //
+  app.config.globalProperties.$core = core;
+  app.config.globalProperties.$api = api;
+  app.config.globalProperties.$colors = colors;
 
   //    axios setup    //
-  axios.defaults.baseURL = process.env.API_URL
-  axios.defaults.withCredentials = true
+  axios.defaults.baseURL = process.env.API_URL;
+  axios.defaults.withCredentials = true;
 
   //    core prototypes setup    //
-  core.$axios = axios
-  core.Vue = new Vue()
-  core.store = store
+  core.$axios = axios;
+  core.$store = store;
 
-  console.core((process.env.DEV ? 'Development' : 'Production'))
+  console.core('Mode: ' + process.env.APP_ENV || 'Development');
 
-  //    call and wait for initial setuo    //
-  await core.init()
-}
+  //    call and wait for initial setup    //
+  await core.init();
+});
