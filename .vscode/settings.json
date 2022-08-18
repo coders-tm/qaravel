@@ -1,0 +1,24 @@
+{
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    "editor.codeActionsOnSave": ["source.fixAll.eslint"],
+
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+
+    "[blade]": {
+        "editor.defaultFormatter": "shufo.vscode-blade-formatter",
+        "editor.formatOnSave": true
+    },
+
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+        "editor.formatOnSave": true
+    },
+
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}

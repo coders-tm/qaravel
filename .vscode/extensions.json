@@ -1,0 +1,21 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig",
+        "vue.volar",
+        "wayou.vscode-todo-highlight",
+        "francescopastore.quasar-extension-pack",
+        "abdelaziz18003.quasar-snippets",
+        "onecentlin.laravel5-snippets",
+        "bmewburn.vscode-intelephense-client",
+        "shufo.vscode-blade-formatter",
+        "onecentlin.laravel-extension-pack"
+    ],
+    "unwantedRecommendations": [
+        "octref.vetur",
+        "hookyqr.beautify",
+        "dbaeumer.jshint",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}
