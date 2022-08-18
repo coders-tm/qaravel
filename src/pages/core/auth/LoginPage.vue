@@ -21,7 +21,9 @@
           bottom-slots
           outlined
           dense
-          :error-message="'password' in errors ? errors.password.join(', ') : ''"
+          :error-message="
+            'password' in errors ? errors.password.join(', ') : ''
+          "
           :error="'password' in errors"
           v-model="form.password"
           :type="isPwd ? 'password' : 'text'"
@@ -69,15 +71,15 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia';
-import { useAppStore } from 'stores/app';
+import { mapActions } from "pinia";
+import { useAppStore } from "stores/app";
 
 export default {
   data() {
     return {
       form: {
-        // email: 'hello@gomedia.co',
-        // password: 'Gis0ra$$;',
+        email: "user@example.com",
+        password: "password",
         remember: false,
         guard: this.$route.meta.guard,
       },
@@ -87,14 +89,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useAppStore, ['login']),
+    ...mapActions(useAppStore, ["login"]),
     onSubmit() {
       this.errors = {};
       this.visible = true;
-      console.func('pages/login/LoginPage:methods.onSubmit()', arguments);
+      console.func("pages/login/LoginPage:methods.onSubmit()", arguments);
       this.login(this.form)
         .then((response) => {
-          this.$router.push({ name: 'Dashboard' });
+          this.$router.push({ name: "Dashboard" });
           this.visible = false;
         })
         .catch((error) => {
