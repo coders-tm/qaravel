@@ -949,6 +949,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fortawesome/fontawesome-pro@^6.1.2":
+  version "6.1.2"
+  resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/6.1.2/fontawesome-pro-6.1.2.tgz#4608bdd4bd484ef38e501a24b791bad5f05d4add"
+  integrity sha512-ypL8njTaxiJ+QbHwCCOBrGwj11vnlmyrP4lQ9c3pA2+9R3FtZwTKXpYmfSwdF0cXlwglCkq9plmmK8bgk64QeA==
+
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.10.4.tgz#01e7366e57d2ad104feea63e72248f22015c520c"

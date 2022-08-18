@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@coders-tm/vue-number-format": "^3.1.2",
+    "@fortawesome/fontawesome-pro": "^6.1.2",
     "@originjs/vite-plugin-require-context": "^1.0.9",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.27",
