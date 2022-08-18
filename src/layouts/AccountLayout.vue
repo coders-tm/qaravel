@@ -12,7 +12,9 @@
             <q-card>
               <q-card-section class="text-center">
                 <base-avatar-widget size="100px" :user="user" />
-                <div class="text-h6 text-weight-medium q-mb-lg">{{ user.name }}</div>
+                <div class="text-h6 text-weight-medium q-mb-lg">
+                  {{ user.name }}
+                </div>
                 <div>Member Since {{ user.member_since }}</div>
                 <div>{{ user.email }}</div>
                 <div>{{ user.phone_number }}</div>
@@ -37,25 +39,24 @@
 </template>
 
 <script>
-import LinksList from 'components/LinksList.vue';
-import LayoutHeader from 'components/LayoutHeader.vue';
-import LayoutDrawer from 'components/LayoutDrawer.vue';
-import { mapActions, mapState } from 'pinia';
-import { useAppStore } from 'stores/app';
+import LayoutHeader from "components/LayoutHeader.vue";
+import LayoutDrawer from "components/LayoutDrawer.vue";
+import { mapActions, mapState } from "pinia";
+import { useAppStore } from "stores/app";
 
 export default {
-  components: { LinksList, LayoutHeader, LayoutDrawer },
+  components: { LayoutHeader, LayoutDrawer },
 
   methods: {
-    ...mapActions(useAppStore, ['logout']),
+    ...mapActions(useAppStore, ["logout"]),
     onLogout() {
       this.logout().then(() => {
-        this.$router.push({ name: 'Login' });
+        this.$router.push({ name: "Login" });
       });
     },
   },
   computed: {
-    ...mapState(useAppStore, ['user']),
+    ...mapState(useAppStore, ["user"]),
   },
 };
 </script>
