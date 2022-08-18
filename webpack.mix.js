@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.copy('dist/spa/index.html', 'resources/views/app.blade.php')
-    .copyDirectory('dist/spa', 'public');
+mix
+  .copy("dist/spa/index.html", "resources/views/app.blade.php")
+  .copyDirectory("dist/spa", "public");
