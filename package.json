@@ -1,81 +1,81 @@
 {
-  "name": "qaravel",
-  "version": "2.0.0",
-  "description": "Qaravel is a Combination of Laravel and Quasar",
-  "productName": "Qaravel",
-  "author": "DepokSarkar <depokbsmrstu@gmail.com>",
-  "private": true,
-  "config": {
-    "app": {
-      "path": "frontend"
+    "name": "qaravel",
+    "version": "2.0.0",
+    "description": "Qaravel is a Combination of Laravel and Quasar",
+    "productName": "Qaravel",
+    "author": "DepokSarkar <depokbsmrstu@gmail.com>",
+    "private": true,
+    "config": {
+        "app": {
+            "path": "frontend"
+        },
+        "ssh": {
+            "user": "example.com",
+            "server": "ssh.hosting-provider.com",
+            "folders": {
+                "live": "~/app",
+                "alpha": "~/alpha"
+            }
+        }
     },
-    "ssh": {
-      "user": "example.com",
-      "server": "ssh.hosting-provider.com",
-      "folders": {
-        "live": "~/app",
-        "alpha": "~/alpha"
-      }
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "mix:dev": "yarn build:clean && mix",
+        "mix:prod": "yarn build:clean && mix --production",
+        "commit": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Commiting to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\"",
+        "push:git": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\"",
+        "push:live": "clear && echo Starting Live Push && yarn build:prod && yarn sync:live && echo Finished Live Push",
+        "push:alpha": "clear && echo Starting Alpha Push && yarn build:alpha && yarn sync:alpha && echo Finished Alpha Push ",
+        "build:prod": "yarn --cwd $npm_package_config_app_path build:prod && yarn mix:prod",
+        "build:alpha": "yarn --cwd $npm_package_config_app_path build:alpha && yarn mix:dev",
+        "build:dev": "yarn --cwd $npm_package_config_app_path build:dev && yarn mix:dev",
+        "build:icons": "yarn --cwd $npm_package_config_app_path icons",
+        "make:ssl": "yarn --cwd $npm_package_config_app_path ssl",
+        "app": "yarn --cwd $npm_package_config_app_path $type $package",
+        "quasar": "yarn --cwd $npm_package_config_app_path quasar $cmd",
+        "fresh": "php artisan migrate:fresh && php artisan migrate --path=database/migrations/imports && php artisan db:seed",
+        "start:web": "yarn && quasar dev",
+        "start:queue": "php artisan queue:work --timeout=36000 --stop-when-empty",
+        "sync:live": "echo Starting File Sync && rsync -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_live && ssh -i ~/.ssh/sync $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_live && /usr/bin/php74 -f /usr/local/bin/composer2 install && /usr/bin/php74 artisan config:cache && /usr/bin/php74 artisan migrate && /usr/bin/php74 artisan storage:link --force\" && echo Finished Live File Sync",
+        "sync:alpha": "echo Starting File Sync && rsync -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_alpha && ssh -i ~/.ssh/sync $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_alpha && /usr/bin/php74 -f /usr/local/bin/composer2 install && /usr/bin/php74 artisan config:cache && /usr/bin/php74 artisan migrate && /usr/bin/php74 artisan storage:link --force\" && echo Finished Alpha File Sync",
+        "build:clean": "echo Cleaning old build && del-cli public/assets public/img public/pdfjs public/mix-manifest.json",
+        "lint": "eslint --ext .js,.vue ./",
+        "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
+        "test": "echo \"No test specified\" && exit 0"
+    },
+    "dependencies": {
+        "@coders-tm/vue-number-format": "^3.1.2",
+        "@originjs/vite-plugin-require-context": "^1.0.9",
+        "@quasar/extras": "^1.0.0",
+        "axios": "^0.27",
+        "lodash": "^4.17.19",
+        "pinia": "^2.0.11",
+        "quasar": "^2.6.0",
+        "vue": "^3.0.0",
+        "vue-i18n": "^9.0.0",
+        "vue-router": "^4.0.0"
+    },
+    "devDependencies": {
+        "@intlify/vite-plugin-vue-i18n": "^3.3.1",
+        "@originjs/vite-plugin-require-context": "^1.0.9",
+        "@quasar/app-vite": "^1.0.0",
+        "autoprefixer": "^10.4.2",
+        "cross-env": "^7.0.3",
+        "del-cli": "^5.0.0",
+        "dotenv": "^16.0.1",
+        "eslint": "^8.10.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-vue": "^9.0.0",
+        "laravel-mix": "^6.0.49",
+        "laravel-vite-plugin": "^0.5.0",
+        "postcss": "^8.1.14",
+        "prettier": "^2.5.1",
+        "vite": "^3.0.0"
+    },
+    "engines": {
+        "node": "^18 || ^16 || ^14.19",
+        "npm": ">= 6.13.4",
+        "yarn": ">= 1.21.1"
     }
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "mix:dev": "yarn build:clean && mix",
-    "mix:prod": "yarn build:clean && mix --production",
-    "commit": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Commiting to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\"",
-    "push:git": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\"",
-    "push:live": "clear && echo Starting Live Push && yarn build:prod && yarn sync:live && echo Finished Live Push",
-    "push:alpha": "clear && echo Starting Alpha Push && yarn build:alpha && yarn sync:alpha && echo Finished Alpha Push ",
-    "build:prod": "yarn --cwd $npm_package_config_app_path build:prod && yarn mix:prod",
-    "build:alpha": "yarn --cwd $npm_package_config_app_path build:alpha && yarn mix:dev",
-    "build:dev": "yarn --cwd $npm_package_config_app_path build:dev && yarn mix:dev",
-    "build:icons": "yarn --cwd $npm_package_config_app_path icons",
-    "make:ssl": "yarn --cwd $npm_package_config_app_path ssl",
-    "app": "yarn --cwd $npm_package_config_app_path $type $package",
-    "quasar": "yarn --cwd $npm_package_config_app_path quasar $cmd",
-    "fresh": "php artisan migrate:fresh && php artisan migrate --path=database/migrations/imports && php artisan db:seed",
-    "start:web": "yarn && quasar dev",
-    "start:queue": "php artisan queue:work --timeout=36000 --stop-when-empty",
-    "sync:live": "echo Starting File Sync && rsync -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_live && ssh -i ~/.ssh/sync $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_live && /usr/bin/php74 -f /usr/local/bin/composer2 install && /usr/bin/php74 artisan config:cache && /usr/bin/php74 artisan migrate && /usr/bin/php74 artisan storage:link --force\" && echo Finished Live File Sync",
-    "sync:alpha": "echo Starting File Sync && rsync -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_alpha && ssh -i ~/.ssh/sync $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_alpha && /usr/bin/php74 -f /usr/local/bin/composer2 install && /usr/bin/php74 artisan config:cache && /usr/bin/php74 artisan migrate && /usr/bin/php74 artisan storage:link --force\" && echo Finished Alpha File Sync",
-    "build:clean": "echo Cleaning old build && del-cli public/assets public/img public/pdfjs public/mix-manifest.json",
-    "lint": "eslint --ext .js,.vue ./",
-    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0"
-  },
-  "dependencies": {
-    "@coders-tm/vue-number-format": "^3.1.2",
-    "@originjs/vite-plugin-require-context": "^1.0.9",
-    "@quasar/extras": "^1.0.0",
-    "axios": "^0.27",
-    "lodash": "^4.17.19",
-    "pinia": "^2.0.11",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-i18n": "^9.0.0",
-    "vue-router": "^4.0.0"
-  },
-  "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^3.3.1",
-    "@originjs/vite-plugin-require-context": "^1.0.9",
-    "@quasar/app-vite": "^1.0.0",
-    "autoprefixer": "^10.4.2",
-    "cross-env": "^7.0.3",
-    "del-cli": "^5.0.0",
-    "dotenv": "^16.0.1",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "laravel-mix": "^6.0.49",
-    "laravel-vite-plugin": "^0.5.0",
-    "postcss": "^8.1.14",
-    "prettier": "^2.5.1",
-    "vite": "^3.0.0"
-  },
-  "engines": {
-    "node": "^18 || ^16 || ^14.19",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
-  }
 }

@@ -141,7 +141,9 @@
                   dense
                   outlined
                   v-model="form.password_confirmation"
-                  :error-message="$core.errorMessage('password_confirmation', errors)"
+                  :error-message="
+                    $core.errorMessage('password_confirmation', errors)
+                  "
                   :error="$core.hasError('password_confirmation', errors)"
                   :type="isPwd2 ? 'password' : 'text'"
                 >
@@ -160,22 +162,35 @@
             <div class="plan q-pa-lg">
               <div class="text-h6">Your plan</div>
               <div class="info">
-                {{ plan.label }} Plan<br />{{ $core.money(plan.price) }} per month
+                {{ plan.label }} Plan<br />{{ $core.money(plan.price) }} per
+                month
               </div>
               <div class="features">
                 <ul>
-                  <li v-for="(feature, index) in plan.features" :key="index">{{ feature }}</li>
+                  <li v-for="(feature, index) in plan.features" :key="index">
+                    {{ feature }}
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="q-my-lg terms">
               <q-checkbox dense size="sm" v-model="form.terms">
                 I have read and agree to the
-                <base-btn :to="{ name: 'Privacy policy' }" size="11px" type="a" link>
+                <base-btn
+                  :to="{ name: 'Privacy policy' }"
+                  size="11px"
+                  type="a"
+                  link
+                >
                   privacy policy
                 </base-btn>
                 and
-                <base-btn :to="{ name: 'Terms and conditions' }" size="11px" type="a" link>
+                <base-btn
+                  :to="{ name: 'Terms and conditions' }"
+                  size="11px"
+                  type="a"
+                  link
+                >
                   terms and conditions
                 </base-btn>
               </q-checkbox>
@@ -197,15 +212,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia';
-import { useAppStore } from 'stores/app';
-const guard = 'users';
+import { mapActions, mapState } from "pinia";
+import { useAppStore } from "stores/app";
+const guard = "users";
 
 export default {
   data() {
     return {
       form: {
-        plan: 'investing',
+        plan: "investing",
         terms: false,
         guard,
       },
@@ -216,13 +231,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useAppStore, ['signUp']),
+    ...mapActions(useAppStore, ["signUp"]),
     onSubmit() {
-      console.func('pages/SignUpPage:methods.onSubmit()', arguments);
+      console.func("pages/SignUpPage:methods.onSubmit()", arguments);
       this.onReset();
       this.signUp(this.form)
         .then((response) => {
-          this.$router.push({ name: 'Dashboard' });
+          this.$router.push({ name: "Dashboard" });
           this.visible = false;
         })
         .catch(({ errors, message }) => {
@@ -250,7 +265,7 @@ export default {
         value: item.key,
       }));
     },
-    ...mapState(useAppStore, ['defaultPlans']),
+    ...mapState(useAppStore, ["defaultPlans"]),
   },
 };
 </script>
