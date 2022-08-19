@@ -4,7 +4,9 @@
       <div class="text-h6">{{ title }}</div>
       <div class="text-subtitle2">{{ user.name }}</div>
     </q-card-section>
-    <q-card-section class="q-pt-none" v-html="description" />
+    <q-card-section class="q-pt-none">
+      <div v-html="description"></div>
+    </q-card-section>
   </q-card>
 </template>
 

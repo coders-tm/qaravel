@@ -10,8 +10,6 @@
 
 const { configure } = require("quasar/wrappers");
 const path = require("path");
-const ViteRequireContext =
-  require("@originjs/vite-plugin-require-context").default;
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -67,14 +65,12 @@ module.exports = configure(function (/* ctx */) {
       // analyze: true,
 
       env: function () {
-        let vars = require("dotenv").config({
+        return require("dotenv").config({
           path: path.resolve(
-            process.cwd(),
-            ".env.frontend." +
-              (process.env.BUILD_MODE ? process.env.BUILD_MODE : "dev")
+            __dirname,
+            `.env.frontend.${process.env.BUILD_MODE || "dev"}`
           ),
         }).parsed;
-        return vars;
       }.call(),
 
       // rawDefine: {}
@@ -89,7 +85,7 @@ module.exports = configure(function (/* ctx */) {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        ViteRequireContext(),
+        require("@originjs/vite-plugin-require-context").default(),
         [
           "@intlify/vite-plugin-vue-i18n",
           {
@@ -105,10 +101,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      // https: {
-      //   key: path.resolve(process.cwd(), 'app.qaravel.gomedia.key'),
-      //   cert: path.resolve(process.cwd(), 'app.qaravel.gomedia.crt')
-      // },
+      https: {
+        key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
+        cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
+      },
       port: 9000,
       open: true, // opens browser window automatically
       host: "qaravel.gomedia",

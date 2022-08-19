@@ -14,7 +14,12 @@
         <q-toolbar-title>
           <img class="self-center" width="120" src="~assets/logo.png" />
         </q-toolbar-title>
-        <q-btn no-caps color="primary" :to="{ name: 'Posts' }" label="Posts" />
+        <q-btn
+          no-caps
+          color="primary"
+          :to="{ name: 'Dashboard' }"
+          label="Posts"
+        />
       </q-toolbar>
     </q-header>
 

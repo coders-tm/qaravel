@@ -13,7 +13,6 @@ export default [
         name: "Dashboard",
         meta: {
           auth: true,
-          subscription: true,
           guard: "users",
         },
         component: () => import("pages/users/IndexPage.vue"),
@@ -29,7 +28,6 @@ export default [
         name: "My Account",
         meta: {
           auth: true,
-          subscription: true,
           title: "My Account",
           guard: "users",
         },
