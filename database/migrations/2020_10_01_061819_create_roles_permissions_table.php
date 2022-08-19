@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRolesPermissionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class CreateRolesPermissionsTable extends Migration
             $table->foreign('role_id')->references('id')->on('roles');
             $table->foreign('permission_id')->references('id')->on('permissions');
 
-            $table->primary(['role_id','permission_id']);
+            $table->primary(['role_id', 'permission_id']);
         });
     }
 
@@ -33,4 +33,4 @@ class CreateRolesPermissionsTable extends Migration
     {
         Schema::dropIfExists('roles_permissions');
     }
-}
+};

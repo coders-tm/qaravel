@@ -22,21 +22,21 @@ class UserSeeder extends Seeder
         $staffRole = Role::where('slug', 'staff')->first();
 
         $admin = User::create([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
             'email' => 'admin@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
         $user = User::create([
-            'name' => 'User',
+            'first_name' => 'User',
             'email' => 'user@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
         $staff = User::create([
-            'name' => 'Staff',
+            'first_name' => 'Staff',
             'email' => 'staff@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
@@ -46,6 +46,5 @@ class UserSeeder extends Seeder
         $admin->roles()->attach($adminRole);
         $user->roles()->attach($userRole);
         $staff->roles()->attach($staffRole);
-
     }
 }

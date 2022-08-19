@@ -1,20 +1,17 @@
 <template>
-  <q-btn
-    class="base-label"
-    :ripple="false"
-    dense
-    flat
-    color="primary"
-    :icon="icon"
-    :label="label"
-    no-caps
-  />
+  <div class="base-label flex items-center">
+    <div class="text-label">
+      <slot>{{ title }}</slot>
+      <span v-if="required" class="q-ml-xs">*</span>
+    </div>
+  </div>
 </template>
+
 <script>
 export default {
   props: {
-    icon: String,
-    label: String,
+    title: String,
+    required: Boolean,
   },
 };
 </script>

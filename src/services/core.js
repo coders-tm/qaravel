@@ -9,10 +9,10 @@ import {
   date,
   format,
   copyToClipboard,
-} from 'quasar';
+} from "quasar";
 
-import { NumberFormat } from '@coders-tm/vue-number-format';
-import BaseAlert from '../components/base/BaseAlert.vue';
+import { NumberFormat } from "@coders-tm/vue-number-format";
+import BaseAlert from "../components/base/BaseAlert.vue";
 
 const { capitalize, humanStorageSize } = format;
 
@@ -21,28 +21,28 @@ let emitTimer;
 export default {
   modules: {},
   async init() {
-    console.func('services/core:init()', arguments);
-    if (Cookies.has('qaravel-gdpr-accept') !== true) {
+    console.func("services/core:init()", arguments);
+    if (Cookies.has("qaravel-gdpr-accept") !== true) {
       Notify.create({
         message:
-          'We use cookies to improve user experience, manage user sessions and analyze website traffic. By clicking “Accept” you consent to store on your device all the technologies described in our Cookie Policy. Please read our Terms and Conditions and Privacy Policy for full details by clicking the Learn More button.',
+          "We use cookies to improve user experience, manage user sessions and analyze website traffic. By clicking “Accept” you consent to store on your device all the technologies described in our Cookie Policy. Please read our Terms and Conditions and Privacy Policy for full details by clicking the Learn More button.",
         multiline: true,
-        classes: 'bg-grey-10',
+        classes: "bg-grey-10",
         timeout: 0,
-        position: 'bottom-right',
+        position: "bottom-right",
         actions: [
           {
-            label: 'Accept',
-            color: 'yellow',
+            label: "Accept",
+            color: "yellow",
             handler() {
-              Cookies.set('qaravel-gdpr-accept', true, {
+              Cookies.set("qaravel-gdpr-accept", true, {
                 expires: 5 * 365,
               });
             },
           },
           {
-            label: 'Learn more',
-            color: 'grey',
+            label: "Learn more",
+            color: "grey",
             noDismiss: true,
             handler() {
               openURL(process.env.COOKIE_URL);
@@ -55,7 +55,7 @@ export default {
   app: {},
   closeDate(refs) {
     Object.keys(refs).forEach((ref) => {
-      if (ref.indexOf('ds_') !== -1) {
+      if (ref.indexOf("ds_") !== -1) {
         refs[ref].hide();
       }
     });
@@ -94,11 +94,11 @@ export default {
           label: col.view.label ? col.view.label : col.label,
           align: col.view.align ? col.view.align : col.align,
           tab: col.view.tab ? col.view.tab : col.tab,
-          type: col.view.type ? col.view.type : col.type ? col.type : 'text',
+          type: col.view.type ? col.view.type : col.type ? col.type : "text",
           classes:
-            (col.classes ? col.classes : '') +
-            (col.classes && col.view.classes ? ' ' : '') +
-            (col.view.classes ? col.view.classes : ''),
+            (col.classes ? col.classes : "") +
+            (col.classes && col.view.classes ? " " : "") +
+            (col.view.classes ? col.view.classes : ""),
           data: col.data ? col.data : {},
         };
       } else {
@@ -113,11 +113,11 @@ export default {
           label: col.edit.label ? col.edit.label : col.label,
           align: col.edit.align ? col.edit.align : col.align,
           tab: col.edit.tab ? col.edit.tab : col.tab,
-          type: col.edit.type ? col.edit.type : col.type ? col.type : 'text',
+          type: col.edit.type ? col.edit.type : col.type ? col.type : "text",
           classes:
-            (col.classes ? col.classes : '') +
-            (col.classes && col.edit.classes ? ' ' : '') +
-            (col.edit.classes ? col.edit.classes : ''),
+            (col.classes ? col.classes : "") +
+            (col.classes && col.edit.classes ? " " : "") +
+            (col.edit.classes ? col.edit.classes : ""),
           data: col.data ? col.data : {},
         };
       } else {
@@ -132,11 +132,11 @@ export default {
           label: col.add.label ? col.add.label : col.label,
           align: col.add.align ? col.add.align : col.align,
           tab: col.add.tab ? col.add.tab : col.tab,
-          type: col.add.type ? col.add.type : col.type ? col.type : 'text',
+          type: col.add.type ? col.add.type : col.type ? col.type : "text",
           classes:
-            (col.classes ? col.classes : '') +
-            (col.classes && col.add.classes ? ' ' : '') +
-            (col.add.classes ? col.add.classes : ''),
+            (col.classes ? col.classes : "") +
+            (col.classes && col.add.classes ? " " : "") +
+            (col.add.classes ? col.add.classes : ""),
           data: col.data ? col.data : {},
         };
       } else {
@@ -145,10 +145,10 @@ export default {
     },
   },
   confirm(msg, o) {
-    console.func('services/core:confirm()', arguments);
+    console.func("services/core:confirm()", arguments);
     return new Promise((resolve, reject) => {
       var strMsg = [];
-      if (typeof msg === 'object') {
+      if (typeof msg === "object") {
         strMsg.push(msg.message);
       } else {
         strMsg.push(msg);
@@ -158,43 +158,43 @@ export default {
         component: BaseAlert,
         componentProps: {
           msg: strMsg,
-          icon: 'warning',
-          title: o && o.title ? o.title : 'Please Confirm',
+          icon: "warning",
+          title: o && o.title ? o.title : "Please Confirm",
           subTitle: o && o.subTitle ? o.subTitle : false,
           ok: {
-            label: o && o.ok ? o.ok : 'Confirm',
-            color: o && o.okColor ? o.okColor : 'positive',
+            label: o && o.ok ? o.ok : "Confirm",
+            color: o && o.okColor ? o.okColor : "positive",
           },
           cancel: {
-            label: o && o.cancel ? o.cancel : 'Cancel',
-            color: o && o.cancelColor ? o.cancelColor : 'grey',
+            label: o && o.cancel ? o.cancel : "Cancel",
+            color: o && o.cancelColor ? o.cancelColor : "grey",
           },
         },
       })
         .onOk(() => {
-          resolve('ok');
+          resolve("ok");
         })
         .onCancel(() => {
-          reject('cancel');
+          reject("cancel");
         });
     });
   },
   error(msg, o) {
-    console.func('services/core:error()', arguments);
+    console.func("services/core:error()", arguments);
     var strMsg = [];
-    if (typeof msg === 'object') {
+    if (typeof msg === "object") {
       if (msg.errors) {
         Object.keys(msg.errors).forEach(function (key) {
-          if (typeof msg.errors[key] === 'string') {
+          if (typeof msg.errors[key] === "string") {
             strMsg.push({
-              icon: 'exclamation-circle',
+              icon: "exclamation-circle",
               text: msg.errors[key],
             });
           } else {
             msg.errors[key].forEach((val) => {
               strMsg.push({
-                color: 'negative',
-                icon: 'exclamation-circle',
+                color: "negative",
+                icon: "exclamation-circle",
                 text: val,
               });
             });
@@ -211,24 +211,24 @@ export default {
       component: BaseAlert,
       componentProps: {
         msg: strMsg,
-        icon: 'error',
-        title: o && o.title ? o.title : 'Application Error',
+        icon: "error",
+        title: o && o.title ? o.title : "Error",
       },
     }).onOk(() => {
-      console.log('OK');
+      console.log("OK");
     });
   },
   success(msg, o) {
-    console.func('services/core:success()', arguments);
+    console.func("services/core:success()", arguments);
     Dialog.create({
       component: BaseAlert,
       componentProps: {
         msg: msg,
-        icon: o && o.icon ? o.icon : 'success',
-        title: o && o.title ? o.title : 'Application Success',
+        icon: o && o.icon ? o.icon : "success",
+        title: o && o.title ? o.title : "Success",
       },
     }).onOk(() => {
-      console.log('OK');
+      console.log("OK");
     });
   },
   random(min, max) {
@@ -246,33 +246,38 @@ export default {
       .toString()
       .trim()
       .toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '');
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
   },
   category(obj) {
     const cat = [];
     obj.forEach((element) => {
       cat.push(element.name);
     });
-    return cat.join(', ');
+    return cat.join(", ");
   },
   async importScript(src) {
     return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.async = true;
       script.src = src;
-      script.addEventListener('load', (event) => {
+      script.addEventListener("load", (event) => {
         resolve();
       });
-      script.addEventListener('error', () => reject('Error loading script "' + src + '"'));
-      script.addEventListener('abort', () => reject('Script loading aborted for "' + src + '"'));
+      script.addEventListener("error", () =>
+        reject('Error loading script "' + src + '"')
+      );
+      script.addEventListener("abort", () =>
+        reject('Script loading aborted for "' + src + '"')
+      );
       document.head.appendChild(script);
     });
   },
   wrapCsvValue(val, formatFn) {
     let formatted = formatFn !== undefined ? formatFn(val) : val;
 
-    formatted = formatted === undefined || formatted === null ? '' : String(formatted);
+    formatted =
+      formatted === undefined || formatted === null ? "" : String(formatted);
 
     formatted = formatted.split('"').join('""');
     /**
@@ -284,35 +289,35 @@ export default {
 
     return `"${formatted}"`;
   },
-  export(table, name, type = 'text/csv') {
+  export(table, name, type = "text/csv") {
     const content = [table.columns.map((col) => this.wrapCsvValue(col.label))]
       .concat(
         table.data.map((row) =>
           table.columns
             .map((col) =>
               this.wrapCsvValue(
-                typeof col.field === 'function'
+                typeof col.field === "function"
                   ? col.field(row)
                   : row[col.field === undefined ? col.name : col.field],
                 col.format
               )
             )
-            .join(',')
+            .join(",")
         )
       )
-      .join('\r\n');
+      .join("\r\n");
 
-    const status = exportFile(name + '_' + Date.now() + '.csv', content, type);
+    const status = exportFile(name + "_" + Date.now() + ".csv", content, type);
 
     if (status !== true) {
       Notify.create({
-        message: 'Browser denied file download...',
-        color: 'negative',
-        icon: 'warning',
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
       });
     }
   },
-  b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+  b64toBlob(b64Data, contentType = "", sliceSize = 512) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -334,7 +339,7 @@ export default {
     return blob;
   },
   getBlobURL(data) {
-    const blob = this.b64toBlob(data, 'text/plain');
+    const blob = this.b64toBlob(data, "text/plain");
     const url = URL.createObjectURL(blob);
     setTimeout(() => {
       URL.revokeObjectURL(url);
@@ -342,13 +347,13 @@ export default {
     return url;
   },
   getDate(d) {
-    if (d && typeof d === 'string') {
-      if (d.indexOf('-') !== -1) {
-        d = date.extractDate(d, 'YYYY-MM-DD');
-      } else if (d.indexOf('/') !== -1) {
-        d = date.extractDate(d, 'DD/MM/YYYY');
+    if (d && typeof d === "string") {
+      if (d.indexOf("-") !== -1) {
+        d = date.extractDate(d, "YYYY-MM-DD");
+      } else if (d.indexOf("/") !== -1) {
+        d = date.extractDate(d, "DD/MM/YYYY");
       }
-    } else if (!d || typeof d === 'string') {
+    } else if (!d || typeof d === "string") {
       d = new Date();
     }
 
@@ -356,7 +361,7 @@ export default {
   },
   length(obj, o) {
     var len = 0;
-    if (obj && typeof obj.length === 'undefined') {
+    if (obj && typeof obj.length === "undefined") {
       Object.keys(obj).forEach(function (key) {
         len++;
       });
@@ -366,11 +371,15 @@ export default {
     return len;
   },
   sort(arr, field, dir) {
-    console.log('core.sort()', arguments);
+    console.log("core.sort()", arguments);
     if (dir) {
-      return arr.sort((a, b) => (a[field] > b[field] ? 1 : b[field] > a[field] ? -1 : 0));
+      return arr.sort((a, b) =>
+        a[field] > b[field] ? 1 : b[field] > a[field] ? -1 : 0
+      );
     } else {
-      return arr.sort((a, b) => (a[field] > b[field] ? -1 : b[field] > a[field] ? 1 : 0));
+      return arr.sort((a, b) =>
+        a[field] > b[field] ? -1 : b[field] > a[field] ? 1 : 0
+      );
     }
   },
   humanSize(number) {
@@ -391,57 +400,67 @@ export default {
     },
   },
   cookie(key, value, days) {
-    console.func('services/core:cookie()', arguments);
+    console.func("services/core:cookie()", arguments);
     var obj =
-      typeof key === 'object'
+      typeof key === "object"
         ? key
         : {
             key,
             value,
             days,
           };
-    if (typeof obj.value === 'undefined') {
-      var keyValue = document.cookie.match('(^|;) ?' + obj.key + '=([^;]*)(;|$)');
+    if (typeof obj.value === "undefined") {
+      var keyValue = document.cookie.match(
+        "(^|;) ?" + obj.key + "=([^;]*)(;|$)"
+      );
       return keyValue ? keyValue[2] : null;
     } else {
       var expires = new Date();
       if (obj.value === null) {
         obj.days = -10000;
       } else {
-        obj.days = expires.getTime() + (isNaN(obj.days) ? 10 : obj.days) * 24 * 60 * 60 * 1000;
+        obj.days =
+          expires.getTime() +
+          (isNaN(obj.days) ? 10 : obj.days) * 24 * 60 * 60 * 1000;
       }
       expires.setTime(obj.days);
-      document.cookie = obj.key + '=' + obj.value + ';expires=' + expires.toUTCString() + ';path=/';
+      document.cookie =
+        obj.key +
+        "=" +
+        obj.value +
+        ";expires=" +
+        expires.toUTCString() +
+        ";path=/";
     }
   },
   formatDate(d, type) {
-    var format = 'DD/MM/YYYY';
+    var format = "DD/MM/YYYY";
 
     switch (type) {
-      case 'sql':
-        format = 'YYYY-MM-DD';
+      case "sql":
+        format = "YYYY-MM-DD";
         break;
     }
-    if (d && typeof d === 'string') {
+    if (d && typeof d === "string") {
       d = this.getDate(d);
     }
-    if (typeof d.getMonth === 'function') {
+    if (typeof d.getMonth === "function") {
       d = date.formatDate(d, format);
     }
 
     return d;
   },
   localData(key, value) {
-    console.func('services/core:localData()', arguments);
+    console.func("services/core:localData()", arguments);
     var obj =
-      typeof key === 'object'
+      typeof key === "object"
         ? key
         : {
             key,
             value,
           };
 
-    if (typeof obj.value === 'undefined') {
+    if (typeof obj.value === "undefined") {
       // GET
       return LocalStorage.has(obj.key) ? LocalStorage.getItem(obj.key) : null;
     } else {
@@ -457,21 +476,21 @@ export default {
     }
   },
   openURL(url) {
-    console.func('services/core:openURL()', arguments);
+    console.func("services/core:openURL()", arguments);
     openURL(url);
   },
   uid() {
-    console.func('services/core:uid()', arguments);
+    console.func("services/core:uid()", arguments);
     return uid();
   },
   user(key) {
-    console.func('services/core:user()', arguments);
+    console.func("services/core:user()", arguments);
     const user = this.$store.state.SessionData.user;
     return user && key ? user[key] : user;
   },
   dataURLtoFile(dataurl, filename) {
-    console.func('services/core:dataURLtoFile()', arguments);
-    var arr = dataurl.split(','),
+    console.func("services/core:dataURLtoFile()", arguments);
+    var arr = dataurl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]),
       n = bstr.length,
@@ -508,19 +527,21 @@ export default {
     // Docs: https://vue-number-format.netlify.app/guide/config.html
     const options = Object.assign(
       {
-        prefix: '£',
+        prefix: "£",
         reverseFill: true,
         precision: 2,
       },
       config
     );
     const integer = parseInt(
-      (Number(value).toFixed(options.precision) * Number(`1e${options.precision + 1}`)) / 10
+      (Number(value).toFixed(options.precision) *
+        Number(`1e${options.precision + 1}`)) /
+        10
     );
     return new NumberFormat(options).format(integer);
   },
   debounce(func, wait, immediate) {
-    console.func('services/core:debounce()', arguments);
+    console.func("services/core:debounce()", arguments);
     if (immediate) {
       return func.call();
     }
@@ -530,15 +551,15 @@ export default {
     }, wait);
   },
   copyToClipboard(text, message) {
-    console.func('services/core:copyToClipboard()', arguments);
+    console.func("services/core:copyToClipboard()", arguments);
     copyToClipboard(text).then(() => {
       Notify.create({
-        message: message || 'Successfully coppied to clipboard.',
+        message: message || "Successfully coppied to clipboard.",
       });
     });
   },
   errorMessage(key, errors) {
-    return this.hasError(key, errors) ? errors[key].join(', ') : '';
+    return this.hasError(key, errors) ? errors[key].join(", ") : "";
   },
   hasError(key, errors) {
     return key in errors;

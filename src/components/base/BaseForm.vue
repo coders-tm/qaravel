@@ -1,10 +1,15 @@
 <template>
-  <q-form ref="baseForm">
-    <q-card flat :square="square" :bordered="bordered" :class="`bg-transparent ${contentClass}`">
-      <q-card-section class="q-pa-none body">
-        <slot name="body"></slot>
+  <q-form class="base-form" ref="baseForm">
+    <q-card
+      flat
+      :square="square"
+      :bordered="bordered"
+      :class="`bg-transparent ${contentClass}`"
+    >
+      <q-card-section class="q-pa-none form-body">
+        <slot></slot>
       </q-card-section>
-      <q-card-section class="actions q-pa-none q-mt-md">
+      <q-card-section class="form-actions q-pa-none q-mt-md">
         <slot name="actions">
           <q-btn
             no-caps
@@ -79,49 +84,52 @@ export default {
     contentClass: {
       required: false,
       type: String,
-      default: () => '',
+      default: () => "",
     },
   },
-  emits: ['cancel', 'reset'],
+  emits: ["cancel", "reset"],
   methods: {
     onCancel() {
-      console.func('components/base/base-form:methods.onCancel()', arguments);
-      this.$emit('cancel');
+      console.func("components/base/base-form:methods.onCancel()", arguments);
+      this.$emit("cancel");
     },
     onReset() {
-      console.func('components/base/base-form:methods.onReset()', arguments);
+      console.func("components/base/base-form:methods.onReset()", arguments);
       this.$core
-        .confirm('If you discard changes, you’ll delete any edits you made since you last saved.', {
-          title: 'Discard all unsaved changes?',
-          ok: 'Discard changes',
-          cancel: 'Continue editing',
-          okColor: 'negative',
-        })
+        .confirm(
+          "If you discard changes, you’ll delete any edits you made since you last saved.",
+          {
+            title: "Discard all unsaved changes?",
+            ok: "Discard changes",
+            cancel: "Continue editing",
+            okColor: "negative",
+          }
+        )
         .then(() => {
-          this.$store.commit('app/setDirt', false);
-          this.$emit('reset');
+          this.$store.commit("app/setDirt", false);
+          this.$emit("reset");
         });
     },
     addHandler() {
-      window.addEventListener('form:discard', this.onDiscard);
-      window.addEventListener('form:save', this.onSave);
+      window.addEventListener("form:discard", this.onDiscard);
+      window.addEventListener("form:save", this.onSave);
     },
     removeHandler() {
-      window.removeEventListener('form:discard', this.onDiscard);
-      window.removeEventListener('form:save', this.onSave);
+      window.removeEventListener("form:discard", this.onDiscard);
+      window.removeEventListener("form:save", this.onSave);
     },
     onDiscard() {
-      console.func('components/base/base-form:methods.onDiscard()', arguments);
+      console.func("components/base/base-form:methods.onDiscard()", arguments);
       this.onReset();
     },
     onSave() {
-      console.func('components/base/base-form:methods.onSave()', arguments);
+      console.func("components/base/base-form:methods.onSave()", arguments);
       this.$refs.baseForm.submit();
     },
   },
   watch: {
     resetable(val) {
-      this.$store.commit('app/setDirt', val);
+      this.$store.commit("app/setDirt", val);
     },
   },
   created() {
