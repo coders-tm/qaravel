@@ -14,7 +14,7 @@
             <div
               v-for="(post, index) in rows"
               :key="index"
-              class="col-sm-3 col-xs-12 posts--col"
+              class="col-md-3 col-sm-6 col-xs-12 posts--col"
             >
               <post-card flat bordered v-bind="post" />
             </div>
