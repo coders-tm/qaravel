@@ -8,11 +8,6 @@ yarn.lock
 .quasar
 .vs
 node_modules
-storage/app/public/*
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/testing/*
-storage/framework/views/*
 storage/logs
 public/storage
 public/.well-known
@@ -21,6 +16,7 @@ tests
 src
 src-*
 dist
+*.bak
 *.pem
 resources/frontend
 .DS_Store

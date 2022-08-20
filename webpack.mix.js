@@ -12,5 +12,5 @@ const mix = require("laravel-mix");
  */
 
 mix
-  .copy("dist/spa/index.html", "resources/views/app.blade.php")
-  .copyDirectory("dist/spa", "public");
+  .copy("dist/pwa/index.html", "resources/views/app.blade.php")
+  .copyDirectory("dist/pwa", "public");
