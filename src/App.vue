@@ -24,7 +24,6 @@ export default defineComponent({
   },
   mounted() {
     window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("beforeinstallprompt", e);
       // Prevents the default mini-infobar or install dialog from appearing on mobile
       e.preventDefault();
       // Save the event because you'll need to trigger it later.
