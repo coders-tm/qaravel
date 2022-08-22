@@ -35,7 +35,7 @@ export default defineComponent({
       dismiss = this.$q.notify({
         message: "Install Qaravel?",
         color: "grey",
-        avatar: "/assets/img/icon.png",
+        avatar: "/images/icon.png",
         timeout: 0,
         actions: [
           {

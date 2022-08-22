@@ -10,6 +10,7 @@ yarn.lock
 node_modules
 storage/logs
 public/storage
+storage/*
 public/.well-known
 vendor
 tests

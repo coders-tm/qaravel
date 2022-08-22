@@ -72,7 +72,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bungee&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index.8d5ea4b7.js"></script>
+  <script type="module" crossorigin src="/assets/index.b4c42063.js"></script>
   <link rel="stylesheet" href="/assets/index.aa5d9cca.css">
 <link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#027be3"><link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#027be3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png"><meta name="msapplication-TileColor" content="#000000"><meta name="apple-mobile-web-app-title" content="Qaravel"><link rel="apple-touch-icon" href="/icons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-icon-167x167.png"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png"></head>
 
