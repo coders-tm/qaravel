@@ -60,90 +60,6 @@ export default {
       }
     });
   },
-  columns: {
-    options(cols, optionsList) {
-      return cols
-        .filter((col) => {
-          return col.data && col.data.options && !optionsList[col.data.options];
-        })
-        .map((col) => {
-          return col.data.options;
-        });
-    },
-    table(col) {
-      if (col.table) {
-        return {
-          name: col.name,
-          field: col.display_field ? col.display_field : col.field,
-          required: col.required,
-          label: col.label,
-          align: col.align,
-          sortable: col.sortable,
-          classes: col.classes,
-          headerClasses: col.headerClasses,
-        };
-      } else {
-        return false;
-      }
-    },
-    view(col) {
-      if (col.view) {
-        return {
-          name: col.view.name ? col.view.name : col.name,
-          field: col.view.field ? col.view.field : col.field,
-          label: col.view.label ? col.view.label : col.label,
-          align: col.view.align ? col.view.align : col.align,
-          tab: col.view.tab ? col.view.tab : col.tab,
-          type: col.view.type ? col.view.type : col.type ? col.type : "text",
-          classes:
-            (col.classes ? col.classes : "") +
-            (col.classes && col.view.classes ? " " : "") +
-            (col.view.classes ? col.view.classes : ""),
-          data: col.data ? col.data : {},
-        };
-      } else {
-        return false;
-      }
-    },
-    edit(col) {
-      if (col.edit) {
-        return {
-          name: col.edit.name ? col.edit.name : col.name,
-          field: col.edit.field ? col.edit.field : col.field,
-          label: col.edit.label ? col.edit.label : col.label,
-          align: col.edit.align ? col.edit.align : col.align,
-          tab: col.edit.tab ? col.edit.tab : col.tab,
-          type: col.edit.type ? col.edit.type : col.type ? col.type : "text",
-          classes:
-            (col.classes ? col.classes : "") +
-            (col.classes && col.edit.classes ? " " : "") +
-            (col.edit.classes ? col.edit.classes : ""),
-          data: col.data ? col.data : {},
-        };
-      } else {
-        return false;
-      }
-    },
-    add(col) {
-      if (col.add) {
-        return {
-          name: col.add.name ? col.add.name : col.name,
-          field: col.add.field ? col.add.field : col.field,
-          label: col.add.label ? col.add.label : col.label,
-          align: col.add.align ? col.add.align : col.align,
-          tab: col.add.tab ? col.add.tab : col.tab,
-          type: col.add.type ? col.add.type : col.type ? col.type : "text",
-          classes:
-            (col.classes ? col.classes : "") +
-            (col.classes && col.add.classes ? " " : "") +
-            (col.add.classes ? col.add.classes : ""),
-          data: col.data ? col.data : {},
-        };
-      } else {
-        return false;
-      }
-    },
-  },
   confirm(msg, o) {
     console.func("services/core:confirm()", arguments);
     return new Promise((resolve, reject) => {
@@ -249,12 +165,8 @@ export default {
       .replace(/ /g, "-")
       .replace(/[^\w-]+/g, "");
   },
-  category(obj) {
-    const cat = [];
-    obj.forEach((element) => {
-      cat.push(element.name);
-    });
-    return cat.join(", ");
+  category(list, key) {
+    return list.map((element) => element[key]).join(", ");
   },
   async importScript(src) {
     return new Promise((resolve, reject) => {
@@ -399,40 +311,6 @@ export default {
       return re.test(email);
     },
   },
-  cookie(key, value, days) {
-    console.func("services/core:cookie()", arguments);
-    var obj =
-      typeof key === "object"
-        ? key
-        : {
-            key,
-            value,
-            days,
-          };
-    if (typeof obj.value === "undefined") {
-      var keyValue = document.cookie.match(
-        "(^|;) ?" + obj.key + "=([^;]*)(;|$)"
-      );
-      return keyValue ? keyValue[2] : null;
-    } else {
-      var expires = new Date();
-      if (obj.value === null) {
-        obj.days = -10000;
-      } else {
-        obj.days =
-          expires.getTime() +
-          (isNaN(obj.days) ? 10 : obj.days) * 24 * 60 * 60 * 1000;
-      }
-      expires.setTime(obj.days);
-      document.cookie =
-        obj.key +
-        "=" +
-        obj.value +
-        ";expires=" +
-        expires.toUTCString() +
-        ";path=/";
-    }
-  },
   formatDate(d, type) {
     var format = "DD/MM/YYYY";
 
@@ -450,31 +328,6 @@ export default {
 
     return d;
   },
-  localData(key, value) {
-    console.func("services/core:localData()", arguments);
-    var obj =
-      typeof key === "object"
-        ? key
-        : {
-            key,
-            value,
-          };
-
-    if (typeof obj.value === "undefined") {
-      // GET
-      return LocalStorage.has(obj.key) ? LocalStorage.getItem(obj.key) : null;
-    } else {
-      if (obj.value === null) {
-        // DELETE
-        if (LocalStorage.has(obj.key)) {
-          localStorage.removeItem(obj.key);
-        }
-      } else {
-        // SET
-        LocalStorage.set(obj.key, obj.value);
-      }
-    }
-  },
   openURL(url) {
     console.func("services/core:openURL()", arguments);
     openURL(url);
@@ -482,11 +335,6 @@ export default {
   uid() {
     console.func("services/core:uid()", arguments);
     return uid();
-  },
-  user(key) {
-    console.func("services/core:user()", arguments);
-    const user = this.$store.state.SessionData.user;
-    return user && key ? user[key] : user;
   },
   dataURLtoFile(dataurl, filename) {
     console.func("services/core:dataURLtoFile()", arguments);
