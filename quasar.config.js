@@ -28,7 +28,7 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ["log", "app", "base-components", "font-awesome-pro", "auth"],
+    boot: ["i18n", "log", "app", "base-components", "font-awesome-pro", "auth"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ["app.scss"],
@@ -74,14 +74,14 @@ module.exports = configure(function (/* ctx */) {
       }.call(),
 
       // rawDefine: {}
-      ignorePublicFolder: true,
+      // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
 
-      extendViteConf(viteConf) {
-        viteConf.publicDir = path.resolve(__dirname, "./statics");
-      },
+      // extendViteConf(viteConf) {
+      //   viteConf.publicDir = path.resolve(__dirname, "./statics");
+      // },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -182,21 +182,15 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: "injectManifest", // 'generateSW' or 'injectManifest'
+      workboxMode: "injectManifest", // or 'injectManifest'
       injectPwaMetaTags: true,
       swFilename: "sw.js",
       manifestFilename: "manifest.json",
       useCredentialsForManifestTag: false,
-      extendGenerateSWOptions(cfg) {},
-      extendInjectManifestOptions(cfg) {},
-      extendManifestJson(json) {},
-      extendPWACustomSWConf(esbuildConf) {},
-    },
-
-    sourceFiles: {
-      pwaRegisterServiceWorker: "src-pwa/register-service-worker",
-      pwaServiceWorker: "src-pwa/custom-service-worker",
-      pwaManifestFile: "src-pwa/manifest.json",
+      // extendGenerateSWOptions (cfg) {}
+      // extendInjectManifestOptions (cfg) {},
+      // extendManifestJson (json) {}
+      // extendPWACustomSWConf (esbuildConf) {}
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
@@ -232,7 +226,7 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "qaravel",
+        appId: "quasar-vite",
       },
     },
 

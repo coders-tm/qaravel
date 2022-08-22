@@ -3,7 +3,7 @@
     <div class="row" style="width: 300px">
       <div class="text-h5">Homepage</div>
       <q-img
-        src="/assets/img/logo.png"
+        src="/images/logo.png"
         spinner-color="primary"
         spinner-size="82px"
       />
