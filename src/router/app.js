@@ -12,7 +12,7 @@ export default [
         path: "dashboard",
         name: "Dashboard",
         meta: {
-          auth: true,
+          // auth: true,
           guard: "users",
         },
         component: () => import("pages/users/IndexPage.vue"),

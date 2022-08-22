@@ -132,6 +132,7 @@ export default {
           this.loading = false;
           this.loaded = true;
           this.$core.error(error);
+          this.$router.push({ name: "Login" });
         });
     },
     onChangePagination() {

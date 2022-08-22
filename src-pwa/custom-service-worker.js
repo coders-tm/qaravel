@@ -39,14 +39,11 @@ cleanupOutdatedCaches();
 googleFontsCache({
   cachePrefix: "google-fonts",
   maxEntries: 60,
-  maxAgeSeconds: 60 * 60 * 24 * 365,
 });
 
 registerRoute(
   ({ url }) => url.pathname.startsWith("/posts"),
-  new NetworkFirst({
-    cacheName: "posts",
-  })
+  new NetworkFirst()
 );
 
 registerRoute(
