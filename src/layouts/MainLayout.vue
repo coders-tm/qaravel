@@ -7,12 +7,7 @@
             <img class="self-center" width="120" src="~assets/logo.png" />
           </router-link>
         </q-toolbar-title>
-        <q-btn
-          no-caps
-          color="primary"
-          :to="{ name: 'Dashboard' }"
-          label="Dashboard"
-        />
+        <q-btn no-caps color="primary" :to="{ name: 'Posts' }" label="Posts" />
       </q-toolbar>
     </q-header>
 

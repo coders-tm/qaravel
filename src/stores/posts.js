@@ -73,7 +73,7 @@ export const usePostsStore = defineStore("posts", {
   actions: {
     get(playload) {
       return new Promise((resolve, reject) => {
-        Api.post("posts", playload)
+        Api.get("posts", playload)
           .then((response) => {
             this.rows = response.data;
             resolve(response);

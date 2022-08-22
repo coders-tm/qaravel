@@ -96,7 +96,7 @@ export default {
       console.func("pages/login/LoginPage:methods.onSubmit()", arguments);
       this.login(this.form)
         .then((response) => {
-          this.$router.push({ name: "Dashboard" });
+          this.$router.push({ name: "Homepage" });
           this.visible = false;
         })
         .catch((error) => {

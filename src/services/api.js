@@ -99,6 +99,9 @@ export default {
   post(endpoint, data, o) {
     console.func("services/core:request.post()", arguments);
     return new Promise((resolve, reject) => {
+      if (data.page) {
+        endpoint = endpoint + `?page=${data.page}`;
+      }
       this.call("post", endpoint, data, o)
         .then((response) => {
           resolve(response);

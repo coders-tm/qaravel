@@ -8,14 +8,29 @@ export default [
         name: "Homepage",
         component: () => import("pages/IndexPage.vue"),
       },
+    ],
+  },
+  {
+    path: "/posts",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
+        path: "",
+        name: "Posts",
         meta: {
-          // auth: true,
+          auth: true,
           guard: "users",
         },
         component: () => import("pages/users/IndexPage.vue"),
+      },
+      {
+        path: ":post",
+        name: "Post",
+        meta: {
+          auth: true,
+          guard: "users",
+        },
+        component: () => import("pages/users/SinglePostPage.vue"),
       },
     ],
   },

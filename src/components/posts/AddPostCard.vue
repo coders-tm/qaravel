@@ -29,6 +29,11 @@ export default {
       },
     };
   },
+  computed: {
+    backgroundSyncSupported() {
+      return "serviceWorker" in navigator && "SyncManager" in window;
+    },
+  },
   methods: {
     ...mapActions(usePostsStore, ["store"]),
     onSubmit(args) {
@@ -45,7 +50,17 @@ export default {
           this.$core.success(message);
         })
         .catch((error) => {
-          this.$core.error(error);
+          if (!navigator.onLine && this.backgroundSyncSupported) {
+            this.$core.success("Post created offline", {
+              title: "Warning",
+              icon: "warning",
+            });
+            this.$router.push({
+              name: "Posts",
+            });
+          } else {
+            this.$core.error(error);
+          }
         });
     },
   },
