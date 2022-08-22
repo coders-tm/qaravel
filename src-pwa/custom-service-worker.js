@@ -13,13 +13,8 @@ import {
   createHandlerBoundToURL,
 } from "workbox-precaching";
 import { registerRoute, NavigationRoute } from "workbox-routing";
-import {
-  StaleWhileRevalidate,
-  NetworkFirst,
-  CacheFirst,
-} from "workbox-strategies";
-import { ExpirationPlugin } from "workbox-expiration";
-import { CacheableResponsePlugin } from "workbox-cacheable-response";
+import { StaleWhileRevalidate, NetworkFirst } from "workbox-strategies";
+import { googleFontsCache } from "workbox-recipes";
 
 self.skipWaiting();
 clientsClaim();
@@ -40,24 +35,18 @@ cleanupOutdatedCaches();
 //   );
 // }
 
-registerRoute(
-  ({ url }) => url.host.startsWith("fonts.g"),
-  new CacheFirst({
-    cacheName: "google-fonts",
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 30,
-      }),
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  })
-);
+// Cache the Google Fonts stylesheets with a stale while revalidate strategy.
+googleFontsCache({
+  cachePrefix: "google-fonts",
+  maxEntries: 60,
+  maxAgeSeconds: 60 * 60 * 24 * 365,
+});
 
 registerRoute(
   ({ url }) => url.pathname.startsWith("/posts"),
-  new NetworkFirst()
+  new NetworkFirst({
+    cacheName: "posts",
+  })
 );
 
 registerRoute(

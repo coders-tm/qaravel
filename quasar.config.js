@@ -74,14 +74,16 @@ module.exports = configure(function (/* ctx */) {
       }.call(),
 
       // rawDefine: {}
-      // ignorePublicFolder: true,
+      ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf(viteConf) {
-      //   viteConf.publicDir = path.resolve(__dirname, "./statics");
-      // },
+      extendViteConf(viteConf) {
+        Object.assign(viteConf, {
+          publicDir: path.resolve(__dirname, "./statics"),
+        });
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -188,7 +190,11 @@ module.exports = configure(function (/* ctx */) {
       manifestFilename: "manifest.json",
       useCredentialsForManifestTag: false,
       // extendGenerateSWOptions (cfg) {}
-      // extendInjectManifestOptions (cfg) {},
+      extendInjectManifestOptions(cfg) {
+        Object.assign(cfg, {
+          globDirectory: path.resolve(__dirname, "./statics"),
+        });
+      },
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
     },

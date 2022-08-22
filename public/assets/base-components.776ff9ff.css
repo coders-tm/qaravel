@@ -1,0 +1,9 @@
+.base-btn.vertical-align-middle {
+  padding: 9px 16px;
+  vertical-align: middle;
+}
+.base-btn .q-icon, .base-btn .q-spinner {
+  font-size: 1.25em;
+}.base-btn-dropdown .q-icon, .base-btn-dropdown .q-spinner {
+  font-size: 1.25em;
+}
