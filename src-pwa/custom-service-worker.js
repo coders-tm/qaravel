@@ -13,7 +13,13 @@ import {
   createHandlerBoundToURL,
 } from "workbox-precaching";
 import { registerRoute, NavigationRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import {
+  StaleWhileRevalidate,
+  NetworkFirst,
+  CacheFirst,
+} from "workbox-strategies";
+import { ExpirationPlugin } from "workbox-expiration";
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
 
 self.skipWaiting();
 clientsClaim();
@@ -22,8 +28,6 @@ clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST);
 
 cleanupOutdatedCaches();
-
-console.log("Custom service worker:", self);
 
 // Non-SSR fallback to index.html
 // Production SSR fallback to offline.html (except for dev)
@@ -35,6 +39,26 @@ console.log("Custom service worker:", self);
 //     )
 //   );
 // }
+
+registerRoute(
+  ({ url }) => url.host.startsWith("fonts.g"),
+  new CacheFirst({
+    cacheName: "google-fonts",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 30,
+      }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+);
+
+registerRoute(
+  ({ url }) => url.pathname.startsWith("/posts"),
+  new NetworkFirst()
+);
 
 registerRoute(
   ({ url }) => url.href.startsWith("http"),

@@ -4,7 +4,7 @@ node_modules
 
 # Quasar core related directories
 .quasar
-.env.frontend.dev
+.env.frontend.*
 dist
 *.pem
 
