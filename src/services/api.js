@@ -63,24 +63,17 @@ export default {
             }
 
             if (error.response.data) {
-              console.error("case1", error.response.data);
               reject(
                 error.response.data.data
                   ? error.response.data.data
                   : error.response.data
               );
+            } else {
+              reject(error);
             }
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.error("case2", error.request);
-            reject(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.error("case3", error.message);
-            reject(error.message);
+            return;
           }
+          reject(error);
         });
     });
   },
@@ -99,9 +92,6 @@ export default {
   post(endpoint, data, o) {
     console.func("services/core:request.post()", arguments);
     return new Promise((resolve, reject) => {
-      if (data.page) {
-        endpoint = endpoint + `?page=${data.page}`;
-      }
       this.call("post", endpoint, data, o)
         .then((response) => {
           resolve(response);

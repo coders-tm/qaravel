@@ -46,6 +46,7 @@
     "@fortawesome/fontawesome-pro": "^6.1.2",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.27",
+    "idb": "^7.0.2",
     "lodash": "^4.17.19",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",

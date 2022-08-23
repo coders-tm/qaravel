@@ -151,7 +151,7 @@ export default {
       );
       this.$nextTick(() => {
         this.onRequest({
-          pagination: deafultOptions,
+          pagination: this.options,
         });
       });
     },

@@ -42,22 +42,28 @@ export default {
         arguments
       );
       this.store(this.post)
-        .then(({ message }) => {
+        .then(({ message, data }) => {
           this.post = {
             title: faker.lorem.lines(1),
             description: faker.lorem.paragraph(10),
           };
           this.$core.success(message);
+          this.$emit("add", { ...data, offline: false });
         })
         .catch((error) => {
           if (!navigator.onLine && this.backgroundSyncSupported) {
-            this.$core.success("Post created offline", {
-              title: "Warning",
-              icon: "warning",
-            });
-            this.$router.push({
-              name: "Posts",
-            });
+            this.$emit("add", { ...this.post, offline: true });
+            this.post = {
+              title: faker.lorem.lines(1),
+              description: faker.lorem.paragraph(10),
+            };
+            this.$core.success(
+              "It will be synced with server when you will get back to online.",
+              {
+                title: "Post created in offline!",
+                icon: "warning",
+              }
+            );
           } else {
             this.$core.error(error);
           }

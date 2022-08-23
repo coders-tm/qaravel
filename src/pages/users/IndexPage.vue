@@ -1,18 +1,27 @@
 <template>
   <q-page padding>
     <div class="q-gutter-y-lg">
-      <add-post-card title="Add post" />
-      <posts-list-card title="Posts" :options="postsOptions" />
+      <add-post-card @add="onAdd" title="Add post" />
+      <offline-posts-card
+        v-show="hasOfflinePost"
+        ref="offlinePosts"
+        @update="onSyncOffline"
+        title="Offline posts"
+      />
+      <posts-list-card ref="Posts" title="Posts" :options="postsOptions" />
     </div>
   </q-page>
 </template>
 <script>
 import AddPostCard from "components/posts/AddPostCard.vue";
 import PostsListCard from "components/posts/PostsListCard.vue";
+import OfflinePostsCard from "components/posts/OfflinePostsCard.vue";
+
 export default {
-  components: { AddPostCard, PostsListCard },
+  components: { AddPostCard, PostsListCard, OfflinePostsCard },
   data() {
     return {
+      hasOfflinePost: false,
       postsOptions: {
         currentPage: 1,
         lastPage: 1,
@@ -21,6 +30,23 @@ export default {
         displayMode: "grid",
       },
     };
+  },
+  methods: {
+    onSyncOffline(args) {
+      console.func("pages/users/IndexPage:methods.onSyncOffline()", arguments);
+      this.hasOfflinePost = args;
+      if (!args) {
+        this.$refs.Posts.onReset();
+      }
+    },
+    onAdd({ offline }) {
+      console.func("pages/users/IndexPage:methods.onAdd()", arguments);
+      if (offline) {
+        this.$refs.offlinePosts.onLoad();
+      } else {
+        this.$refs.Posts.onReset();
+      }
+    },
   },
 };
 </script>
