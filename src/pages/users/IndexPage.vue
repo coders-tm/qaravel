@@ -2,12 +2,14 @@
   <q-page padding>
     <div class="q-gutter-y-lg">
       <add-post-card @add="onAdd" title="Add post" />
-      <offline-posts-card
-        v-show="hasOfflinePost"
-        ref="offlinePosts"
-        @update="onSyncOffline"
-        title="Offline posts"
-      />
+      <keep-alive>
+        <offline-posts-card
+          v-show="hasOfflinePost"
+          ref="offlinePosts"
+          @update="onSyncOffline"
+          title="Offline posts"
+        />
+      </keep-alive>
       <posts-list-card ref="Posts" title="Posts" :options="postsOptions" />
     </div>
   </q-page>

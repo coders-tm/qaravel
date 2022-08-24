@@ -34,7 +34,7 @@ if (backgroundSyncSupported) {
       let entry;
       while ((entry = await queue.shiftRequest())) {
         try {
-          await fetch(entry.request);
+          await fetch(entry.request.clone());
           console.log("Replay successful for request", entry.request);
           const channel = new BroadcastChannel("sw-messages");
           channel.postMessage({ msg: "offline-post-uploaded" });
