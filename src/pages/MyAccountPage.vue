@@ -24,11 +24,11 @@
                 <div class="text-label">Surname</div>
 
                 <q-input
-                  :error-message="$core.errorMessage('surname', errors)"
-                  :error="$core.hasError('surname', errors)"
+                  :error-message="$core.errorMessage('last_name', errors)"
+                  :error="$core.hasError('last_name', errors)"
                   dense
                   outlined
-                  v-model="user.surname"
+                  v-model="user.last_name"
                   type="text"
                 />
               </div>

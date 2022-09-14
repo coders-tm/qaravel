@@ -63,10 +63,7 @@ class ResourceRegistrar extends BaseResourceRegistrar
 
         foreach ($this->getResourceMethods($defaults, $options) as $m) {
             $route = $this->{'addResource' . Str::studly($m)}(
-                $name,
-                $base,
-                $controller,
-                $options
+                $name, $base, $controller, $options
             );
 
             if (isset($options['bindingFields'])) {

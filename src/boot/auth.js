@@ -11,7 +11,7 @@ export default boot(async ({ router, store }) => {
       if (app.isAuthenticated) {
         next();
       } else {
-        next({ name: "Login", params: { to: to } });
+        next({ name: "Login", query: { redirect: to.fullPath } });
       }
     } else {
       next();
@@ -20,9 +20,7 @@ export default boot(async ({ router, store }) => {
   router.beforeResolve((to, from, next) => {
     const module = to.meta.module;
     if (module) {
-      if (module === "Dashboard" && !app.hasPermission(module)) {
-        next({ name: "Error 404" });
-      } else if (app.hasPermission(module)) {
+      if (app.hasPermission(module)) {
         next();
       } else {
         next({ name: "Dashboard" });

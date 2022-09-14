@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\User;
-use App\Models\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserController extends Controller
 {
@@ -15,27 +14,21 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
-        $data = User::with('roles');
+        $user = $user->query();
 
-        if ($request->has('filter') && !empty($request->filter)) {
-            $data->where('name', 'like', $request->filter . '%');
-            $data->orWhere('email', 'like', $request->filter . '%');
+        if ($request->filled('filter')) {
+            $user->where('first_name', 'like', "%{$request->filter}%");
         }
-        $data = $data->orderBy($request->has('order') ? $request->order : 'created_at', $request->has('descending') ? $request->descending : 'desc')
-                    ->paginate($request->has('limit') ? $request->limit : 15);
-        return response()->json($data, 200);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if ($request->boolean('deleted') ?: false) {
+            $user->onlyTrashed();
+        }
+
+        $user = $user->orderBy($request->filled('order') ? $request->order : 'created_at', $request->filled('descending') ? $request->descending : 'desc')
+            ->paginate($request->filled('limit') ? $request->limit : 15);
+        return new ResourceCollection($user);
     }
 
     /**
@@ -44,82 +37,144 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        //
+        $rules = [
+            'email' => 'required|email|unique:users',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'address' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ];
+
+        // Validate those rules
+        $this->validate($request, $rules);
+
+        $data = $request->only([
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'password',
+        ]);
+
+        $data['password'] = Hash::make($request->password);
+
+        // create the user
+        $user = User::create($data);
+
+        // add address to the user
+        $user->updateOrCreateAddress($request->input('address'));
+
+        $user = $user->fresh('address');
+
+        $user['subscription'] = [
+            'message' => $user->is_free_forever ? 'Currently user using free forever plan.' : 'Currently user didn\'t subscribed to any plan.',
+            'upcomingInvoice' => [],
+        ];
+
+        return response()->json([
+            'data' => $user,
+            'message' => 'User has been created successfully!',
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  App\Models\User $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
-        $permissions = Permission::all();
-        $permissionsNode = [];
-        foreach ($permissions->groupBy('module') as $key => $value) {
-            array_push($permissionsNode, array(
-                'name' => $key,
-                'id' => $key,
-                'children' => $value
-            ));
-        }
-        $roles = Role::all();
-        $user->load('roles');
-        $user->permissions = $user->permissions()->get()->pluck('id');
-        return response()->json([
-            'user' => $user,
-            'permissions' => $permissionsNode,
-            'roles' => $roles
-        ], 200);
-    }
+        $user['subscription'] = null;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+        if ($user->subscribed()) {
+            $subscription = $user->subscription('default');
+            $upcomingInvoice = $user->subscription('default')->upcomingInvoice();
+
+            if ($subscription->canceled()) {
+                $subscription['message'] = "User have cancelled your subscription. User's subscription will end on {$subscription->ends_at->format('D d M Y')}";
+            } else {
+                $subscription['upcomingInvoice'] =  [
+                    'amount' => $upcomingInvoice->total(),
+                    'date' => $upcomingInvoice->date()->toFormattedDateString(),
+                ];
+            }
+            $user['subscription'] = $subscription;
+        } else {
+            $user['subscription'] = [
+                'message' => $user->is_free_forever ? 'Currently user using free forever plan.' : 'Currently user didn\'t subscribed to any plan.',
+                'upcomingInvoice' => [],
+            ];
+        }
+        return response()->json($user, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  App\Models\User $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
     {
-        if ($request->email != $user->email) {
-            $check = User::where('email', $request->email)->first();
-            if ($check) {
-                if ($check->id != $user->id) {
-                    return response()->json([
-                        'Email already assinged to another account.'
-                    ], 403);
-                }
-            }
-        }
-        $user->update($request->only('name', 'email'));
-        $user->roles()->sync(collect($request->roles)->pluck('id'));
-        $user->permissions()->sync($request->permissions);
-        return response()->json($user->load('roles', 'permissions'), 200);
+
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'address' => 'required',
+            'email' => "email|unique:users,email,{$user->id}",
+        ];
+
+        // Validate those rules
+        $this->validate($request, $rules);
+
+        $user->update($request->only([
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+        ]));
+
+        // add address to the user
+        $user->updateOrCreateAddress($request->input('address'));
+
+        return response()->json([
+            'data' => $user->fresh('address'),
+            'message' => 'User has been update successfully!',
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  App\Models\User $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            'message' => 'User has been deleted successfully!',
+        ], 200);
+    }
+
+    /**
+     * Marked as admin the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function marked_as_admin(User $user)
+    {
+        $user->update([
+            'is_free_forever' => !$user->is_free_forever
+        ]);
+
+        return response()->json([
+            'message' => $user->is_free_forever ? 'User marked as free successfully!' : 'User marked as paid successfully!',
+        ], 200);
     }
 }

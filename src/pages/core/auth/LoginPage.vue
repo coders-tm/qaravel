@@ -78,8 +78,6 @@ export default {
   data() {
     return {
       form: {
-        email: "user@example.com",
-        password: "password",
         remember: false,
         guard: this.$route.meta.guard,
       },
@@ -96,7 +94,11 @@ export default {
       console.func("pages/login/LoginPage:methods.onSubmit()", arguments);
       this.login(this.form)
         .then((response) => {
-          this.$router.push({ name: "Homepage" });
+          if (this.hasRedirect) {
+            this.$router.push(this.redirectPath);
+          } else {
+            this.$router.push({ name: "Dashboard" });
+          }
           this.visible = false;
         })
         .catch((error) => {
@@ -107,6 +109,24 @@ export default {
             this.$core.error(error.message);
           }
         });
+    },
+  },
+  mounted() {
+    if (process.env.DEV) {
+      Object.assign(this.form, {
+        email: "hello@coderstm.com",
+        password: "Gis0ra$$;",
+      });
+    }
+  },
+  computed: {
+    hasRedirect() {
+      return (
+        this.$route.query.redirect && this.$route.query.redirect.length > 0
+      );
+    },
+    redirectPath() {
+      return this.$route.query.redirect;
     },
   },
 };

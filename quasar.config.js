@@ -103,10 +103,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      https: {
-        key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
-        cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
-      },
+      // https: {
+      //   key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
+      //   cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
+      // },
       port: 9000,
       open: true, // opens browser window automatically
       host: "qaravel.gomedia",

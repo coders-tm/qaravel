@@ -2,34 +2,51 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Billable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use function Illuminate\Events\queueable;
 
-use App\Traits\HasPermissionsTrait;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Notifications\Notifiable;
-use Creativeorange\Gravatar\Facades\Gravatar;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class User extends Admin
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyEmail, HasPermissionsTrait;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'first_name',
         'last_name',
-        'avater',
         'email',
         'password',
-        'is_active',
-        'is_admin',
+        'plan',
+        'phone_number',
+        'calendar_color',
+        'is_free_forever',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'is_free_forever' => 'boolean',
+        'created_at' => 'datetime:d M, Y \a\t h:i a',
     ];
 
     /**
@@ -38,8 +55,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'avatar_url',
         'name',
+        'member_since',
+        'subscribed',
+        'has_cancelled',
     ];
 
     /**
@@ -47,26 +66,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = [];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'avater',
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    protected $with = [
+        'avatar',
+        'address',
     ];
 
     /**
@@ -79,12 +81,51 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function getAvatarUrlAttribute()
+    /**
+     * Get the plan of the user.
+     *
+     * @return bool
+     */
+    public function getPlanAttribute($value)
     {
-        if ($this->avater == null) {
-            return Gravatar::get($this->email, ['size' => 200]);
-        } else {
-            return Storage::disk('public')->url($this->avater);
-        }
+        return $this->is_free_forever ? 'both' : $value;
+    }
+
+    /**
+     * Get the subscribed status of the user.
+     *
+     * @return bool
+     */
+    public function getSubscribedAttribute()
+    {
+        // check is admin user and return true
+        if ($this->is_free_forever) return true;
+
+        // check subscription for normal user
+        return $this->subscribed() ?: false;
+    }
+
+    /**
+     * Get the member since of the user.
+     *
+     * @return bool
+     */
+    public function getMemberSinceAttribute()
+    {
+        return $this->created_at->format('Y');
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::updated(queueable(function ($customer) {
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
+        }));
     }
 }

@@ -63,4 +63,64 @@ export default [
       },
     ],
   },
+  {
+    path: "/staff",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Staff",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Staff",
+        },
+        component: () => import("pages/core/staffs/StaffsPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Staff",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Staff",
+        },
+        component: () => import("pages/core/staffs/StaffPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/groups",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Groups",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Groups",
+        },
+        component: () => import("pages/core/groups/GroupsPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Group",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Groups",
+        },
+        component: () => import("pages/core/groups/GroupPage.vue"),
+      },
+    ],
+  },
 ];

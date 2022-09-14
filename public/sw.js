@@ -2,59 +2,60 @@
   // node_modules/workbox-core/_version.js
   try {
     self["workbox:core:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-core/_private/logger.js
-  var logger = true ? null : (() => {
-    if (!("__WB_DISABLE_DEV_LOGS" in self)) {
-      self.__WB_DISABLE_DEV_LOGS = false;
-    }
-    let inGroup = false;
-    const methodToColorMap = {
-      debug: `#7f8c8d`,
-      log: `#2ecc71`,
-      warn: `#f39c12`,
-      error: `#c0392b`,
-      groupCollapsed: `#3498db`,
-      groupEnd: null
-    };
-    const print = function(method, args) {
-      if (self.__WB_DISABLE_DEV_LOGS) {
-        return;
-      }
-      if (method === "groupCollapsed") {
-        if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
-          console[method](...args);
-          return;
+  var logger = true
+    ? null
+    : (() => {
+        if (!("__WB_DISABLE_DEV_LOGS" in self)) {
+          self.__WB_DISABLE_DEV_LOGS = false;
         }
-      }
-      const styles = [
-        `background: ${methodToColorMap[method]}`,
-        `border-radius: 0.5em`,
-        `color: white`,
-        `font-weight: bold`,
-        `padding: 2px 0.5em`
-      ];
-      const logPrefix = inGroup ? [] : ["%cworkbox", styles.join(";")];
-      console[method](...logPrefix, ...args);
-      if (method === "groupCollapsed") {
-        inGroup = true;
-      }
-      if (method === "groupEnd") {
-        inGroup = false;
-      }
-    };
-    const api = {};
-    const loggerMethods = Object.keys(methodToColorMap);
-    for (const key of loggerMethods) {
-      const method = key;
-      api[method] = (...args) => {
-        print(method, args);
-      };
-    }
-    return api;
-  })();
+        let inGroup = false;
+        const methodToColorMap = {
+          debug: `#7f8c8d`,
+          log: `#2ecc71`,
+          warn: `#f39c12`,
+          error: `#c0392b`,
+          groupCollapsed: `#3498db`,
+          groupEnd: null,
+        };
+        const print = function (method, args) {
+          if (self.__WB_DISABLE_DEV_LOGS) {
+            return;
+          }
+          if (method === "groupCollapsed") {
+            if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+              console[method](...args);
+              return;
+            }
+          }
+          const styles = [
+            `background: ${methodToColorMap[method]}`,
+            `border-radius: 0.5em`,
+            `color: white`,
+            `font-weight: bold`,
+            `padding: 2px 0.5em`,
+          ];
+          const logPrefix = inGroup ? [] : ["%cworkbox", styles.join(";")];
+          console[method](...logPrefix, ...args);
+          if (method === "groupCollapsed") {
+            inGroup = true;
+          }
+          if (method === "groupEnd") {
+            inGroup = false;
+          }
+        };
+        const api = {};
+        const loggerMethods = Object.keys(methodToColorMap);
+        for (const key of loggerMethods) {
+          const method = key;
+          api[method] = (...args) => {
+            print(method, args);
+          };
+        }
+        return api;
+      })();
 
   // node_modules/workbox-core/models/messages/messageGenerator.js
   var fallback = (code, ...args) => {
@@ -85,7 +86,7 @@
       finalAssertExports.isType(callback, "function", {
         moduleName: "workbox-core",
         funcName: "register",
-        paramName: "callback"
+        paramName: "callback",
       });
     }
     quotaErrorCallbacks.add(callback);
@@ -100,10 +101,12 @@
     precache: "precache-v2",
     prefix: "workbox",
     runtime: "runtime",
-    suffix: typeof registration !== "undefined" ? registration.scope : ""
+    suffix: typeof registration !== "undefined" ? registration.scope : "",
   };
   var _createCacheName = (cacheName) => {
-    return [_cacheNameDetails.prefix, cacheName, _cacheNameDetails.suffix].filter((value) => value && value.length > 0).join("-");
+    return [_cacheNameDetails.prefix, cacheName, _cacheNameDetails.suffix]
+      .filter((value) => value && value.length > 0)
+      .join("-");
   };
   var eachCacheNameDetail = (fn) => {
     for (const key of Object.keys(_cacheNameDetails)) {
@@ -119,7 +122,9 @@
       });
     },
     getGoogleAnalyticsName: (userCacheName) => {
-      return userCacheName || _createCacheName(_cacheNameDetails.googleAnalytics);
+      return (
+        userCacheName || _createCacheName(_cacheNameDetails.googleAnalytics)
+      );
     },
     getPrecacheName: (userCacheName) => {
       return userCacheName || _createCacheName(_cacheNameDetails.precache);
@@ -132,7 +137,7 @@
     },
     getSuffix: () => {
       return _cacheNameDetails.suffix;
-    }
+    },
   };
 
   // node_modules/workbox-core/_private/cacheMatchIgnoreParams.js
@@ -143,12 +148,19 @@
     }
     return strippedURL.href;
   }
-  async function cacheMatchIgnoreParams(cache, request, ignoreParams, matchOptions) {
+  async function cacheMatchIgnoreParams(
+    cache,
+    request,
+    ignoreParams,
+    matchOptions
+  ) {
     const strippedRequestURL = stripParams(request.url, ignoreParams);
     if (request.url === strippedRequestURL) {
       return cache.match(request, matchOptions);
     }
-    const keysOptions = Object.assign(Object.assign({}, matchOptions), { ignoreSearch: true });
+    const keysOptions = Object.assign(Object.assign({}, matchOptions), {
+      ignoreSearch: true,
+    });
     const cacheKeys = await cache.keys(request, keysOptions);
     for (const cacheKey of cacheKeys) {
       const strippedCacheKeyURL = stripParams(cacheKey.url, ignoreParams);
@@ -179,8 +191,7 @@
 
   // node_modules/workbox-core/_private/dontWaitFor.js
   function dontWaitFor(promise) {
-    void promise.then(() => {
-    });
+    void promise.then(() => {});
   }
 
   // node_modules/workbox-core/_private/Deferred.js
@@ -196,7 +207,9 @@
   // node_modules/workbox-core/_private/executeQuotaErrorCallbacks.js
   async function executeQuotaErrorCallbacks() {
     if (false) {
-      logger.log(`About to run ${quotaErrorCallbacks.size} callbacks to clean up caches.`);
+      logger.log(
+        `About to run ${quotaErrorCallbacks.size} callbacks to clean up caches.`
+      );
     }
     for (const callback of quotaErrorCallbacks) {
       await callback();
@@ -241,10 +254,14 @@
     const responseInit = {
       headers: new Headers(clonedResponse.headers),
       status: clonedResponse.status,
-      statusText: clonedResponse.statusText
+      statusText: clonedResponse.statusText,
     };
-    const modifiedResponseInit = modifier ? modifier(responseInit) : responseInit;
-    const body = canConstructResponseFromBodyStream() ? clonedResponse.body : await clonedResponse.blob();
+    const modifiedResponseInit = modifier
+      ? modifier(responseInit)
+      : responseInit;
+    const body = canConstructResponseFromBodyStream()
+      ? clonedResponse.body
+      : await clonedResponse.blob();
     return new Response(body, modifiedResponseInit);
   }
 
@@ -256,8 +273,7 @@
   // node_modules/workbox-precaching/_version.js
   try {
     self["workbox:precaching:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-precaching/utils/createCacheKey.js
   var REVISION_SEARCH_PARAM = "__WB_REVISION__";
@@ -269,7 +285,7 @@
       const urlObject = new URL(entry, location.href);
       return {
         cacheKey: urlObject.href,
-        url: urlObject.href
+        url: urlObject.href,
       };
     }
     const { revision, url } = entry;
@@ -280,7 +296,7 @@
       const urlObject = new URL(url, location.href);
       return {
         cacheKey: urlObject.href,
-        url: urlObject.href
+        url: urlObject.href,
       };
     }
     const cacheKeyURL = new URL(url, location.href);
@@ -288,7 +304,7 @@
     cacheKeyURL.searchParams.set(REVISION_SEARCH_PARAM, revision);
     return {
       cacheKey: cacheKeyURL.href,
-      url: originalURL.href
+      url: originalURL.href,
     };
   }
 
@@ -302,9 +318,17 @@
           state.originalRequest = request;
         }
       };
-      this.cachedResponseWillBeUsed = async ({ event, state, cachedResponse }) => {
+      this.cachedResponseWillBeUsed = async ({
+        event,
+        state,
+        cachedResponse,
+      }) => {
         if (event.type === "install") {
-          if (state && state.originalRequest && state.originalRequest instanceof Request) {
+          if (
+            state &&
+            state.originalRequest &&
+            state.originalRequest instanceof Request
+          ) {
             const url = state.originalRequest.url;
             if (cachedResponse) {
               this.notUpdatedURLs.push(url);
@@ -322,8 +346,12 @@
   var PrecacheCacheKeyPlugin = class {
     constructor({ precacheController: precacheController2 }) {
       this.cacheKeyWillBeUsed = async ({ request, params }) => {
-        const cacheKey = (params === null || params === void 0 ? void 0 : params.cacheKey) || this._precacheController.getCacheKeyForURL(request.url);
-        return cacheKey ? new Request(cacheKey, { headers: request.headers }) : request;
+        const cacheKey =
+          (params === null || params === void 0 ? void 0 : params.cacheKey) ||
+          this._precacheController.getCacheKeyForURL(request.url);
+        return cacheKey
+          ? new Request(cacheKey, { headers: request.headers })
+          : request;
       };
       this._precacheController = precacheController2;
     }
@@ -332,8 +360,7 @@
   // node_modules/workbox-strategies/_version.js
   try {
     self["workbox:strategies:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-strategies/StrategyHandler.js
   function toRequest(input) {
@@ -347,7 +374,7 @@
           moduleName: "workbox-strategies",
           className: "StrategyHandler",
           funcName: "constructor",
-          paramName: "options.event"
+          paramName: "options.event",
         });
       }
       Object.assign(this, options);
@@ -365,16 +392,26 @@
     async fetch(input) {
       const { event } = this;
       let request = toRequest(input);
-      if (request.mode === "navigate" && event instanceof FetchEvent && event.preloadResponse) {
+      if (
+        request.mode === "navigate" &&
+        event instanceof FetchEvent &&
+        event.preloadResponse
+      ) {
         const possiblePreloadResponse = await event.preloadResponse;
         if (possiblePreloadResponse) {
           if (false) {
-            logger.log(`Using a preloaded navigation response for '${getFriendlyURL(request.url)}'`);
+            logger.log(
+              `Using a preloaded navigation response for '${getFriendlyURL(
+                request.url
+              )}'`
+            );
           }
           return possiblePreloadResponse;
         }
       }
-      const originalRequest = this.hasCallback("fetchDidFail") ? request.clone() : null;
+      const originalRequest = this.hasCallback("fetchDidFail")
+        ? request.clone()
+        : null;
       try {
         for (const cb of this.iterateCallbacks("requestWillFetch")) {
           request = await cb({ request: request.clone(), event });
@@ -382,35 +419,47 @@
       } catch (err) {
         if (err instanceof Error) {
           throw new WorkboxError("plugin-error-request-will-fetch", {
-            thrownErrorMessage: err.message
+            thrownErrorMessage: err.message,
           });
         }
       }
       const pluginFilteredRequest = request.clone();
       try {
         let fetchResponse;
-        fetchResponse = await fetch(request, request.mode === "navigate" ? void 0 : this._strategy.fetchOptions);
+        fetchResponse = await fetch(
+          request,
+          request.mode === "navigate" ? void 0 : this._strategy.fetchOptions
+        );
         if (false) {
-          logger.debug(`Network request for '${getFriendlyURL(request.url)}' returned a response with status '${fetchResponse.status}'.`);
+          logger.debug(
+            `Network request for '${getFriendlyURL(
+              request.url
+            )}' returned a response with status '${fetchResponse.status}'.`
+          );
         }
         for (const callback of this.iterateCallbacks("fetchDidSucceed")) {
           fetchResponse = await callback({
             event,
             request: pluginFilteredRequest,
-            response: fetchResponse
+            response: fetchResponse,
           });
         }
         return fetchResponse;
       } catch (error) {
         if (false) {
-          logger.log(`Network request for '${getFriendlyURL(request.url)}' threw an error.`, error);
+          logger.log(
+            `Network request for '${getFriendlyURL(
+              request.url
+            )}' threw an error.`,
+            error
+          );
         }
         if (originalRequest) {
           await this.runCallbacks("fetchDidFail", {
             error,
             event,
             originalRequest: originalRequest.clone(),
-            request: pluginFilteredRequest.clone()
+            request: pluginFilteredRequest.clone(),
           });
         }
         throw error;
@@ -427,7 +476,9 @@
       let cachedResponse;
       const { cacheName, matchOptions } = this._strategy;
       const effectiveRequest = await this.getCacheKey(request, "read");
-      const multiMatchOptions = Object.assign(Object.assign({}, matchOptions), { cacheName });
+      const multiMatchOptions = Object.assign(Object.assign({}, matchOptions), {
+        cacheName,
+      });
       cachedResponse = await caches.match(effectiveRequest, multiMatchOptions);
       if (false) {
         if (cachedResponse) {
@@ -436,14 +487,17 @@
           logger.debug(`No cached response found in '${cacheName}'.`);
         }
       }
-      for (const callback of this.iterateCallbacks("cachedResponseWillBeUsed")) {
-        cachedResponse = await callback({
-          cacheName,
-          matchOptions,
-          cachedResponse,
-          request: effectiveRequest,
-          event: this.event
-        }) || void 0;
+      for (const callback of this.iterateCallbacks(
+        "cachedResponseWillBeUsed"
+      )) {
+        cachedResponse =
+          (await callback({
+            cacheName,
+            matchOptions,
+            cachedResponse,
+            request: effectiveRequest,
+            event: this.event,
+          })) || void 0;
       }
       return cachedResponse;
     }
@@ -455,43 +509,65 @@
         if (effectiveRequest.method && effectiveRequest.method !== "GET") {
           throw new WorkboxError("attempt-to-cache-non-get-request", {
             url: getFriendlyURL(effectiveRequest.url),
-            method: effectiveRequest.method
+            method: effectiveRequest.method,
           });
         }
         const vary = response.headers.get("Vary");
         if (vary) {
-          logger.debug(`The response for ${getFriendlyURL(effectiveRequest.url)} has a 'Vary: ${vary}' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.`);
+          logger.debug(
+            `The response for ${getFriendlyURL(
+              effectiveRequest.url
+            )} has a 'Vary: ${vary}' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.`
+          );
         }
       }
       if (!response) {
         if (false) {
-          logger.error(`Cannot cache non-existent response for '${getFriendlyURL(effectiveRequest.url)}'.`);
+          logger.error(
+            `Cannot cache non-existent response for '${getFriendlyURL(
+              effectiveRequest.url
+            )}'.`
+          );
         }
         throw new WorkboxError("cache-put-with-no-response", {
-          url: getFriendlyURL(effectiveRequest.url)
+          url: getFriendlyURL(effectiveRequest.url),
         });
       }
       const responseToCache = await this._ensureResponseSafeToCache(response);
       if (!responseToCache) {
         if (false) {
-          logger.debug(`Response '${getFriendlyURL(effectiveRequest.url)}' will not be cached.`, responseToCache);
+          logger.debug(
+            `Response '${getFriendlyURL(
+              effectiveRequest.url
+            )}' will not be cached.`,
+            responseToCache
+          );
         }
         return false;
       }
       const { cacheName, matchOptions } = this._strategy;
       const cache = await self.caches.open(cacheName);
       const hasCacheUpdateCallback = this.hasCallback("cacheDidUpdate");
-      const oldResponse = hasCacheUpdateCallback ? await cacheMatchIgnoreParams(
-        cache,
-        effectiveRequest.clone(),
-        ["__WB_REVISION__"],
-        matchOptions
-      ) : null;
+      const oldResponse = hasCacheUpdateCallback
+        ? await cacheMatchIgnoreParams(
+            cache,
+            effectiveRequest.clone(),
+            ["__WB_REVISION__"],
+            matchOptions
+          )
+        : null;
       if (false) {
-        logger.debug(`Updating the '${cacheName}' cache with a new Response for ${getFriendlyURL(effectiveRequest.url)}.`);
+        logger.debug(
+          `Updating the '${cacheName}' cache with a new Response for ${getFriendlyURL(
+            effectiveRequest.url
+          )}.`
+        );
       }
       try {
-        await cache.put(effectiveRequest, hasCacheUpdateCallback ? responseToCache.clone() : responseToCache);
+        await cache.put(
+          effectiveRequest,
+          hasCacheUpdateCallback ? responseToCache.clone() : responseToCache
+        );
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === "QuotaExceededError") {
@@ -506,7 +582,7 @@
           oldResponse,
           newResponse: responseToCache.clone(),
           request: effectiveRequest,
-          event: this.event
+          event: this.event,
         });
       }
       return true;
@@ -516,12 +592,14 @@
       if (!this._cacheKeys[key]) {
         let effectiveRequest = request;
         for (const callback of this.iterateCallbacks("cacheKeyWillBeUsed")) {
-          effectiveRequest = toRequest(await callback({
-            mode,
-            request: effectiveRequest,
-            event: this.event,
-            params: this.params
-          }));
+          effectiveRequest = toRequest(
+            await callback({
+              mode,
+              request: effectiveRequest,
+              event: this.event,
+              params: this.params,
+            })
+          );
         }
         this._cacheKeys[key] = effectiveRequest;
       }
@@ -545,7 +623,9 @@
         if (typeof plugin[name] === "function") {
           const state = this._pluginStateMap.get(plugin);
           const statefulCallback = (param) => {
-            const statefulParam = Object.assign(Object.assign({}, param), { state });
+            const statefulParam = Object.assign(Object.assign({}, param), {
+              state,
+            });
             return plugin[name](statefulParam);
           };
           yield statefulCallback;
@@ -558,7 +638,7 @@
     }
     async doneWaiting() {
       let promise;
-      while (promise = this._extendLifetimePromises.shift()) {
+      while ((promise = this._extendLifetimePromises.shift())) {
         await promise;
       }
     }
@@ -569,11 +649,12 @@
       let responseToCache = response;
       let pluginsUsed = false;
       for (const callback of this.iterateCallbacks("cacheWillUpdate")) {
-        responseToCache = await callback({
-          request: this.request,
-          response: responseToCache,
-          event: this.event
-        }) || void 0;
+        responseToCache =
+          (await callback({
+            request: this.request,
+            response: responseToCache,
+            event: this.event,
+          })) || void 0;
         pluginsUsed = true;
         if (!responseToCache) {
           break;
@@ -587,9 +668,13 @@
           if (responseToCache) {
             if (responseToCache.status !== 200) {
               if (responseToCache.status === 0) {
-                logger.warn(`The response for '${this.request.url}' is an opaque response. The caching strategy that you're using will not cache opaque responses by default.`);
+                logger.warn(
+                  `The response for '${this.request.url}' is an opaque response. The caching strategy that you're using will not cache opaque responses by default.`
+                );
               } else {
-                logger.debug(`The response for '${this.request.url}' returned a status code of '${response.status}' and won't be cached as a result.`);
+                logger.debug(
+                  `The response for '${this.request.url}' returned a status code of '${response.status}' and won't be cached as a result.`
+                );
               }
             }
           }
@@ -615,15 +700,23 @@
       if (options instanceof FetchEvent) {
         options = {
           event: options,
-          request: options.request
+          request: options.request,
         };
       }
       const event = options.event;
-      const request = typeof options.request === "string" ? new Request(options.request) : options.request;
+      const request =
+        typeof options.request === "string"
+          ? new Request(options.request)
+          : options.request;
       const params = "params" in options ? options.params : void 0;
       const handler = new StrategyHandler(this, { event, request, params });
       const responseDone = this._getResponse(handler, request, event);
-      const handlerDone = this._awaitComplete(responseDone, handler, request, event);
+      const handlerDone = this._awaitComplete(
+        responseDone,
+        handler,
+        request,
+        event
+      );
       return [responseDone, handlerDone];
     }
     async _getResponse(handler, request, event) {
@@ -646,7 +739,11 @@
         if (!response) {
           throw error;
         } else if (false) {
-          logger.log(`While responding to '${getFriendlyURL(request.url)}', an ${error instanceof Error ? error.toString() : ""} error occurred. Using a fallback response provided by a handlerDidError plugin.`);
+          logger.log(
+            `While responding to '${getFriendlyURL(request.url)}', an ${
+              error instanceof Error ? error.toString() : ""
+            } error occurred. Using a fallback response provided by a handlerDidError plugin.`
+          );
         }
       }
       for (const callback of handler.iterateCallbacks("handlerWillRespond")) {
@@ -659,13 +756,12 @@
       let error;
       try {
         response = await responseDone;
-      } catch (error2) {
-      }
+      } catch (error2) {}
       try {
         await handler.runCallbacks("handlerDidRespond", {
           event,
           request,
-          response
+          response,
         });
         await handler.doneWaiting();
       } catch (waitUntilError) {
@@ -677,7 +773,7 @@
         event,
         request,
         response,
-        error
+        error,
       });
       handler.destroy();
       if (error) {
@@ -691,8 +787,11 @@
     constructor(options = {}) {
       options.cacheName = cacheNames.getPrecacheName(options.cacheName);
       super(options);
-      this._fallbackToNetwork = options.fallbackToNetwork === false ? false : true;
-      this.plugins.push(PrecacheStrategy.copyRedirectedCacheableResponsesPlugin);
+      this._fallbackToNetwork =
+        options.fallbackToNetwork === false ? false : true;
+      this.plugins.push(
+        PrecacheStrategy.copyRedirectedCacheableResponsesPlugin
+      );
     }
     async _handle(request, handler) {
       const response = await handler.cacheMatch(request);
@@ -709,33 +808,58 @@
       const params = handler.params || {};
       if (this._fallbackToNetwork) {
         if (false) {
-          logger.warn(`The precached response for ${getFriendlyURL(request.url)} in ${this.cacheName} was not found. Falling back to the network.`);
+          logger.warn(
+            `The precached response for ${getFriendlyURL(request.url)} in ${
+              this.cacheName
+            } was not found. Falling back to the network.`
+          );
         }
         const integrityInManifest = params.integrity;
         const integrityInRequest = request.integrity;
-        const noIntegrityConflict = !integrityInRequest || integrityInRequest === integrityInManifest;
-        response = await handler.fetch(new Request(request, {
-          integrity: request.mode !== "no-cors" ? integrityInRequest || integrityInManifest : void 0
-        }));
-        if (integrityInManifest && noIntegrityConflict && request.mode !== "no-cors") {
+        const noIntegrityConflict =
+          !integrityInRequest || integrityInRequest === integrityInManifest;
+        response = await handler.fetch(
+          new Request(request, {
+            integrity:
+              request.mode !== "no-cors"
+                ? integrityInRequest || integrityInManifest
+                : void 0,
+          })
+        );
+        if (
+          integrityInManifest &&
+          noIntegrityConflict &&
+          request.mode !== "no-cors"
+        ) {
           this._useDefaultCacheabilityPluginIfNeeded();
           const wasCached = await handler.cachePut(request, response.clone());
           if (false) {
             if (wasCached) {
-              logger.log(`A response for ${getFriendlyURL(request.url)} was used to "repair" the precache.`);
+              logger.log(
+                `A response for ${getFriendlyURL(
+                  request.url
+                )} was used to "repair" the precache.`
+              );
             }
           }
         }
       } else {
         throw new WorkboxError("missing-precache-entry", {
           cacheName: this.cacheName,
-          url: request.url
+          url: request.url,
         });
       }
       if (false) {
-        const cacheKey = params.cacheKey || await handler.getCacheKey(request, "read");
-        logger.groupCollapsed(`Precaching is responding to: ` + getFriendlyURL(request.url));
-        logger.log(`Serving the precached url: ${getFriendlyURL(cacheKey instanceof Request ? cacheKey.url : cacheKey)}`);
+        const cacheKey =
+          params.cacheKey || (await handler.getCacheKey(request, "read"));
+        logger.groupCollapsed(
+          `Precaching is responding to: ` + getFriendlyURL(request.url)
+        );
+        logger.log(
+          `Serving the precached url: ${getFriendlyURL(
+            cacheKey instanceof Request ? cacheKey.url : cacheKey
+          )}`
+        );
         logger.groupCollapsed(`View request details here.`);
         logger.log(request);
         logger.groupEnd();
@@ -753,7 +877,7 @@
       if (!wasCached) {
         throw new WorkboxError("bad-precaching-response", {
           url: request.url,
-          status: response.status
+          status: response.status,
         });
       }
       return response;
@@ -762,7 +886,9 @@
       let defaultPluginIndex = null;
       let cacheWillUpdatePluginCount = 0;
       for (const [index, plugin] of this.plugins.entries()) {
-        if (plugin === PrecacheStrategy.copyRedirectedCacheableResponsesPlugin) {
+        if (
+          plugin === PrecacheStrategy.copyRedirectedCacheableResponsesPlugin
+        ) {
           continue;
         }
         if (plugin === PrecacheStrategy.defaultPrecacheCacheabilityPlugin) {
@@ -774,7 +900,10 @@
       }
       if (cacheWillUpdatePluginCount === 0) {
         this.plugins.push(PrecacheStrategy.defaultPrecacheCacheabilityPlugin);
-      } else if (cacheWillUpdatePluginCount > 1 && defaultPluginIndex !== null) {
+      } else if (
+        cacheWillUpdatePluginCount > 1 &&
+        defaultPluginIndex !== null
+      ) {
         this.plugins.splice(defaultPluginIndex, 1);
       }
     }
@@ -785,12 +914,12 @@
         return null;
       }
       return response;
-    }
+    },
   };
   PrecacheStrategy.copyRedirectedCacheableResponsesPlugin = {
     async cacheWillUpdate({ response }) {
       return response.redirected ? await copyResponse(response) : response;
-    }
+    },
   };
 
   // node_modules/workbox-precaching/PrecacheController.js
@@ -803,9 +932,9 @@
         cacheName: cacheNames.getPrecacheName(cacheName),
         plugins: [
           ...plugins,
-          new PrecacheCacheKeyPlugin({ precacheController: this })
+          new PrecacheCacheKeyPlugin({ precacheController: this }),
         ],
-        fallbackToNetwork
+        fallbackToNetwork,
       });
       this.install = this.install.bind(this);
       this.activate = this.activate.bind(this);
@@ -827,7 +956,7 @@
           moduleName: "workbox-precaching",
           className: "PrecacheController",
           funcName: "addToCacheList",
-          paramName: "entries"
+          paramName: "entries",
         });
       }
       const urlsToWarnAbout = [];
@@ -838,25 +967,37 @@
           urlsToWarnAbout.push(entry.url);
         }
         const { cacheKey, url } = createCacheKey(entry);
-        const cacheMode = typeof entry !== "string" && entry.revision ? "reload" : "default";
-        if (this._urlsToCacheKeys.has(url) && this._urlsToCacheKeys.get(url) !== cacheKey) {
+        const cacheMode =
+          typeof entry !== "string" && entry.revision ? "reload" : "default";
+        if (
+          this._urlsToCacheKeys.has(url) &&
+          this._urlsToCacheKeys.get(url) !== cacheKey
+        ) {
           throw new WorkboxError("add-to-cache-list-conflicting-entries", {
             firstEntry: this._urlsToCacheKeys.get(url),
-            secondEntry: cacheKey
+            secondEntry: cacheKey,
           });
         }
         if (typeof entry !== "string" && entry.integrity) {
-          if (this._cacheKeysToIntegrities.has(cacheKey) && this._cacheKeysToIntegrities.get(cacheKey) !== entry.integrity) {
-            throw new WorkboxError("add-to-cache-list-conflicting-integrities", {
-              url
-            });
+          if (
+            this._cacheKeysToIntegrities.has(cacheKey) &&
+            this._cacheKeysToIntegrities.get(cacheKey) !== entry.integrity
+          ) {
+            throw new WorkboxError(
+              "add-to-cache-list-conflicting-integrities",
+              {
+                url,
+              }
+            );
           }
           this._cacheKeysToIntegrities.set(cacheKey, entry.integrity);
         }
         this._urlsToCacheKeys.set(url, cacheKey);
         this._urlsToCacheModes.set(url, cacheMode);
         if (urlsToWarnAbout.length > 0) {
-          const warningMessage = `Workbox is precaching URLs without revision info: ${urlsToWarnAbout.join(", ")}
+          const warningMessage = `Workbox is precaching URLs without revision info: ${urlsToWarnAbout.join(
+            ", "
+          )}
 This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           if (true) {
             console.warn(warningMessage);
@@ -876,13 +1017,15 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           const request = new Request(url, {
             integrity,
             cache: cacheMode,
-            credentials: "same-origin"
+            credentials: "same-origin",
           });
-          await Promise.all(this.strategy.handleAll({
-            params: { cacheKey },
-            request,
-            event
-          }));
+          await Promise.all(
+            this.strategy.handleAll({
+              params: { cacheKey },
+              request,
+              event,
+            })
+          );
         }
         const { updatedURLs, notUpdatedURLs } = installReportPlugin;
         if (false) {
@@ -956,8 +1099,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   // node_modules/workbox-routing/_version.js
   try {
     self["workbox:routing:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-routing/utils/constants.js
   var defaultMethod = "GET";
@@ -970,7 +1112,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "Route",
           funcName: "constructor",
-          paramName: "handler"
+          paramName: "handler",
         });
       }
       return handler;
@@ -980,7 +1122,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "Route",
           funcName: "constructor",
-          paramName: "handler"
+          paramName: "handler",
         });
       }
       return { handle: handler };
@@ -995,10 +1137,12 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "Route",
           funcName: "constructor",
-          paramName: "match"
+          paramName: "match",
         });
         if (method) {
-          finalAssertExports.isOneOf(method, validMethods, { paramName: "method" });
+          finalAssertExports.isOneOf(method, validMethods, {
+            paramName: "method",
+          });
         }
       }
       this.handler = normalizeHandler(handler);
@@ -1018,7 +1162,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "RegExpRoute",
           funcName: "constructor",
-          paramName: "pattern"
+          paramName: "pattern",
         });
       }
       const match = ({ url }) => {
@@ -1028,7 +1172,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         }
         if (url.origin !== location.origin && result.index !== 0) {
           if (false) {
-            logger.debug(`The regular expression '${regExp.toString()}' only partially matched against the cross-origin URL '${url.toString()}'. RegExpRoute's will only handle cross-origin requests if they match the entire URL.`);
+            logger.debug(
+              `The regular expression '${regExp.toString()}' only partially matched against the cross-origin URL '${url.toString()}'. RegExpRoute's will only handle cross-origin requests if they match the entire URL.`
+            );
           }
           return;
         }
@@ -1063,13 +1209,15 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           if (false) {
             logger.debug(`Caching URLs from the window`, payload.urlsToCache);
           }
-          const requestPromises = Promise.all(payload.urlsToCache.map((entry) => {
-            if (typeof entry === "string") {
-              entry = [entry];
-            }
-            const request = new Request(...entry);
-            return this.handleRequest({ request, event });
-          }));
+          const requestPromises = Promise.all(
+            payload.urlsToCache.map((entry) => {
+              if (typeof entry === "string") {
+                entry = [entry];
+              }
+              const request = new Request(...entry);
+              return this.handleRequest({ request, event });
+            })
+          );
           event.waitUntil(requestPromises);
           if (event.ports && event.ports[0]) {
             void requestPromises.then(() => event.ports[0].postMessage(true));
@@ -1083,13 +1231,15 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "handleRequest",
-          paramName: "options.request"
+          paramName: "options.request",
         });
       }
       const url = new URL(request.url, location.href);
       if (!url.protocol.startsWith("http")) {
         if (false) {
-          logger.debug(`Workbox Router only supports URLs that start with 'http'.`);
+          logger.debug(
+            `Workbox Router only supports URLs that start with 'http'.`
+          );
         }
         return;
       }
@@ -1098,7 +1248,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         event,
         request,
         sameOrigin,
-        url
+        url,
       });
       let handler = route && route.handler;
       const debugMessages = [];
@@ -1108,7 +1258,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           if (params) {
             debugMessages.push([
               `Passing the following params to the route's handler:`,
-              params
+              params,
             ]);
           }
         }
@@ -1116,7 +1266,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       const method = request.method;
       if (!handler && this._defaultHandlerMap.has(method)) {
         if (false) {
-          debugMessages.push(`Failed to find a matching route. Falling back to the default handler for ${method}.`);
+          debugMessages.push(
+            `Failed to find a matching route. Falling back to the default handler for ${method}.`
+          );
         }
         handler = this._defaultHandlerMap.get(method);
       }
@@ -1127,7 +1279,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         return;
       }
       if (false) {
-        logger.groupCollapsed(`Router is responding to: ${getFriendlyURL(url)}`);
+        logger.groupCollapsed(
+          `Router is responding to: ${getFriendlyURL(url)}`
+        );
         debugMessages.forEach((msg) => {
           if (Array.isArray(msg)) {
             logger.log(...msg);
@@ -1144,11 +1298,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         responsePromise = Promise.reject(err);
       }
       const catchHandler = route && route.catchHandler;
-      if (responsePromise instanceof Promise && (this._catchHandler || catchHandler)) {
+      if (
+        responsePromise instanceof Promise &&
+        (this._catchHandler || catchHandler)
+      ) {
         responsePromise = responsePromise.catch(async (err) => {
           if (catchHandler) {
             if (false) {
-              logger.groupCollapsed(`Error thrown when responding to:  ${getFriendlyURL(url)}. Falling back to route's Catch Handler.`);
+              logger.groupCollapsed(
+                `Error thrown when responding to:  ${getFriendlyURL(
+                  url
+                )}. Falling back to route's Catch Handler.`
+              );
               logger.error(`Error thrown by:`, route);
               logger.error(err);
               logger.groupEnd();
@@ -1163,7 +1324,11 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           }
           if (this._catchHandler) {
             if (false) {
-              logger.groupCollapsed(`Error thrown when responding to:  ${getFriendlyURL(url)}. Falling back to global Catch Handler.`);
+              logger.groupCollapsed(
+                `Error thrown when responding to:  ${getFriendlyURL(
+                  url
+                )}. Falling back to global Catch Handler.`
+              );
               logger.error(`Error thrown by:`, route);
               logger.error(err);
               logger.groupEnd();
@@ -1183,13 +1348,21 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         if (matchResult) {
           if (false) {
             if (matchResult instanceof Promise) {
-              logger.warn(`While routing ${getFriendlyURL(url)}, an async matchCallback function was used. Please convert the following route to use a synchronous matchCallback function:`, route);
+              logger.warn(
+                `While routing ${getFriendlyURL(
+                  url
+                )}, an async matchCallback function was used. Please convert the following route to use a synchronous matchCallback function:`,
+                route
+              );
             }
           }
           params = matchResult;
           if (Array.isArray(params) && params.length === 0) {
             params = void 0;
-          } else if (matchResult.constructor === Object && Object.keys(matchResult).length === 0) {
+          } else if (
+            matchResult.constructor === Object &&
+            Object.keys(matchResult).length === 0
+          ) {
             params = void 0;
           } else if (typeof matchResult === "boolean") {
             params = void 0;
@@ -1211,31 +1384,31 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "registerRoute",
-          paramName: "route"
+          paramName: "route",
         });
         finalAssertExports.hasMethod(route, "match", {
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "registerRoute",
-          paramName: "route"
+          paramName: "route",
         });
         finalAssertExports.isType(route.handler, "object", {
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "registerRoute",
-          paramName: "route"
+          paramName: "route",
         });
         finalAssertExports.hasMethod(route.handler, "handle", {
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "registerRoute",
-          paramName: "route.handler"
+          paramName: "route.handler",
         });
         finalAssertExports.isType(route.method, "string", {
           moduleName: "workbox-routing",
           className: "Router",
           funcName: "registerRoute",
-          paramName: "route.method"
+          paramName: "route.method",
         });
       }
       if (!this._routes.has(route.method)) {
@@ -1246,7 +1419,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     unregisterRoute(route) {
       if (!this._routes.has(route.method)) {
         throw new WorkboxError("unregister-route-but-not-found-with-method", {
-          method: route.method
+          method: route.method,
         });
       }
       const routeIndex = this._routes.get(route.method).indexOf(route);
@@ -1279,19 +1452,28 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           throw new WorkboxError("invalid-string", {
             moduleName: "workbox-routing",
             funcName: "registerRoute",
-            paramName: "capture"
+            paramName: "capture",
           });
         }
-        const valueToCheck = capture.startsWith("http") ? captureUrl.pathname : capture;
+        const valueToCheck = capture.startsWith("http")
+          ? captureUrl.pathname
+          : capture;
         const wildcards = "[*:?+]";
         if (new RegExp(`${wildcards}`).exec(valueToCheck)) {
-          logger.debug(`The '$capture' parameter contains an Express-style wildcard character (${wildcards}). Strings are now always interpreted as exact matches; use a RegExp for partial or wildcard matches.`);
+          logger.debug(
+            `The '$capture' parameter contains an Express-style wildcard character (${wildcards}). Strings are now always interpreted as exact matches; use a RegExp for partial or wildcard matches.`
+          );
         }
       }
       const matchCallback = ({ url }) => {
         if (false) {
-          if (url.pathname === captureUrl.pathname && url.origin !== captureUrl.origin) {
-            logger.debug(`${capture} only partially matches the cross-origin URL ${url.toString()}. This route will only handle cross-origin requests if they match the entire URL.`);
+          if (
+            url.pathname === captureUrl.pathname &&
+            url.origin !== captureUrl.origin
+          ) {
+            logger.debug(
+              `${capture} only partially matches the cross-origin URL ${url.toString()}. This route will only handle cross-origin requests if they match the entire URL.`
+            );
           }
         }
         return url.href === captureUrl.href;
@@ -1307,7 +1489,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       throw new WorkboxError("unsupported-route-type", {
         moduleName: "workbox-routing",
         funcName: "registerRoute",
-        paramName: "capture"
+        paramName: "capture",
       });
     }
     const defaultRouter2 = getOrCreateDefaultRouter();
@@ -1316,9 +1498,14 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   }
 
   // node_modules/workbox-precaching/utils/removeIgnoredSearchParams.js
-  function removeIgnoredSearchParams(urlObject, ignoreURLParametersMatching = []) {
+  function removeIgnoredSearchParams(
+    urlObject,
+    ignoreURLParametersMatching = []
+  ) {
     for (const paramName of [...urlObject.searchParams.keys()]) {
-      if (ignoreURLParametersMatching.some((regExp) => regExp.test(paramName))) {
+      if (
+        ignoreURLParametersMatching.some((regExp) => regExp.test(paramName))
+      ) {
         urlObject.searchParams.delete(paramName);
       }
     }
@@ -1326,11 +1513,22 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   }
 
   // node_modules/workbox-precaching/utils/generateURLVariations.js
-  function* generateURLVariations(url, { ignoreURLParametersMatching = [/^utm_/, /^fbclid$/], directoryIndex = "index.html", cleanURLs = true, urlManipulation } = {}) {
+  function* generateURLVariations(
+    url,
+    {
+      ignoreURLParametersMatching = [/^utm_/, /^fbclid$/],
+      directoryIndex = "index.html",
+      cleanURLs = true,
+      urlManipulation,
+    } = {}
+  ) {
     const urlObject = new URL(url, location.href);
     urlObject.hash = "";
     yield urlObject.href;
-    const urlWithoutIgnoredParams = removeIgnoredSearchParams(urlObject, ignoreURLParametersMatching);
+    const urlWithoutIgnoredParams = removeIgnoredSearchParams(
+      urlObject,
+      ignoreURLParametersMatching
+    );
     yield urlWithoutIgnoredParams.href;
     if (directoryIndex && urlWithoutIgnoredParams.pathname.endsWith("/")) {
       const directoryURL = new URL(urlWithoutIgnoredParams.href);
@@ -1358,12 +1556,15 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         for (const possibleURL of generateURLVariations(request.url, options)) {
           const cacheKey = urlsToCacheKeys.get(possibleURL);
           if (cacheKey) {
-            const integrity = precacheController2.getIntegrityForCacheKey(cacheKey);
+            const integrity =
+              precacheController2.getIntegrityForCacheKey(cacheKey);
             return { cacheKey, integrity };
           }
         }
         if (false) {
-          logger.debug(`Precaching did not find a match for ` + getFriendlyURL(request.url));
+          logger.debug(
+            `Precaching did not find a match for ` + getFriendlyURL(request.url)
+          );
         }
         return;
       };
@@ -1380,12 +1581,21 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
 
   // node_modules/workbox-precaching/utils/deleteOutdatedCaches.js
   var SUBSTRING_TO_FIND = "-precache-";
-  var deleteOutdatedCaches = async (currentPrecacheName, substringToFind = SUBSTRING_TO_FIND) => {
+  var deleteOutdatedCaches = async (
+    currentPrecacheName,
+    substringToFind = SUBSTRING_TO_FIND
+  ) => {
     const cacheNames3 = await self.caches.keys();
     const cacheNamesToDelete = cacheNames3.filter((cacheName) => {
-      return cacheName.includes(substringToFind) && cacheName.includes(self.registration.scope) && cacheName !== currentPrecacheName;
+      return (
+        cacheName.includes(substringToFind) &&
+        cacheName.includes(self.registration.scope) &&
+        cacheName !== currentPrecacheName
+      );
     });
-    await Promise.all(cacheNamesToDelete.map((cacheName) => self.caches.delete(cacheName)));
+    await Promise.all(
+      cacheNamesToDelete.map((cacheName) => self.caches.delete(cacheName))
+    );
     return cacheNamesToDelete;
   };
 
@@ -1393,13 +1603,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   function cleanupOutdatedCaches() {
     self.addEventListener("activate", (event) => {
       const cacheName = cacheNames.getPrecacheName();
-      event.waitUntil(deleteOutdatedCaches(cacheName).then((cachesDeleted) => {
-        if (false) {
-          if (cachesDeleted.length > 0) {
-            logger.log(`The following out-of-date precaches were cleaned up automatically:`, cachesDeleted);
+      event.waitUntil(
+        deleteOutdatedCaches(cacheName).then((cachesDeleted) => {
+          if (false) {
+            if (cachesDeleted.length > 0) {
+              logger.log(
+                `The following out-of-date precaches were cleaned up automatically:`,
+                cachesDeleted
+              );
+            }
           }
-        }
-      }));
+        })
+      );
     });
   }
 
@@ -1424,14 +1639,16 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-strategies",
           className: this.constructor.name,
           funcName: "makeRequest",
-          paramName: "request"
+          paramName: "request",
         });
       }
       let response = await handler.cacheMatch(request);
       let error = void 0;
       if (!response) {
         if (false) {
-          logs.push(`No response found in the '${this.cacheName}' cache. Will respond with a network request.`);
+          logs.push(
+            `No response found in the '${this.cacheName}' cache. Will respond with a network request.`
+          );
         }
         try {
           response = await handler.fetchAndCachePut(request);
@@ -1449,11 +1666,15 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         }
       } else {
         if (false) {
-          logs.push(`Found a cached response in the '${this.cacheName}' cache.`);
+          logs.push(
+            `Found a cached response in the '${this.cacheName}' cache.`
+          );
         }
       }
       if (false) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
+        logger.groupCollapsed(
+          messages2.strategyStart(this.constructor.name, request)
+        );
         for (const log of logs) {
           logger.log(log);
         }
@@ -1474,7 +1695,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         return response;
       }
       return null;
-    }
+    },
   };
 
   // node_modules/workbox-strategies/NetworkFirst.js
@@ -1491,7 +1712,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-strategies",
             className: this.constructor.name,
             funcName: "constructor",
-            paramName: "networkTimeoutSeconds"
+            paramName: "networkTimeoutSeconds",
           });
         }
       }
@@ -1503,13 +1724,17 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-strategies",
           className: this.constructor.name,
           funcName: "handle",
-          paramName: "makeRequest"
+          paramName: "makeRequest",
         });
       }
       const promises = [];
       let timeoutId;
       if (this._networkTimeoutSeconds) {
-        const { id, promise } = this._getTimeoutPromise({ request, logs, handler });
+        const { id, promise } = this._getTimeoutPromise({
+          request,
+          logs,
+          handler,
+        });
         timeoutId = id;
         promises.push(promise);
       }
@@ -1517,14 +1742,21 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         timeoutId,
         request,
         logs,
-        handler
+        handler,
       });
       promises.push(networkPromise);
-      const response = await handler.waitUntil((async () => {
-        return await handler.waitUntil(Promise.race(promises)) || await networkPromise;
-      })());
+      const response = await handler.waitUntil(
+        (async () => {
+          return (
+            (await handler.waitUntil(Promise.race(promises))) ||
+            (await networkPromise)
+          );
+        })()
+      );
       if (false) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
+        logger.groupCollapsed(
+          messages2.strategyStart(this.constructor.name, request)
+        );
         for (const log of logs) {
           logger.log(log);
         }
@@ -1541,15 +1773,20 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       const timeoutPromise = new Promise((resolve) => {
         const onNetworkTimeout = async () => {
           if (false) {
-            logs.push(`Timing out the network response at ${this._networkTimeoutSeconds} seconds.`);
+            logs.push(
+              `Timing out the network response at ${this._networkTimeoutSeconds} seconds.`
+            );
           }
           resolve(await handler.cacheMatch(request));
         };
-        timeoutId = setTimeout(onNetworkTimeout, this._networkTimeoutSeconds * 1e3);
+        timeoutId = setTimeout(
+          onNetworkTimeout,
+          this._networkTimeoutSeconds * 1e3
+        );
       });
       return {
         promise: timeoutPromise,
-        id: timeoutId
+        id: timeoutId,
       };
     }
     async _getNetworkPromise({ timeoutId, request, logs, handler }) {
@@ -1569,14 +1806,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         if (response) {
           logs.push(`Got response from network.`);
         } else {
-          logs.push(`Unable to get a response from the network. Will respond with a cached response.`);
+          logs.push(
+            `Unable to get a response from the network. Will respond with a cached response.`
+          );
         }
       }
       if (error || !response) {
         response = await handler.cacheMatch(request);
         if (false) {
           if (response) {
-            logs.push(`Found a cached response in the '${this.cacheName}' cache.`);
+            logs.push(
+              `Found a cached response in the '${this.cacheName}' cache.`
+            );
           } else {
             logs.push(`No response found in the '${this.cacheName}' cache.`);
           }
@@ -1601,21 +1842,26 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-strategies",
           className: this.constructor.name,
           funcName: "handle",
-          paramName: "request"
+          paramName: "request",
         });
       }
-      const fetchAndCachePromise = handler.fetchAndCachePut(request).catch(() => {
-      });
+      const fetchAndCachePromise = handler
+        .fetchAndCachePut(request)
+        .catch(() => {});
       void handler.waitUntil(fetchAndCachePromise);
       let response = await handler.cacheMatch(request);
       let error;
       if (response) {
         if (false) {
-          logs.push(`Found a cached response in the '${this.cacheName}' cache. Will update with the network response in the background.`);
+          logs.push(
+            `Found a cached response in the '${this.cacheName}' cache. Will update with the network response in the background.`
+          );
         }
       } else {
         if (false) {
-          logs.push(`No response found in the '${this.cacheName}' cache. Will wait for the network response.`);
+          logs.push(
+            `No response found in the '${this.cacheName}' cache. Will wait for the network response.`
+          );
         }
         try {
           response = await fetchAndCachePromise;
@@ -1626,7 +1872,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         }
       }
       if (false) {
-        logger.groupCollapsed(messages2.strategyStart(this.constructor.name, request));
+        logger.groupCollapsed(
+          messages2.strategyStart(this.constructor.name, request)
+        );
         for (const log of logs) {
           logger.log(log);
         }
@@ -1643,8 +1891,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   // node_modules/workbox-cacheable-response/_version.js
   try {
     self["workbox:cacheable-response:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-cacheable-response/CacheableResponse.js
   var CacheableResponse = class {
@@ -1654,7 +1901,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           throw new WorkboxError("statuses-or-headers-required", {
             moduleName: "workbox-cacheable-response",
             className: "CacheableResponse",
-            funcName: "constructor"
+            funcName: "constructor",
           });
         }
         if (config.statuses) {
@@ -1662,7 +1909,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-cacheable-response",
             className: "CacheableResponse",
             funcName: "constructor",
-            paramName: "config.statuses"
+            paramName: "config.statuses",
           });
         }
         if (config.headers) {
@@ -1670,7 +1917,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-cacheable-response",
             className: "CacheableResponse",
             funcName: "constructor",
-            paramName: "config.headers"
+            paramName: "config.headers",
           });
         }
       }
@@ -1683,7 +1930,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-cacheable-response",
           className: "CacheableResponse",
           funcName: "isResponseCacheable",
-          paramName: "response"
+          paramName: "response",
         });
       }
       let cacheable = true;
@@ -1697,10 +1944,16 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       }
       if (false) {
         if (!cacheable) {
-          logger.groupCollapsed(`The request for '${getFriendlyURL(response.url)}' returned a response that does not meet the criteria for being cached.`);
+          logger.groupCollapsed(
+            `The request for '${getFriendlyURL(
+              response.url
+            )}' returned a response that does not meet the criteria for being cached.`
+          );
           logger.groupCollapsed(`View cacheability criteria here.`);
           logger.log(`Cacheable statuses: ` + JSON.stringify(this._statuses));
-          logger.log(`Cacheable headers: ` + JSON.stringify(this._headers, null, 2));
+          logger.log(
+            `Cacheable headers: ` + JSON.stringify(this._headers, null, 2)
+          );
           logger.groupEnd();
           const logFriendlyHeaders = {};
           response.headers.forEach((value, key) => {
@@ -1708,7 +1961,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           });
           logger.groupCollapsed(`View response status and headers here.`);
           logger.log(`Response status: ${response.status}`);
-          logger.log(`Response headers: ` + JSON.stringify(logFriendlyHeaders, null, 2));
+          logger.log(
+            `Response headers: ` + JSON.stringify(logFriendlyHeaders, null, 2)
+          );
           logger.groupEnd();
           logger.groupCollapsed(`View full response details here.`);
           logger.log(response.headers);
@@ -1735,24 +1990,31 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   };
 
   // node_modules/idb/build/wrap-idb-value.js
-  var instanceOfAny = (object, constructors) => constructors.some((c) => object instanceof c);
+  var instanceOfAny = (object, constructors) =>
+    constructors.some((c) => object instanceof c);
   var idbProxyableTypes;
   var cursorAdvanceMethods;
   function getIdbProxyableTypes() {
-    return idbProxyableTypes || (idbProxyableTypes = [
-      IDBDatabase,
-      IDBObjectStore,
-      IDBIndex,
-      IDBCursor,
-      IDBTransaction
-    ]);
+    return (
+      idbProxyableTypes ||
+      (idbProxyableTypes = [
+        IDBDatabase,
+        IDBObjectStore,
+        IDBIndex,
+        IDBCursor,
+        IDBTransaction,
+      ])
+    );
   }
   function getCursorAdvanceMethods() {
-    return cursorAdvanceMethods || (cursorAdvanceMethods = [
-      IDBCursor.prototype.advance,
-      IDBCursor.prototype.continue,
-      IDBCursor.prototype.continuePrimaryKey
-    ]);
+    return (
+      cursorAdvanceMethods ||
+      (cursorAdvanceMethods = [
+        IDBCursor.prototype.advance,
+        IDBCursor.prototype.continue,
+        IDBCursor.prototype.continuePrimaryKey,
+      ])
+    );
   }
   var cursorRequestMap = /* @__PURE__ */ new WeakMap();
   var transactionDoneMap = /* @__PURE__ */ new WeakMap();
@@ -1776,18 +2038,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       request.addEventListener("success", success);
       request.addEventListener("error", error);
     });
-    promise.then((value) => {
-      if (value instanceof IDBCursor) {
-        cursorRequestMap.set(value, request);
-      }
-    }).catch(() => {
-    });
+    promise
+      .then((value) => {
+        if (value instanceof IDBCursor) {
+          cursorRequestMap.set(value, request);
+        }
+      })
+      .catch(() => {});
     reverseTransformCache.set(promise, request);
     return promise;
   }
   function cacheDonePromiseForTransaction(tx) {
-    if (transactionDoneMap.has(tx))
-      return;
+    if (transactionDoneMap.has(tx)) return;
     const done = new Promise((resolve, reject) => {
       const unlisten = () => {
         tx.removeEventListener("complete", complete);
@@ -1811,13 +2073,16 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   var idbProxyTraps = {
     get(target, prop, receiver) {
       if (target instanceof IDBTransaction) {
-        if (prop === "done")
-          return transactionDoneMap.get(target);
+        if (prop === "done") return transactionDoneMap.get(target);
         if (prop === "objectStoreNames") {
-          return target.objectStoreNames || transactionStoreNamesMap.get(target);
+          return (
+            target.objectStoreNames || transactionStoreNamesMap.get(target)
+          );
         }
         if (prop === "store") {
-          return receiver.objectStoreNames[1] ? void 0 : receiver.objectStore(receiver.objectStoreNames[0]);
+          return receiver.objectStoreNames[1]
+            ? void 0
+            : receiver.objectStore(receiver.objectStoreNames[0]);
         }
       }
       return wrap(target[prop]);
@@ -1827,47 +2092,52 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       return true;
     },
     has(target, prop) {
-      if (target instanceof IDBTransaction && (prop === "done" || prop === "store")) {
+      if (
+        target instanceof IDBTransaction &&
+        (prop === "done" || prop === "store")
+      ) {
         return true;
       }
       return prop in target;
-    }
+    },
   };
   function replaceTraps(callback) {
     idbProxyTraps = callback(idbProxyTraps);
   }
   function wrapFunction(func) {
-    if (func === IDBDatabase.prototype.transaction && !("objectStoreNames" in IDBTransaction.prototype)) {
-      return function(storeNames, ...args) {
+    if (
+      func === IDBDatabase.prototype.transaction &&
+      !("objectStoreNames" in IDBTransaction.prototype)
+    ) {
+      return function (storeNames, ...args) {
         const tx = func.call(unwrap(this), storeNames, ...args);
-        transactionStoreNamesMap.set(tx, storeNames.sort ? storeNames.sort() : [storeNames]);
+        transactionStoreNamesMap.set(
+          tx,
+          storeNames.sort ? storeNames.sort() : [storeNames]
+        );
         return wrap(tx);
       };
     }
     if (getCursorAdvanceMethods().includes(func)) {
-      return function(...args) {
+      return function (...args) {
         func.apply(unwrap(this), args);
         return wrap(cursorRequestMap.get(this));
       };
     }
-    return function(...args) {
+    return function (...args) {
       return wrap(func.apply(unwrap(this), args));
     };
   }
   function transformCachableValue(value) {
-    if (typeof value === "function")
-      return wrapFunction(value);
-    if (value instanceof IDBTransaction)
-      cacheDonePromiseForTransaction(value);
+    if (typeof value === "function") return wrapFunction(value);
+    if (value instanceof IDBTransaction) cacheDonePromiseForTransaction(value);
     if (instanceOfAny(value, getIdbProxyableTypes()))
       return new Proxy(value, idbProxyTraps);
     return value;
   }
   function wrap(value) {
-    if (value instanceof IDBRequest)
-      return promisifyRequest(value);
-    if (transformCache.has(value))
-      return transformCache.get(value);
+    if (value instanceof IDBRequest) return promisifyRequest(value);
+    if (transformCache.has(value)) return transformCache.get(value);
     const newValue = transformCachableValue(value);
     if (newValue !== value) {
       transformCache.set(value, newValue);
@@ -1878,70 +2148,89 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   var unwrap = (value) => reverseTransformCache.get(value);
 
   // node_modules/idb/build/index.js
-  function openDB(name, version, { blocked, upgrade, blocking, terminated } = {}) {
+  function openDB(
+    name,
+    version,
+    { blocked, upgrade, blocking, terminated } = {}
+  ) {
     const request = indexedDB.open(name, version);
     const openPromise = wrap(request);
     if (upgrade) {
       request.addEventListener("upgradeneeded", (event) => {
-        upgrade(wrap(request.result), event.oldVersion, event.newVersion, wrap(request.transaction));
+        upgrade(
+          wrap(request.result),
+          event.oldVersion,
+          event.newVersion,
+          wrap(request.transaction)
+        );
       });
     }
-    if (blocked)
-      request.addEventListener("blocked", () => blocked());
-    openPromise.then((db) => {
-      if (terminated)
-        db.addEventListener("close", () => terminated());
-      if (blocking)
-        db.addEventListener("versionchange", () => blocking());
-    }).catch(() => {
-    });
+    if (blocked) request.addEventListener("blocked", () => blocked());
+    openPromise
+      .then((db) => {
+        if (terminated) db.addEventListener("close", () => terminated());
+        if (blocking) db.addEventListener("versionchange", () => blocking());
+      })
+      .catch(() => {});
     return openPromise;
   }
   function deleteDB(name, { blocked } = {}) {
     const request = indexedDB.deleteDatabase(name);
-    if (blocked)
-      request.addEventListener("blocked", () => blocked());
+    if (blocked) request.addEventListener("blocked", () => blocked());
     return wrap(request).then(() => void 0);
   }
   var readMethods = ["get", "getKey", "getAll", "getAllKeys", "count"];
   var writeMethods = ["put", "add", "delete", "clear"];
   var cachedMethods = /* @__PURE__ */ new Map();
   function getMethod(target, prop) {
-    if (!(target instanceof IDBDatabase && !(prop in target) && typeof prop === "string")) {
+    if (
+      !(
+        target instanceof IDBDatabase &&
+        !(prop in target) &&
+        typeof prop === "string"
+      )
+    ) {
       return;
     }
-    if (cachedMethods.get(prop))
-      return cachedMethods.get(prop);
+    if (cachedMethods.get(prop)) return cachedMethods.get(prop);
     const targetFuncName = prop.replace(/FromIndex$/, "");
     const useIndex = prop !== targetFuncName;
     const isWrite = writeMethods.includes(targetFuncName);
-    if (!(targetFuncName in (useIndex ? IDBIndex : IDBObjectStore).prototype) || !(isWrite || readMethods.includes(targetFuncName))) {
+    if (
+      !(targetFuncName in (useIndex ? IDBIndex : IDBObjectStore).prototype) ||
+      !(isWrite || readMethods.includes(targetFuncName))
+    ) {
       return;
     }
-    const method = async function(storeName, ...args) {
-      const tx = this.transaction(storeName, isWrite ? "readwrite" : "readonly");
+    const method = async function (storeName, ...args) {
+      const tx = this.transaction(
+        storeName,
+        isWrite ? "readwrite" : "readonly"
+      );
       let target2 = tx.store;
-      if (useIndex)
-        target2 = target2.index(args.shift());
-      return (await Promise.all([
-        target2[targetFuncName](...args),
-        isWrite && tx.done
-      ]))[0];
+      if (useIndex) target2 = target2.index(args.shift());
+      return (
+        await Promise.all([
+          target2[targetFuncName](...args),
+          isWrite && tx.done,
+        ])
+      )[0];
     };
     cachedMethods.set(prop, method);
     return method;
   }
   replaceTraps((oldTraps) => ({
     ...oldTraps,
-    get: (target, prop, receiver) => getMethod(target, prop) || oldTraps.get(target, prop, receiver),
-    has: (target, prop) => !!getMethod(target, prop) || oldTraps.has(target, prop)
+    get: (target, prop, receiver) =>
+      getMethod(target, prop) || oldTraps.get(target, prop, receiver),
+    has: (target, prop) =>
+      !!getMethod(target, prop) || oldTraps.has(target, prop),
   }));
 
   // node_modules/workbox-expiration/_version.js
   try {
     self["workbox:expiration:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-expiration/models/CacheTimestampsModel.js
   var DB_NAME = "workbox-expiration";
@@ -1957,7 +2246,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       this._cacheName = cacheName;
     }
     _upgradeDb(db) {
-      const objStore = db.createObjectStore(CACHE_OBJECT_STORE, { keyPath: "id" });
+      const objStore = db.createObjectStore(CACHE_OBJECT_STORE, {
+        keyPath: "id",
+      });
       objStore.createIndex("cacheName", "cacheName", { unique: false });
       objStore.createIndex("timestamp", "timestamp", { unique: false });
     }
@@ -1973,11 +2264,11 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         url,
         timestamp,
         cacheName: this._cacheName,
-        id: this._getId(url)
+        id: this._getId(url),
       };
       const db = await this.getDb();
       const tx = db.transaction(CACHE_OBJECT_STORE, "readwrite", {
-        durability: "relaxed"
+        durability: "relaxed",
       });
       await tx.store.put(entry);
       await tx.done;
@@ -1989,13 +2280,19 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
     async expireEntries(minTimestamp, maxCount) {
       const db = await this.getDb();
-      let cursor = await db.transaction(CACHE_OBJECT_STORE).store.index("timestamp").openCursor(null, "prev");
+      let cursor = await db
+        .transaction(CACHE_OBJECT_STORE)
+        .store.index("timestamp")
+        .openCursor(null, "prev");
       const entriesToDelete = [];
       let entriesNotDeletedCount = 0;
       while (cursor) {
         const result = cursor.value;
         if (result.cacheName === this._cacheName) {
-          if (minTimestamp && result.timestamp < minTimestamp || maxCount && entriesNotDeletedCount >= maxCount) {
+          if (
+            (minTimestamp && result.timestamp < minTimestamp) ||
+            (maxCount && entriesNotDeletedCount >= maxCount)
+          ) {
             entriesToDelete.push(cursor.value);
           } else {
             entriesNotDeletedCount++;
@@ -2016,7 +2313,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     async getDb() {
       if (!this._db) {
         this._db = await openDB(DB_NAME, 1, {
-          upgrade: this._upgradeDbAndDeleteOldDbs.bind(this)
+          upgrade: this._upgradeDbAndDeleteOldDbs.bind(this),
         });
       }
       return this._db;
@@ -2033,13 +2330,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-expiration",
           className: "CacheExpiration",
           funcName: "constructor",
-          paramName: "cacheName"
+          paramName: "cacheName",
         });
         if (!(config.maxEntries || config.maxAgeSeconds)) {
           throw new WorkboxError("max-entries-or-age-required", {
             moduleName: "workbox-expiration",
             className: "CacheExpiration",
-            funcName: "constructor"
+            funcName: "constructor",
           });
         }
         if (config.maxEntries) {
@@ -2047,7 +2344,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-expiration",
             className: "CacheExpiration",
             funcName: "constructor",
-            paramName: "config.maxEntries"
+            paramName: "config.maxEntries",
           });
         }
         if (config.maxAgeSeconds) {
@@ -2055,7 +2352,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-expiration",
             className: "CacheExpiration",
             funcName: "constructor",
-            paramName: "config.maxAgeSeconds"
+            paramName: "config.maxAgeSeconds",
           });
         }
       }
@@ -2071,16 +2368,31 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         return;
       }
       this._isRunning = true;
-      const minTimestamp = this._maxAgeSeconds ? Date.now() - this._maxAgeSeconds * 1e3 : 0;
-      const urlsExpired = await this._timestampModel.expireEntries(minTimestamp, this._maxEntries);
+      const minTimestamp = this._maxAgeSeconds
+        ? Date.now() - this._maxAgeSeconds * 1e3
+        : 0;
+      const urlsExpired = await this._timestampModel.expireEntries(
+        minTimestamp,
+        this._maxEntries
+      );
       const cache = await self.caches.open(this._cacheName);
       for (const url of urlsExpired) {
         await cache.delete(url, this._matchOptions);
       }
       if (false) {
         if (urlsExpired.length > 0) {
-          logger.groupCollapsed(`Expired ${urlsExpired.length} ${urlsExpired.length === 1 ? "entry" : "entries"} and removed ${urlsExpired.length === 1 ? "it" : "them"} from the '${this._cacheName}' cache.`);
-          logger.log(`Expired the following ${urlsExpired.length === 1 ? "URL" : "URLs"}:`);
+          logger.groupCollapsed(
+            `Expired ${urlsExpired.length} ${
+              urlsExpired.length === 1 ? "entry" : "entries"
+            } and removed ${
+              urlsExpired.length === 1 ? "it" : "them"
+            } from the '${this._cacheName}' cache.`
+          );
+          logger.log(
+            `Expired the following ${
+              urlsExpired.length === 1 ? "URL" : "URLs"
+            }:`
+          );
           urlsExpired.forEach((url) => logger.log(`    ${url}`));
           logger.groupEnd();
         } else {
@@ -2099,7 +2411,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-expiration",
           className: "CacheExpiration",
           funcName: "updateTimestamp",
-          paramName: "url"
+          paramName: "url",
         });
       }
       await this._timestampModel.setTimestamp(url, Date.now());
@@ -2109,7 +2421,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         if (false) {
           throw new WorkboxError(`expired-test-without-max-age`, {
             methodName: "isURLExpired",
-            paramName: "maxAgeSeconds"
+            paramName: "maxAgeSeconds",
           });
         }
         return false;
@@ -2128,21 +2440,32 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   // node_modules/workbox-expiration/ExpirationPlugin.js
   var ExpirationPlugin = class {
     constructor(config = {}) {
-      this.cachedResponseWillBeUsed = async ({ event, request, cacheName, cachedResponse }) => {
+      this.cachedResponseWillBeUsed = async ({
+        event,
+        request,
+        cacheName,
+        cachedResponse,
+      }) => {
         if (!cachedResponse) {
           return null;
         }
         const isFresh = this._isResponseDateFresh(cachedResponse);
         const cacheExpiration = this._getCacheExpiration(cacheName);
         dontWaitFor(cacheExpiration.expireEntries());
-        const updateTimestampDone = cacheExpiration.updateTimestamp(request.url);
+        const updateTimestampDone = cacheExpiration.updateTimestamp(
+          request.url
+        );
         if (event) {
           try {
             event.waitUntil(updateTimestampDone);
           } catch (error) {
             if (false) {
               if ("request" in event) {
-                logger.warn(`Unable to ensure service worker stays alive when updating cache entry for '${getFriendlyURL(event.request.url)}'.`);
+                logger.warn(
+                  `Unable to ensure service worker stays alive when updating cache entry for '${getFriendlyURL(
+                    event.request.url
+                  )}'.`
+                );
               }
             }
           }
@@ -2155,13 +2478,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-expiration",
             className: "Plugin",
             funcName: "cacheDidUpdate",
-            paramName: "cacheName"
+            paramName: "cacheName",
           });
           finalAssertExports.isInstance(request, Request, {
             moduleName: "workbox-expiration",
             className: "Plugin",
             funcName: "cacheDidUpdate",
-            paramName: "request"
+            paramName: "request",
           });
         }
         const cacheExpiration = this._getCacheExpiration(cacheName);
@@ -2173,7 +2496,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           throw new WorkboxError("max-entries-or-age-required", {
             moduleName: "workbox-expiration",
             className: "Plugin",
-            funcName: "constructor"
+            funcName: "constructor",
           });
         }
         if (config.maxEntries) {
@@ -2181,7 +2504,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-expiration",
             className: "Plugin",
             funcName: "constructor",
-            paramName: "config.maxEntries"
+            paramName: "config.maxEntries",
           });
         }
         if (config.maxAgeSeconds) {
@@ -2189,7 +2512,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
             moduleName: "workbox-expiration",
             className: "Plugin",
             funcName: "constructor",
-            paramName: "config.maxAgeSeconds"
+            paramName: "config.maxAgeSeconds",
           });
         }
       }
@@ -2246,37 +2569,43 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   // node_modules/workbox-recipes/_version.js
   try {
     self["workbox:recipes:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-recipes/googleFontsCache.js
   function googleFontsCache(options = {}) {
-    const sheetCacheName = `${options.cachePrefix || "google-fonts"}-stylesheets`;
+    const sheetCacheName = `${
+      options.cachePrefix || "google-fonts"
+    }-stylesheets`;
     const fontCacheName = `${options.cachePrefix || "google-fonts"}-webfonts`;
     const maxAgeSeconds = options.maxAgeSeconds || 60 * 60 * 24 * 365;
     const maxEntries = options.maxEntries || 30;
-    registerRoute(({ url }) => url.origin === "https://fonts.googleapis.com", new StaleWhileRevalidate({
-      cacheName: sheetCacheName
-    }));
-    registerRoute(({ url }) => url.origin === "https://fonts.gstatic.com", new CacheFirst({
-      cacheName: fontCacheName,
-      plugins: [
-        new CacheableResponsePlugin({
-          statuses: [0, 200]
-        }),
-        new ExpirationPlugin({
-          maxAgeSeconds,
-          maxEntries
-        })
-      ]
-    }));
+    registerRoute(
+      ({ url }) => url.origin === "https://fonts.googleapis.com",
+      new StaleWhileRevalidate({
+        cacheName: sheetCacheName,
+      })
+    );
+    registerRoute(
+      ({ url }) => url.origin === "https://fonts.gstatic.com",
+      new CacheFirst({
+        cacheName: fontCacheName,
+        plugins: [
+          new CacheableResponsePlugin({
+            statuses: [0, 200],
+          }),
+          new ExpirationPlugin({
+            maxAgeSeconds,
+            maxEntries,
+          }),
+        ],
+      })
+    );
   }
 
   // node_modules/workbox-background-sync/_version.js
   try {
     self["workbox:background-sync:6.5.3"] && _();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // node_modules/workbox-background-sync/lib/QueueDb.js
   var DB_VERSION = 3;
@@ -2290,44 +2619,63 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     async addEntry(entry) {
       const db = await this.getDb();
       const tx = db.transaction(REQUEST_OBJECT_STORE_NAME, "readwrite", {
-        durability: "relaxed"
+        durability: "relaxed",
       });
       await tx.store.add(entry);
       await tx.done;
     }
     async getFirstEntryId() {
       const db = await this.getDb();
-      const cursor = await db.transaction(REQUEST_OBJECT_STORE_NAME).store.openCursor();
+      const cursor = await db
+        .transaction(REQUEST_OBJECT_STORE_NAME)
+        .store.openCursor();
       return cursor === null || cursor === void 0 ? void 0 : cursor.value.id;
     }
     async getAllEntriesByQueueName(queueName) {
       const db = await this.getDb();
-      const results = await db.getAllFromIndex(REQUEST_OBJECT_STORE_NAME, QUEUE_NAME_INDEX, IDBKeyRange.only(queueName));
+      const results = await db.getAllFromIndex(
+        REQUEST_OBJECT_STORE_NAME,
+        QUEUE_NAME_INDEX,
+        IDBKeyRange.only(queueName)
+      );
       return results ? results : new Array();
     }
     async getEntryCountByQueueName(queueName) {
       const db = await this.getDb();
-      return db.countFromIndex(REQUEST_OBJECT_STORE_NAME, QUEUE_NAME_INDEX, IDBKeyRange.only(queueName));
+      return db.countFromIndex(
+        REQUEST_OBJECT_STORE_NAME,
+        QUEUE_NAME_INDEX,
+        IDBKeyRange.only(queueName)
+      );
     }
     async deleteEntry(id) {
       const db = await this.getDb();
       await db.delete(REQUEST_OBJECT_STORE_NAME, id);
     }
     async getFirstEntryByQueueName(queueName) {
-      return await this.getEndEntryFromIndex(IDBKeyRange.only(queueName), "next");
+      return await this.getEndEntryFromIndex(
+        IDBKeyRange.only(queueName),
+        "next"
+      );
     }
     async getLastEntryByQueueName(queueName) {
-      return await this.getEndEntryFromIndex(IDBKeyRange.only(queueName), "prev");
+      return await this.getEndEntryFromIndex(
+        IDBKeyRange.only(queueName),
+        "prev"
+      );
     }
     async getEndEntryFromIndex(query, direction) {
       const db = await this.getDb();
-      const cursor = await db.transaction(REQUEST_OBJECT_STORE_NAME).store.index(QUEUE_NAME_INDEX).openCursor(query, direction);
+      const cursor = await db
+        .transaction(REQUEST_OBJECT_STORE_NAME)
+        .store.index(QUEUE_NAME_INDEX)
+        .openCursor(query, direction);
       return cursor === null || cursor === void 0 ? void 0 : cursor.value;
     }
     async getDb() {
       if (!this._db) {
         this._db = await openDB(DB_NAME2, DB_VERSION, {
-          upgrade: this._upgradeDb
+          upgrade: this._upgradeDb,
         });
       }
       return this._db;
@@ -2340,9 +2688,11 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       }
       const objStore = db.createObjectStore(REQUEST_OBJECT_STORE_NAME, {
         autoIncrement: true,
-        keyPath: "id"
+        keyPath: "id",
       });
-      objStore.createIndex(QUEUE_NAME_INDEX, QUEUE_NAME_INDEX, { unique: false });
+      objStore.createIndex(QUEUE_NAME_INDEX, QUEUE_NAME_INDEX, {
+        unique: false,
+      });
     }
   };
 
@@ -2358,13 +2708,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-background-sync",
           className: "QueueStore",
           funcName: "pushEntry",
-          paramName: "entry"
+          paramName: "entry",
         });
         finalAssertExports.isType(entry.requestData, "object", {
           moduleName: "workbox-background-sync",
           className: "QueueStore",
           funcName: "pushEntry",
-          paramName: "entry.requestData"
+          paramName: "entry.requestData",
         });
       }
       delete entry.id;
@@ -2377,13 +2727,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-background-sync",
           className: "QueueStore",
           funcName: "unshiftEntry",
-          paramName: "entry"
+          paramName: "entry",
         });
         finalAssertExports.isType(entry.requestData, "object", {
           moduleName: "workbox-background-sync",
           className: "QueueStore",
           funcName: "unshiftEntry",
-          paramName: "entry.requestData"
+          paramName: "entry.requestData",
         });
       }
       const firstId = await this._queueDb.getFirstEntryId();
@@ -2396,10 +2746,14 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
       await this._queueDb.addEntry(entry);
     }
     async popEntry() {
-      return this._removeEntry(await this._queueDb.getLastEntryByQueueName(this._queueName));
+      return this._removeEntry(
+        await this._queueDb.getLastEntryByQueueName(this._queueName)
+      );
     }
     async shiftEntry() {
-      return this._removeEntry(await this._queueDb.getFirstEntryByQueueName(this._queueName));
+      return this._removeEntry(
+        await this._queueDb.getFirstEntryByQueueName(this._queueName)
+      );
     }
     async getAll() {
       return await this._queueDb.getAllEntriesByQueueName(this._queueName);
@@ -2428,7 +2782,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     "cache",
     "redirect",
     "integrity",
-    "keepalive"
+    "keepalive",
   ];
   var StorableRequest = class {
     constructor(requestData) {
@@ -2437,13 +2791,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-background-sync",
           className: "StorableRequest",
           funcName: "constructor",
-          paramName: "requestData"
+          paramName: "requestData",
         });
         finalAssertExports.isType(requestData.url, "string", {
           moduleName: "workbox-background-sync",
           className: "StorableRequest",
           funcName: "constructor",
-          paramName: "requestData.url"
+          paramName: "requestData.url",
         });
       }
       if (requestData["mode"] === "navigate") {
@@ -2454,7 +2808,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     static async fromRequest(request) {
       const requestData = {
         url: request.url,
-        headers: {}
+        headers: {},
       };
       if (request.method !== "GET") {
         requestData.body = await request.clone().arrayBuffer();
@@ -2492,7 +2846,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   var convertEntry = (queueStoreEntry) => {
     const queueEntry = {
       request: new StorableRequest(queueStoreEntry.requestData).toRequest(),
-      timestamp: queueStoreEntry.timestamp
+      timestamp: queueStoreEntry.timestamp,
     };
     if (queueStoreEntry.metadata) {
       queueEntry.metadata = queueStoreEntry.metadata;
@@ -2524,13 +2878,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-background-sync",
           className: "Queue",
           funcName: "pushRequest",
-          paramName: "entry"
+          paramName: "entry",
         });
         finalAssertExports.isInstance(entry.request, Request, {
           moduleName: "workbox-background-sync",
           className: "Queue",
           funcName: "pushRequest",
-          paramName: "entry.request"
+          paramName: "entry.request",
         });
       }
       await this._addRequest(entry, "push");
@@ -2541,13 +2895,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           moduleName: "workbox-background-sync",
           className: "Queue",
           funcName: "unshiftRequest",
-          paramName: "entry"
+          paramName: "entry",
         });
         finalAssertExports.isInstance(entry.request, Request, {
           moduleName: "workbox-background-sync",
           className: "Queue",
           funcName: "unshiftRequest",
-          paramName: "entry.request"
+          paramName: "entry.request",
         });
       }
       await this._addRequest(entry, "unshift");
@@ -2575,11 +2929,16 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     async size() {
       return await this._queueStore.size();
     }
-    async _addRequest({ request, metadata, timestamp = Date.now() }, operation) {
-      const storableRequest = await StorableRequest.fromRequest(request.clone());
+    async _addRequest(
+      { request, metadata, timestamp = Date.now() },
+      operation
+    ) {
+      const storableRequest = await StorableRequest.fromRequest(
+        request.clone()
+      );
       const entry = {
         requestData: storableRequest.toObject(),
-        timestamp
+        timestamp,
       };
       if (metadata) {
         entry.metadata = metadata;
@@ -2593,7 +2952,11 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           break;
       }
       if (false) {
-        logger.log(`Request for '${getFriendlyURL(request.url)}' has been added to background sync queue '${this._name}'.`);
+        logger.log(
+          `Request for '${getFriendlyURL(
+            request.url
+          )}' has been added to background sync queue '${this._name}'.`
+        );
       }
       if (this._syncInProgress) {
         this._requestsAddedDuringSync = true;
@@ -2624,22 +2987,32 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     }
     async replayRequests() {
       let entry;
-      while (entry = await this.shiftRequest()) {
+      while ((entry = await this.shiftRequest())) {
         try {
           await fetch(entry.request.clone());
           if (false) {
-            logger.log(`Request for '${getFriendlyURL(entry.request.url)}' has been replayed in queue '${this._name}'`);
+            logger.log(
+              `Request for '${getFriendlyURL(
+                entry.request.url
+              )}' has been replayed in queue '${this._name}'`
+            );
           }
         } catch (error) {
           await this.unshiftRequest(entry);
           if (false) {
-            logger.log(`Request for '${getFriendlyURL(entry.request.url)}' failed to replay, putting it back in queue '${this._name}'`);
+            logger.log(
+              `Request for '${getFriendlyURL(
+                entry.request.url
+              )}' failed to replay, putting it back in queue '${this._name}'`
+            );
           }
           throw new WorkboxError("queue-replay-failed", { name: this._name });
         }
       }
       if (false) {
-        logger.log(`All requests in queue '${this.name}' have successfully replayed; the queue is now empty!`);
+        logger.log(
+          `All requests in queue '${this.name}' have successfully replayed; the queue is now empty!`
+        );
       }
     }
     async registerSync() {
@@ -2648,7 +3021,10 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           await self.registration.sync.register(`${TAG_PREFIX}:${this._name}`);
         } catch (err) {
           if (false) {
-            logger.warn(`Unable to register sync event for '${this._name}'.`, err);
+            logger.warn(
+              `Unable to register sync event for '${this._name}'.`,
+              err
+            );
           }
         }
       }
@@ -2658,7 +3034,9 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
         self.addEventListener("sync", (event) => {
           if (event.tag === `${TAG_PREFIX}:${this._name}`) {
             if (false) {
-              logger.log(`Background sync for tag '${event.tag}' has been received`);
+              logger.log(
+                `Background sync for tag '${event.tag}' has been received`
+              );
             }
             const syncComplete = async () => {
               this._syncInProgress = true;
@@ -2671,7 +3049,10 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
                   throw syncError;
                 }
               } finally {
-                if (this._requestsAddedDuringSync && !(syncError && !event.lastChance)) {
+                if (
+                  this._requestsAddedDuringSync &&
+                  !(syncError && !event.lastChance)
+                ) {
                   await this.registerSync();
                 }
                 this._syncInProgress = false;
@@ -2696,7 +3077,131 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   // src-pwa/custom-service-worker.js
   self.skipWaiting();
   clientsClaim();
-  precacheAndRoute([{"revision":"4e9df72260ddba693d544a3d31d56530","url":"favicon.ico"},{"revision":"c18800ada3eda5b38f1fc5e2d5cae10f","url":"icons/apple-icon-120x120.png"},{"revision":"95190973a27f346a2082ae1cd9c0abaf","url":"icons/apple-icon-152x152.png"},{"revision":"3f925bc01e8bc0f3d7cd4617ccc3738a","url":"icons/apple-icon-167x167.png"},{"revision":"ac3da4ecb9574c46f87dce8ea71612be","url":"icons/apple-icon-180x180.png"},{"revision":"18e086bf3afe309323afe930620cba90","url":"icons/apple-launch-1125x2436.png"},{"revision":"da4b2b7c0b976732ca4dbe6d55afee24","url":"icons/apple-launch-1170x2532.png"},{"revision":"4fffaa30f986f26ed8d4c3e947be8701","url":"icons/apple-launch-1242x2208.png"},{"revision":"5bff93bfe08778caffcd964a30a32339","url":"icons/apple-launch-1242x2688.png"},{"revision":"5d753ec8e1c1182642e4b5986c2d7cd7","url":"icons/apple-launch-1284x2778.png"},{"revision":"e9b24abcbf3b05e9d2be07b9186f89fd","url":"icons/apple-launch-1536x2048.png"},{"revision":"06fa13bfac043a05084bf9b150ad1121","url":"icons/apple-launch-1620x2160.png"},{"revision":"a35254b91b97fdba7a468de7dd44d454","url":"icons/apple-launch-1668x2224.png"},{"revision":"74f173233ae7810c05847c8c5c77155b","url":"icons/apple-launch-1668x2388.png"},{"revision":"f2aa0c2556bfa8e0af8f4b5a1a4b7e4c","url":"icons/apple-launch-2048x2732.png"},{"revision":"e6c5d9cccba54faf07b1a16b462a9d06","url":"icons/apple-launch-750x1334.png"},{"revision":"b8ba1fd65e523a5b5e5b0037175d98f1","url":"icons/apple-launch-828x1792.png"},{"revision":"f98ce64a97081d84147cd8723792201e","url":"icons/favicon-128x128.png"},{"revision":"1a02032274e46ee3b440a38550106fe3","url":"icons/favicon-16x16.png"},{"revision":"416389947164ff036b2d1a2dd3855e23","url":"icons/favicon-32x32.png"},{"revision":"d5e473cd2e3911dd5f7ff3b02a7db962","url":"icons/favicon-96x96.png"},{"revision":"f98ce64a97081d84147cd8723792201e","url":"icons/icon-128x128.png"},{"revision":"d0b6aa54c442f6142581c7fa95b4d6a0","url":"icons/icon-192x192.png"},{"revision":"8d3f351140fb51c5cb880498ff91c7cc","url":"icons/icon-256x256.png"},{"revision":"d24650479c8c698dbad71e155d3b3ec5","url":"icons/icon-384x384.png"},{"revision":"093c6dbb842b8e346c0a38e87de0cd23","url":"icons/icon-512x512.png"},{"revision":"f3a7cbd49251ee2bcba3db06febffcc3","url":"icons/ms-icon-144x144.png"},{"revision":"f71c562d12ece59f74dae009de4aa668","url":"icons/safari-pinned-tab.svg"},{"revision":"e2e9999dd2cc813625d7dfca93b292eb","url":"images/icon-alt.png"},{"revision":"5a8a8aab31d2047dce2c6db8aea24e4e","url":"images/icon.png"},{"revision":"48cecb72dc8b91c141c3e25a7ddff4dc","url":"images/login-bg.jpg"},{"revision":"1bcd0ad4920234aeac30ef4a880fb985","url":"images/logo-alt.png"},{"revision":"c472d09ddd4b604a7b3841b19bd0bac1","url":"images/logo.png"}]);
+  precacheAndRoute([
+    { revision: "4e9df72260ddba693d544a3d31d56530", url: "favicon.ico" },
+    {
+      revision: "c18800ada3eda5b38f1fc5e2d5cae10f",
+      url: "icons/apple-icon-120x120.png",
+    },
+    {
+      revision: "95190973a27f346a2082ae1cd9c0abaf",
+      url: "icons/apple-icon-152x152.png",
+    },
+    {
+      revision: "3f925bc01e8bc0f3d7cd4617ccc3738a",
+      url: "icons/apple-icon-167x167.png",
+    },
+    {
+      revision: "ac3da4ecb9574c46f87dce8ea71612be",
+      url: "icons/apple-icon-180x180.png",
+    },
+    {
+      revision: "18e086bf3afe309323afe930620cba90",
+      url: "icons/apple-launch-1125x2436.png",
+    },
+    {
+      revision: "da4b2b7c0b976732ca4dbe6d55afee24",
+      url: "icons/apple-launch-1170x2532.png",
+    },
+    {
+      revision: "4fffaa30f986f26ed8d4c3e947be8701",
+      url: "icons/apple-launch-1242x2208.png",
+    },
+    {
+      revision: "5bff93bfe08778caffcd964a30a32339",
+      url: "icons/apple-launch-1242x2688.png",
+    },
+    {
+      revision: "5d753ec8e1c1182642e4b5986c2d7cd7",
+      url: "icons/apple-launch-1284x2778.png",
+    },
+    {
+      revision: "e9b24abcbf3b05e9d2be07b9186f89fd",
+      url: "icons/apple-launch-1536x2048.png",
+    },
+    {
+      revision: "06fa13bfac043a05084bf9b150ad1121",
+      url: "icons/apple-launch-1620x2160.png",
+    },
+    {
+      revision: "a35254b91b97fdba7a468de7dd44d454",
+      url: "icons/apple-launch-1668x2224.png",
+    },
+    {
+      revision: "74f173233ae7810c05847c8c5c77155b",
+      url: "icons/apple-launch-1668x2388.png",
+    },
+    {
+      revision: "f2aa0c2556bfa8e0af8f4b5a1a4b7e4c",
+      url: "icons/apple-launch-2048x2732.png",
+    },
+    {
+      revision: "e6c5d9cccba54faf07b1a16b462a9d06",
+      url: "icons/apple-launch-750x1334.png",
+    },
+    {
+      revision: "b8ba1fd65e523a5b5e5b0037175d98f1",
+      url: "icons/apple-launch-828x1792.png",
+    },
+    {
+      revision: "f98ce64a97081d84147cd8723792201e",
+      url: "icons/favicon-128x128.png",
+    },
+    {
+      revision: "1a02032274e46ee3b440a38550106fe3",
+      url: "icons/favicon-16x16.png",
+    },
+    {
+      revision: "416389947164ff036b2d1a2dd3855e23",
+      url: "icons/favicon-32x32.png",
+    },
+    {
+      revision: "d5e473cd2e3911dd5f7ff3b02a7db962",
+      url: "icons/favicon-96x96.png",
+    },
+    {
+      revision: "f98ce64a97081d84147cd8723792201e",
+      url: "icons/icon-128x128.png",
+    },
+    {
+      revision: "d0b6aa54c442f6142581c7fa95b4d6a0",
+      url: "icons/icon-192x192.png",
+    },
+    {
+      revision: "8d3f351140fb51c5cb880498ff91c7cc",
+      url: "icons/icon-256x256.png",
+    },
+    {
+      revision: "d24650479c8c698dbad71e155d3b3ec5",
+      url: "icons/icon-384x384.png",
+    },
+    {
+      revision: "093c6dbb842b8e346c0a38e87de0cd23",
+      url: "icons/icon-512x512.png",
+    },
+    {
+      revision: "f3a7cbd49251ee2bcba3db06febffcc3",
+      url: "icons/ms-icon-144x144.png",
+    },
+    {
+      revision: "f71c562d12ece59f74dae009de4aa668",
+      url: "icons/safari-pinned-tab.svg",
+    },
+    {
+      revision: "e2e9999dd2cc813625d7dfca93b292eb",
+      url: "images/icon-alt.png",
+    },
+    { revision: "5a8a8aab31d2047dce2c6db8aea24e4e", url: "images/icon.png" },
+    {
+      revision: "48cecb72dc8b91c141c3e25a7ddff4dc",
+      url: "images/login-bg.jpg",
+    },
+    {
+      revision: "1bcd0ad4920234aeac30ef4a880fb985",
+      url: "images/logo-alt.png",
+    },
+    { revision: "c472d09ddd4b604a7b3841b19bd0bac1", url: "images/logo.png" },
+  ]);
   var backgroundSyncSupported = "sync" in self.registration || false;
   console.log("BackgroundSyncSupported: ", backgroundSyncSupported);
   var createPostQueue;
@@ -2704,7 +3209,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
     createPostQueue = new Queue("createPostQueue", {
       onSync: async ({ queue }) => {
         let entry;
-        while (entry = await queue.shiftRequest()) {
+        while ((entry = await queue.shiftRequest())) {
           try {
             await fetch(entry.request);
             console.log("Replay successful for request", entry.request);
@@ -2717,18 +3222,18 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
           }
         }
         console.log("Replay complete!");
-      }
+      },
     });
   }
   cleanupOutdatedCaches();
   googleFontsCache({
     cachePrefix: "google-fonts",
-    maxEntries: 60
+    maxEntries: 60,
   });
   registerRoute(
     ({ url }) => url.pathname.startsWith("/posts"),
     new NetworkFirst({
-      cacheName: "qaravel-api"
+      cacheName: "qaravel-api",
     })
   );
   registerRoute(

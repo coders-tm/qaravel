@@ -5,9 +5,11 @@
     :icon="icon"
     :label="title"
     expand-icon-class="hidden"
-    active-class="sublink-active"
+    class="sublinks"
+    :header-class="{
+      'sublink-active': active,
+    }"
     :to="{ name: route }"
-    dense
   >
     <q-item
       v-for="(item, index) in subLinks"
@@ -70,7 +72,7 @@ export default {
     },
     route: {
       type: String,
-      default: '',
+      default: "",
     },
     params: {
       type: Object,
@@ -78,7 +80,7 @@ export default {
     },
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
     notification: [String, Number],
     subLinks: {

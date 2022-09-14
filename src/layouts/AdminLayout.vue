@@ -17,13 +17,10 @@
 <script>
 import LayoutHeader from "components/LayoutHeader.vue";
 import LayoutDrawer from "components/LayoutDrawer.vue";
-import { mapState } from "pinia";
-import { useAppStore } from "stores/app";
 
 export default {
   components: { LayoutHeader, LayoutDrawer },
   computed: {
-    ...mapState(useAppStore, ["statistics"]),
     sideMenus() {
       return [
         {
@@ -32,35 +29,19 @@ export default {
           route: "Dashboard",
         },
         {
-          title: "Confidential Listings",
-          icon: "fas fa-laptop-house",
-          route: "Confidential Listings",
-        },
-        {
-          title: "Listings",
-          icon: "fas fa-home",
-          route: "Property Listings",
-        },
-        {
-          title: "Enquiries",
-          icon: "fas fa-paper-plane",
-          route: "Enquiry Index",
-          notification: this.statistics.unseen_enquiry,
-        },
-        {
-          title: "Tags",
-          icon: "fas fa-tag",
-          route: "Tags",
-        },
-        {
-          title: "Types",
-          icon: "fas fa-tag",
-          route: "Types",
-        },
-        {
-          title: "Categories",
-          icon: "fas fa-tag",
-          route: "Categories",
+          title: "Staff",
+          icon: "fas fa-user-headset",
+          route: "Staff",
+          subLinks: [
+            {
+              title: "All Staff",
+              route: "Staff",
+            },
+            {
+              title: "Groups",
+              route: "Groups",
+            },
+          ],
         },
       ];
     },

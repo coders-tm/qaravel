@@ -11,30 +11,6 @@ export default [
     ],
   },
   {
-    path: "/posts",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [
-      {
-        path: "",
-        name: "Posts",
-        meta: {
-          auth: true,
-          guard: "users",
-        },
-        component: () => import("pages/users/IndexPage.vue"),
-      },
-      {
-        path: ":post",
-        name: "Post",
-        meta: {
-          auth: true,
-          guard: "users",
-        },
-        component: () => import("pages/users/SinglePostPage.vue"),
-      },
-    ],
-  },
-  {
     path: "/",
     component: () => import("layouts/AccountLayout.vue"),
     children: [

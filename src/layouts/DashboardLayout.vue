@@ -23,7 +23,6 @@ import { useAppStore } from "stores/app";
 export default {
   components: { LayoutHeader, LayoutDrawer },
   computed: {
-    ...mapState(useAppStore, ["statistics"]),
     sideMenus() {
       return [
         {

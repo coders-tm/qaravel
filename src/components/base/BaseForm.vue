@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
+import { useAppStore } from "stores/app";
 export default {
   props: {
     submited: {
@@ -89,6 +91,7 @@ export default {
   },
   emits: ["cancel", "reset"],
   methods: {
+    ...mapActions(useAppStore, ["setIsDirt"]),
     onCancel() {
       console.func("components/base/base-form:methods.onCancel()", arguments);
       this.$emit("cancel");
@@ -106,7 +109,7 @@ export default {
           }
         )
         .then(() => {
-          this.$store.commit("app/setDirt", false);
+          this.setIsDirt(false);
           this.$emit("reset");
         });
     },
@@ -129,8 +132,11 @@ export default {
   },
   watch: {
     resetable(val) {
-      this.$store.commit("app/setDirt", val);
+      this.setIsDirt(val);
     },
+  },
+  computed: {
+    ...mapState(useAppStore, ["isDirt"]),
   },
   created() {
     this.addHandler();

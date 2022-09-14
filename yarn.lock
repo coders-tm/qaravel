@@ -2773,6 +2773,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.5.6:
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.12.tgz#d9c0db2bfb8c0d769d51739e8f916bbc44e10f50"
+  integrity sha512-re7UdjE5UnwdrovyhNzZ6gathI4Rs3KGCBSc8HCIjUo5hO42CtzyblmWLj6QWVw7huHyDMfpKxhiO2II77nhDw==
+
 cross-env@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
@@ -7269,10 +7274,22 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-cropperjs@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/vue-cropperjs/-/vue-cropperjs-5.0.0.tgz#7f8cbc460737af3831b4ded634c95905198e329e"
+  integrity sha512-RhnC8O33uRZNkn74aiHZwNHnBJOXWlS4P6gsRI0lw4cZlWjKSCywZI9oSI9POlIPI6OYv30jvnHMXGch85tw7w==
+  dependencies:
+    cropperjs "^1.5.6"
+
 vue-demi@*:
   version "0.13.8"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.8.tgz#5c568fb3b4d8f848acc658dfccd3d875035b5653"
   integrity sha512-Vy1zbZhCOdsmvGR6tJhAvO5vhP7eiS8xkbYQSoVa7o6KlIy3W8Rc53ED4qI4qpeRDjv3mLfXSEpYU6Yq4pgXRg==
+
+vue-draggable-next@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vue-draggable-next/-/vue-draggable-next-2.1.1.tgz#49886da82f116d11b3e4df7674320fdacf5d7e04"
+  integrity sha512-f5lmA7t6LMaL4viR7dU30zzvqJzaKQs0ymL0Jy9UDT9uiZ2tXF3MzPzEvpTH2UODXZJkT+SnjeV1fXHMsgXLYA==
 
 vue-eslint-parser@^9.0.1:
   version "9.0.3"

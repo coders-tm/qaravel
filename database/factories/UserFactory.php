@@ -40,4 +40,32 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+     * Indicate that the model's status should be deactive.
+     *
+     * @return static
+     */
+    public function deactive()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_active' => false,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the model's user should be admin.
+     *
+     * @return static
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
+            ];
+        });
+    }
 }
