@@ -18,7 +18,7 @@ const _sfc_main = {
   computed: {
     app_name: {
       get() {
-        return "qaravel";
+        return "Qaravel";
       },
       set(val) {
         return val;

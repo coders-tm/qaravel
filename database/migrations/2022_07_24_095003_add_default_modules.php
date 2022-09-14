@@ -16,9 +16,22 @@ return new class extends Migration
     {
 
         $permissions = [
+            'Staff' => [
+                'sort_order' => 1,
+                'icon' => 'fas fa-user-shield',
+                'url' => 'staff',
+                'show_menu' => 1,
+                'sub_items' => [
+                    'View',
+                    'Edit',
+                    'List',
+                    'New',
+                    'Delete',
+                ],
+            ],
             'Groups' => [
                 'sort_order' => 2,
-                'icon' => 'fas fa-user-shield',
+                'icon' => 'fas fa-user-group',
                 'url' => 'groups',
                 'show_menu' => 1,
                 'sub_items' => [
@@ -29,10 +42,10 @@ return new class extends Migration
                     'Delete',
                 ],
             ],
-            'Staff' => [
-                'sort_order' => 2,
-                'icon' => 'fas fa-user-headset',
-                'url' => 'staff',
+            'Members' => [
+                'sort_order' => 3,
+                'icon' => 'fas fa-user-tag',
+                'url' => 'members',
                 'show_menu' => 1,
                 'sub_items' => [
                     'View',

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\ResourceRegistrar;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Relation::morphMap([
+            'User' => 'App\Models\User',
+            'Admin' => 'App\Models\Admin',
+            'Address' => 'App\Models\Core\Address',
+            'Group' => 'App\Models\Core\Group',
+        ]);
     }
 }

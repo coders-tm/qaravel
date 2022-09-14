@@ -155,7 +155,7 @@ import PermissionsModule from "components/PermissionsModule.vue";
 import SkeletonSinglePage from "components/skeleton/SkeletonSinglePage.vue";
 import { useStaffStore } from "stores/staff";
 import { useAppStore } from "stores/app";
-import { useGroupStore } from "src/stores/group";
+import { useGroupStore } from "stores/group";
 
 const staff = {
   groups: [],

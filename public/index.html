@@ -3,11 +3,11 @@
 
 <head>
   <title>
-    qaravel
+    Qaravel
   </title>
 
   <meta charset="utf-8">
-  <meta name="description" content="qaravel is a Combination of Laravel and Quasar">
+  <meta name="description" content="Qaravel is a Combination of Laravel and Quasar">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="viewport"
@@ -77,7 +77,7 @@
     rel="stylesheet">
   <script type="module" crossorigin src="/assets/index.94c1c68b.js"></script>
   <link rel="stylesheet" href="/assets/index.9fd802ac.css">
-<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#027be3"><link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#027be3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png"><meta name="msapplication-TileColor" content="#000000"><meta name="apple-mobile-web-app-title" content="qaravel"><link rel="apple-touch-icon" href="/icons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-icon-167x167.png"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png"></head>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#027be3"><link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#027be3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png"><meta name="msapplication-TileColor" content="#000000"><meta name="apple-mobile-web-app-title" content="Qaravel"><link rel="apple-touch-icon" href="/icons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-icon-167x167.png"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png"></head>
 
 <body>
   <div id="q-app"></div>

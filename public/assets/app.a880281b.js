@@ -3,8 +3,8 @@ import { A as Api } from "./api.636d00fa.js";
 import { l as lodash } from "./lodash.2b44b28e.js";
 const name = "qaravel";
 const version = "2.0.0";
-const description = "qaravel is a Combination of Laravel and Quasar";
-const productName = "qaravel";
+const description = "Qaravel is a Combination of Laravel and Quasar";
+const productName = "Qaravel";
 const author = "DepokSarkar <depokbsmrstu@gmail.com>";
 const config = {
   ssl: {

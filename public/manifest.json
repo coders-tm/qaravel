@@ -1,8 +1,8 @@
 {
   "id": "qaravel",
-  "name": "qaravel",
+  "name": "Qaravel",
   "short_name": "qaravel",
-  "description": "qaravel is a Combination of Laravel and Quasar",
+  "description": "Qaravel is a Combination of Laravel and Quasar",
   "display": "standalone",
   "start_url": "/",
   "orientation": "portrait",

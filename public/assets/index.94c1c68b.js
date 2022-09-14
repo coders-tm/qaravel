@@ -8187,7 +8187,7 @@ const _sfc_main = defineComponent({
       e.preventDefault();
       deferredPrompt = e;
       dismiss = this.$q.notify({
-        message: "Install qaravel?",
+        message: "Install Qaravel?",
         color: "grey",
         avatar: "/images/icon.png",
         timeout: 0,

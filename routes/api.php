@@ -28,26 +28,26 @@ Route::prefix('auth/{guard?}')->namespace('Auth')->group(function () {
 
 // Core Routes
 Route::namespace('Core')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::middleware('auth:admins')->group(function () {
-            // Admins
-            Route::get('admins/modules', 'AdminController@modules')->name('admins.modules');
-            Route::middleware('can:update,admin')->group(function () {
-                Route::post('admins/{admin}/reset-password-request', 'AdminController@reset_password_request')->name('admins.reset-password-request');
-                Route::post('admins/{admin}/change-active', 'AdminController@change_active')->name('admins.change-active');
-                Route::post('admins/{admin}/change-admin', 'AdminController@change_admin')->name('admins.change-admin');
-            });
-            Route::apiResource('admins', 'AdminController');
-
-            // Groups
-            Route::apiResource('groups', 'GroupController');
-
-            // Logs
-            Route::post('logs/{log}/reply', 'LogController@reply')->name('logs.reply');
-            Route::apiResource('logs', 'LogController')->only([
-                'show', 'update', 'destroy',
-            ]);
+    Route::middleware(['auth:admins'])->group(function () {
+        // Admins
+        Route::get('admins/modules', 'AdminController@modules')->name('admins.modules');
+        Route::middleware('can:update,admin')->group(function () {
+            Route::post('admins/{admin}/reset-password-request', 'AdminController@reset_password_request')->name('admins.reset-password-request');
+            Route::post('admins/{admin}/change-active', 'AdminController@change_active')->name('admins.change-active');
+            Route::post('admins/{admin}/change-admin', 'AdminController@change_admin')->name('admins.change-admin');
         });
+        Route::apiResource('admins', 'AdminController');
+
+        // Groups
+        Route::apiResource('groups', 'GroupController');
+
+        // Logs
+        Route::post('logs/{log}/reply', 'LogController@reply')->name('logs.reply');
+        Route::apiResource('logs', 'LogController')->only([
+            'show', 'update', 'destroy',
+        ]);
+    });
+    Route::middleware(['auth:sanctum'])->group(function () {
         // Files
         Route::post('files/upload-from-source', 'FileController@upload_from_source')->name('files.upload_source');
         Route::get('files/{file}/download', 'FileController@download')->name('files.download');
@@ -55,4 +55,12 @@ Route::namespace('Core')->group(function () {
             'destroy_selected', 'restore', 'restore_selected',
         ]);
     });
+});
+
+// Admin Routes
+Route::namespace('Admin')->middleware(['auth:admins'])->group(function () {
+    // Users
+    Route::post('users/{user}/reset-password-request', 'UserController@reset_password_request')->name('users.reset-password-request');
+    Route::post('users/{user}/change-active', 'UserController@change_active')->name('users.change-active');
+    Route::apiResource('users', 'UserController');
 });

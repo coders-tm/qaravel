@@ -33,7 +33,7 @@ export default defineComponent({
       // can have buttons in different locations, or wait to prompt
       // as part of a critical journey.
       dismiss = this.$q.notify({
-        message: "Install qaravel?",
+        message: "Install Qaravel?",
         color: "grey",
         avatar: "/images/icon.png",
         timeout: 0,

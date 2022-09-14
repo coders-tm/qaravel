@@ -29,8 +29,13 @@ export default {
           route: "Dashboard",
         },
         {
+          title: "Members",
+          icon: "fas fa-user-tag",
+          route: "Members",
+        },
+        {
           title: "Staff",
-          icon: "fas fa-user-headset",
+          icon: "fas fa-user-shield",
           route: "Staff",
           subLinks: [
             {

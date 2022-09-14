@@ -6,8 +6,9 @@ use App\Traits\Core;
 use App\Models\Core\Log;
 use App\Traits\Fileable;
 use App\Traits\Addressable;
-use App\Traits\HasPermissionGroup;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\HasPermissionGroup;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -100,8 +101,25 @@ class Admin extends User
     public function scopeSortBy($query, $column = 'CREATED_AT_ASC', $direction = 'asc')
     {
         switch ($column) {
+            case 'last_login':
+                $query->select("{$this->getTable()}.*")
+                    ->leftJoin('logs', function ($join) {
+                        $join->on('logs.logable_id', '=', "{$this->getTable()}.id")
+                            ->where('logs.logable_type', '=', $this->getMorphClass());
+                    })
+                    ->addSelect(DB::raw('logs.created_at AS last_login'))
+                    ->groupBy("{$this->getTable()}.id")
+                    ->orderBy('last_login', $direction ?? 'asc');
+                break;
+
+            case 'email':
+                $query->orderBy('email', $direction ?? 'asc');
+                break;
+
             case 'name':
-                $query->orderBy('first_name', $direction ?? 'asc');
+                $query->select("{$this->getTable()}.*")
+                    ->addSelect(DB::raw("CONCAT(`first_name`, `first_name`) AS name"))
+                    ->orderBy('name', $direction ?? 'asc');
                 break;
 
             default:

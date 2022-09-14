@@ -123,4 +123,32 @@ export default [
       },
     ],
   },
+  {
+    path: "/members",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Members",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Members",
+        },
+        component: () => import("pages/admins/members/MembersPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Member",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Members",
+        },
+        component: () => import("pages/admins/members/MemberPage.vue"),
+      },
+    ],
+  },
 ];

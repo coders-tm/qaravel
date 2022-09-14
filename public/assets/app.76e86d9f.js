@@ -1760,7 +1760,7 @@ axios$2.exports = axios$1;
 axios$2.exports.default = axios$1;
 var axios = axios$2.exports;
 var app = boot(async ({ app: app2, store }) => {
-  console.core(`Loading ${"qaravel"} services`);
+  console.core(`Loading ${"Qaravel"} services`);
   app2.config.globalProperties.$core = core;
   app2.config.globalProperties.$api = Api;
   app2.config.globalProperties.$colors = colors;

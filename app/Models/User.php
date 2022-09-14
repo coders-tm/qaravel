@@ -45,6 +45,7 @@ class User extends Admin
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'is_active' => 'boolean',
         'is_free_forever' => 'boolean',
         'created_at' => 'datetime:d M, Y \a\t h:i a',
     ];
@@ -69,6 +70,7 @@ class User extends Admin
     protected $with = [
         'avatar',
         'address',
+        'last_login',
     ];
 
     /**
