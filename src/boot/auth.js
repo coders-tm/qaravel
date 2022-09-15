@@ -10,6 +10,9 @@ export default boot(async ({ router, store }) => {
     if (auth) {
       if (app.isAuthenticated) {
         next();
+        app.currentUser(to.meta.guard).catch((error) => {
+          router.push({ name: "Login", query: { redirect: to.fullPath } });
+        });
       } else {
         next({ name: "Login", query: { redirect: to.fullPath } });
       }
