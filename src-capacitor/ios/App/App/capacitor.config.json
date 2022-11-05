@@ -1,6 +1,6 @@
 {
-  "appId": "com.coderstm.profit28-members",
-  "appName": "ProFit28",
+  "appId": "com.coderstm.qaravel-members",
+  "appName": "Qaravel",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "www"

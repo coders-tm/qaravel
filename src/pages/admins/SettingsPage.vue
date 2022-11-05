@@ -76,34 +76,10 @@ export default {
       save: false,
       settings: [
         {
-          label: "Opening Times",
-          key: "opening-times",
-          icon: "fas fa-clock",
-          component: "opening-times",
-        },
-        {
-          label: "Documents",
-          key: "documents",
-          icon: "fas fa-file",
-          component: "documents-list",
-          canAdd: true,
-          option: {
-            is_active: false,
-          },
-        },
-        {
-          label: "Memberships",
-          key: "memberships",
-          icon: "fas fa-memo-circle-check",
-          component: "memberships-list",
-          canAdd: true,
-          option: {
-            label: null,
-            features: [],
-            plan_id: null,
-            price: 0.0,
-            is_active: false,
-          },
+          label: "App Configs",
+          key: "app-configs",
+          icon: "fas fa-folder-gear",
+          component: "app-configs",
         },
       ],
     };

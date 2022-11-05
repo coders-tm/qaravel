@@ -63,7 +63,7 @@
           </template>
         </template>
         <template v-slot:body-cell-status="props">
-          <base-status-widget :type="props.value" />
+          <base-status :type="props.value" />
         </template>
       </base-table>
     </base-section>

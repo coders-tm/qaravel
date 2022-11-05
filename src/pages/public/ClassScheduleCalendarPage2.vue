@@ -31,7 +31,7 @@
           >
             <span class="title q-calendar__ellipsis">
               {{ event.title }}
-              <base-tooltip-widget class="class-info">
+              <base-tooltip class="class-info">
                 <div>
                   <q-icon class="q-mr-xs" name="fas fa-book-sparkles" />
                   {{ event.class.name }}
@@ -48,7 +48,7 @@
                   <q-icon class="q-mr-xs" name="fas fa-location-dot" />
                   {{ event.location.label }}
                 </div>
-              </base-tooltip-widget>
+              </base-tooltip>
             </span>
           </div>
         </template>

@@ -68,9 +68,9 @@
                     </div>
                     <div class="q-pa-sm file-name ellipsis absolute-bottom">
                       {{ file.name }}
-                      <base-tooltip-widget style="width: 150px">
+                      <base-tooltip style="width: 150px">
                         {{ file.name }}
-                      </base-tooltip-widget>
+                      </base-tooltip>
                     </div>
                   </div>
                 </file-card>

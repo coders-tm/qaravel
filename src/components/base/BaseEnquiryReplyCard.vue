@@ -15,7 +15,7 @@
     <div :class="`q-timeline__dot text-${color}`">
       <img v-if="avatar" class="q-timeline__dot-img" :src="avatar" />
       <q-icon v-else-if="icon" :name="icon" />
-      <base-avatar-widget
+      <base-avatar
         class="q-timeline__dot-img"
         :tooltip="false"
         size="30px"

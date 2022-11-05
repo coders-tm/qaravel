@@ -48,7 +48,7 @@
             </base-btn>
           </template>
           <template v-slot:body-cell-status="props">
-            <base-status-widget :type="props.value" />
+            <base-status :type="props.value" />
           </template>
           <template v-slot:body-cell-is_active="props">
             <q-toggle

@@ -22,7 +22,7 @@
           <template v-slot:body-cell-name="props">
             <q-item class="q-pa-none" dense>
               <q-item-section avatar>
-                <base-avatar-widget
+                <base-avatar
                   rounded
                   class="cursor-pointer"
                   :user="props.row"

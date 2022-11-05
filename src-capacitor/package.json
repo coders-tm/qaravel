@@ -1,7 +1,7 @@
 {
-  "name": "ProFit28",
+  "name": "Qaravel",
   "version": "1.0",
-  "description": "ProFit28 Members App",
+  "description": "Qaravel Members App",
   "author": "DepokSarkar <dipak@coderstm.com>",
   "private": true,
   "dependencies": {

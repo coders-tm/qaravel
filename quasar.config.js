@@ -100,16 +100,16 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: {
-      //   key: path.resolve(__dirname, "profit28.gomedia-key.pem"),
-      //   cert: path.resolve(__dirname, "profit28.gomedia.pem"),
+      //   key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
+      //   cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
       // },
-      port: 9001,
+      port: 9000,
       open: true, // opens browser window automatically
-      // host: "admin.profit28.gomedia",
+      // host: "admin.qaravel.gomedia",
       proxy: {
         // Using the proxy instance
         "/api/": {
-          target: "http://profit28.gomedia/api/",
+          target: "http://qaravel.gomedia/api/",
           secure: false,
           changeOrigin: true,
         },
@@ -225,9 +225,9 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
       hideSplashscreen: false,
-      appName: "ProFit28",
+      appName: "Qaravel",
       version: "1.0",
-      description: "ProFit28 Members App",
+      description: "Qaravel is a Combination of Laravel and Quasar",
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
@@ -253,7 +253,7 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "profit28",
+        appId: "qaravel",
       },
     },
 

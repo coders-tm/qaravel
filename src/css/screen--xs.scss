@@ -3,7 +3,7 @@ body {
     .file-selector-uploader .file-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .q-header .base-current-user-widget {
+    .q-header .base-current-user {
       width: 80px !important;
       transition: 0.3s;
       &:hover {

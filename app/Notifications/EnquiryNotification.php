@@ -26,12 +26,7 @@ class EnquiryNotification extends Notification
     {
         $this->enquiry = $enquiry;
         $enquiry->message = nl2br($enquiry->message);
-
-        if (empty($this->enquiry->subject)) {
-            $this->message = '<p style="color:red"><small>This email was sent through the general enquirey form at pro-fit28.uk/contact</small></p>';
-        }
-
-        $this->message .= "<div>{$enquiry->message}</div><br>";
+        $this->message = "<div>{$enquiry->message}</div><br>";
         $this->salutation = "Regards,<br>{$enquiry->name}<br>{$enquiry->email}<br>{$enquiry->phone}";
     }
 

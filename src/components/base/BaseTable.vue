@@ -164,12 +164,12 @@
                             @update:model-value="onToolbarClicked(item)"
                             v-bind="item"
                           >
-                            <base-tooltip-widget
+                            <base-tooltip
                               v-if="item.tooltip"
                               position="top"
                             >
                               {{ item.tooltip }}
-                            </base-tooltip-widget>
+                            </base-tooltip>
                           </component>
                         </template>
                         <template v-else>
@@ -178,12 +178,12 @@
                             v-bind="item"
                             no-caps
                           >
-                            <base-tooltip-widget
+                            <base-tooltip
                               v-if="item.tooltip"
                               position="top"
                             >
                               {{ item.tooltip }}
-                            </base-tooltip-widget>
+                            </base-tooltip>
                           </q-btn>
                         </template>
                       </div>

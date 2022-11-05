@@ -5,7 +5,7 @@
     class="q-pa-none rounded-borders border-all overflow-hidden"
   >
     <q-item-section avatar>
-      <base-thumbnail-widget class="border-right" square flat :media="media" />
+      <base-thumbnail class="border-right" square flat :media="media" />
     </q-item-section>
     <q-item-section>
       <q-item-label caption lines="1">{{ media.name }}</q-item-label>

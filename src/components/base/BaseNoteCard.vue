@@ -15,7 +15,7 @@
     <div :class="`q-timeline__dot text-${color}`">
       <img v-if="avatar" class="q-timeline__dot-img" :src="avatar" />
       <q-icon v-else-if="icon" :name="icon" />
-      <base-avatar-widget
+      <base-avatar
         class="q-timeline__dot-img"
         :tooltip="false"
         size="30px"
@@ -80,7 +80,7 @@ import { cloneDeep } from "lodash";
 import { useAppStore } from "stores/app";
 import { mapState } from "pinia";
 import BaseBtn from "./BaseBtn.vue";
-import BaseAvatarWidget from "./widget/BaseAvatarWidget.vue";
+import BaseAvatarWidget from "./BaseAvatar.vue";
 
 const rag_options = ["red", "green", "amber", "white"].map((item) => ({
   label: item

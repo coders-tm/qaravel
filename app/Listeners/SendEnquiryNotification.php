@@ -30,9 +30,7 @@ class SendEnquiryNotification implements ShouldQueue
     public function handle(EnquiryCreated $event)
     {
         foreach ([
-            'reception@pro-fit28.co.uk' => 'Reception',
-            'mramsay@htgmail.co.uk' => 'Mike Ramsay',
-            'hramsay@pro-fit28.co.uk' => 'H Ramsay',
+            'admin@qaravel.gomedia' => 'Admin',
         ] as $email => $name) {
             Notification::route('mail', [
                 $email => $name

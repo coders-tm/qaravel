@@ -10,8 +10,13 @@ export default async function () {
         routes = routes.default ? routes.default : [];
         break;
 
-      default:
+      case 'app':
         routes = await import('./app');
+        routes = routes.default ? routes.default : [];
+        break;
+
+      default:
+        routes = await import('./public');
         routes = routes.default ? routes.default : [];
     }
   } catch (error) {

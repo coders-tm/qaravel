@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Core\File;
 use App\Traits\Core;
 use Illuminate\Database\Eloquent\Model;
 

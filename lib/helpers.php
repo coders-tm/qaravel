@@ -57,13 +57,3 @@ if (!function_exists('app_settings')) {
         return AppSetting::findByKey($key);
     }
 }
-
-if (!function_exists('opening_times')) {
-    function opening_times()
-    {
-        return app_settings('opening-times')->map(function ($item, $key) {
-            $item['is_today'] = now()->format('l') == $item['name'];
-            return $item;
-        });
-    }
-}

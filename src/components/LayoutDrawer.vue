@@ -9,7 +9,7 @@
     class="bg-white text-black"
   >
     <q-toolbar v-if="user && $q.screen.lt.sm" class="q-pa-md">
-      <base-current-user-widget
+      <base-current-user
         class="q-pa-none cursor-pointer"
         style="width: 100%"
       />

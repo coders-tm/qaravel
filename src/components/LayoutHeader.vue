@@ -36,7 +36,7 @@
         <q-space v-if="$q.screen.gt.xs" />
         <div class="row no-wrap q-col-gutter-md">
           <div v-if="user" class="column self-center">
-            <base-current-user-widget
+            <base-current-user
               class="q-pa-none cursor-pointer"
               style="width: 180px"
             />

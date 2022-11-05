@@ -1,6 +1,6 @@
-# ProFit28 (profit28)
+# Qaravel (qaravel)
 
-Pro-FIT28 | Fitness & Wellbeing Centre | Farsley, Leeds, LS28 5LY
+Qaravel is a Combination of Laravel and Quasar
 
 ## 1. Add FontAwesome pro key
 
@@ -29,8 +29,8 @@ allowed to perform. Please check laravel default
 [sanctum configuration](https://laravel.com/docs/9.x/sanctum#spa-authentication)
 
 ```bash
-SANCTUM_STATEFUL_DOMAINS=profit28.gomedia:9000 (for local you have to include your port)
-SESSION_DOMAIN=.profit28.gomedia
+SANCTUM_STATEFUL_DOMAINS=qaravel.gomedia:9000 (for local you have to include your port)
+SESSION_DOMAIN=.qaravel.gomedia
 ```
 
 ## 5. Migrate the Database
@@ -41,7 +41,7 @@ Add your database details on .env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=profit28
+DB_DATABASE=qaravel
 DB_USERNAME=root
 DB_PASSWORD=toor
 ```
@@ -61,8 +61,8 @@ c:\windows\system32\drivers\etc\hosts
 Then add thoes line at the bottom and save as admin.
 
 ```
-127.0.0.1   api.profit28.gomedia
-127.0.0.1   app.profit28.gomedia
+127.0.0.1   api.qaravel.gomedia
+127.0.0.1   app.qaravel.gomedia
 ```
 
 ### 7. Start the app in development mode (hot-code reloading, error reporting, etc.)
@@ -70,13 +70,13 @@ Then add thoes line at the bottom and save as admin.
 > Only for windows user
 
 ```
-php artisan serve --host=api.profit28.gomedia  --port=80
+php artisan serve --host=api.qaravel.gomedia  --port=80
 ```
 
 Change your api url from .env.frontend.dev
 
 ```
-API_URL=http://api.profit28.gomedia
+API_URL=http://api.qaravel.gomedia
 ```
 
 ```bash

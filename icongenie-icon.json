@@ -1,6 +1,6 @@
 {
   "params": {
-    "skipTrim": false,
+    "skipTrim": true,
     "background": "app-splashscreen.png",
     "icon": "favicon.png",
     "themeColor": "3a80c3",

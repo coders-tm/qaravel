@@ -1,13 +1,13 @@
 {
-  "name": "profit28",
+  "name": "qaravel",
   "version": "2.0.0",
-  "description": "Pro-FIT28 | Fitness & Wellbeing Centre | Farsley, Leeds, LS28 5LY",
-  "productName": "ProFit28",
+  "description": "Qaravel is a Combination of Laravel and Quasar",
+  "productName": "Qaravel",
   "author": "DepokSarkar <dipak@coderstm.com>",
   "private": true,
   "config": {
     "ssl": {
-      "host": "profit28.gomedia"
+      "host": "qaravel.gomedia"
     },
     "ssh": {
       "user": "pro-fit28.uk",

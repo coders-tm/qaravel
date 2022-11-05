@@ -1,24 +1,8 @@
 <template>
   <div class="sign-up-page">
-    <div class="text-h6 text-center q-mb-xl">Register your user account</div>
+    <div class="text-h6 text-center q-mb-xl">Create account</div>
     <base-form no-action @submit="onSubmit">
       <div class="row q-col-gutter-md">
-        <div class="col-xs-12">
-          <div class="text-label">
-            Pro-FIT28 ID
-            <q-icon name="fas fa-info-circle">
-              <base-tooltip-widget>
-                Starting with 28 after - e.g. 102715-281256
-              </base-tooltip-widget>
-            </q-icon>
-          </div>
-          <base-input
-            :error-message="$core.errorMessage('profit_id', errors)"
-            :error="$core.hasError('profit_id', errors)"
-            placeholder="i.e 281256"
-            v-model="form.profit_id"
-          />
-        </div>
         <div class="col-xs-12">
           <div class="text-label">Email</div>
           <base-input
