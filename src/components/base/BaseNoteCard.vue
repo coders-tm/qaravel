@@ -36,17 +36,6 @@
         </q-input>
         <div class="flex items-center">
           <q-space />
-          <base-select
-            :options="rag_options"
-            v-model="note.rag"
-            outlined
-            dense
-            class="q-mr-sm"
-            options-html
-            map-options
-            prefix="Rag: "
-            emit-value
-          />
           <base-btn
             :loading="loading"
             class="main-btn"
@@ -79,23 +68,12 @@
 import { cloneDeep } from "lodash";
 import { useAppStore } from "stores/app";
 import { mapState } from "pinia";
-import BaseBtn from "./BaseBtn.vue";
-import BaseAvatarWidget from "./BaseAvatar.vue";
-
-const rag_options = ["red", "green", "amber", "white"].map((item) => ({
-  label: item
-    ? `<div class="text-center"><i class="q-icon fas fa-circle rag-${item}" style="font-size: 13px;" aria-hidden="true" role="presentation" ></i></div>`
-    : `<div class="text-center">All</div>`,
-  value: item,
-}));
 
 const note = {
-  rag: null,
   message: null,
 };
 
 export default {
-  components: { BaseBtn, BaseAvatarWidget },
   props: {
     id: [String, Number],
     avatar: {
@@ -128,7 +106,6 @@ export default {
       loading: false,
       note: cloneDeep(note),
       default: cloneDeep(note),
-      rag_options,
     };
   },
   emits: ["create"],
