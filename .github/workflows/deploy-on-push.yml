@@ -36,6 +36,7 @@ jobs:
           envkey_API_URL: ${{ secrets.API_URL }}
           envkey_APP_DEBUG: ${{ secrets.APP_DEBUG }}
           envkey_COOKIE_URL: ${{ secrets.COOKIE_URL }}
+          envkey_APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
           file_name: .env.frontend.alpha
 
       - name: Install dependencies and Build package
