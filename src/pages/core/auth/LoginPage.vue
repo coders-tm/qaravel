@@ -112,7 +112,7 @@ export default {
     },
   },
   mounted() {
-    if (process.env.DEV) {
+    if (process.env.APP_DEBUG === "true") {
       Object.assign(this.form, {
         email: "hello@coderstm.com",
         password: "Gis0ra$$;",
