@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Core\Address;
 use App\Models\Core\Enquiry;
@@ -18,6 +19,12 @@ class EnquirySeeder extends Seeder
      */
     public function run()
     {
-        Enquiry::factory()->count(20)->has(Reply::factory()->has(Admin::factory(), 'user')->count(rand(3, 5)))->create();
+        Enquiry::factory()->for(User::factory())->count(20)->create()->each(function ($enquiry) {
+            for ($i = 0; $i < rand(0, 3); $i++) {
+                $reply = Reply::factory()->make();
+                $reply->user()->associate(Admin::inRandomOrder()->first());
+                $enquiry->replies()->save($reply);
+            }
+        });
     }
 }
