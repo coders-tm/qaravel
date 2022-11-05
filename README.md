@@ -1,9 +1,11 @@
-# Qaravel (qaravel)
+# [Qaravel (qaravel)](https://qaravel.coderstm.com/)
 
-Qaravel is a Combination of Laravel and Quasar
+[Qaravel](https://qaravel.coderstm.com/) is a Combination of Laravel and Quasar.
 
 <p>
-    <img src="./intro.gif">
+    <a href="https://qaravel.coderstm.com/" target="_blank">
+        <img src="./intro.gif">
+    </a>
 </p>
 
 ## 1. Add FontAwesome pro key
