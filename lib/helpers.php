@@ -26,6 +26,13 @@ if (!function_exists('current_user')) {
     }
 }
 
+if (!function_exists('is_user')) {
+    function is_user()
+    {
+        return guard() == 'users';
+    }
+}
+
 if (!function_exists('guard_user')) {
     function guard_user($guard)
     {

@@ -25,7 +25,6 @@ class User extends Admin implements MustVerifyEmail
         'phone_number',
         'calendar_color',
         'is_active',
-        'is_free_forever',
     ];
 
     /**
@@ -49,7 +48,6 @@ class User extends Admin implements MustVerifyEmail
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'is_active' => 'boolean',
-        'is_free_forever' => 'boolean',
         'created_at' => 'datetime:d M, Y \a\t h:i a',
     ];
 
@@ -73,16 +71,6 @@ class User extends Admin implements MustVerifyEmail
         'address',
         'last_login',
     ];
-
-    /**
-     * Get the full name of the user.
-     *
-     * @return bool
-     */
-    public function getNameAttribute()
-    {
-        return "{$this->title} {$this->first_name} {$this->last_name}";
-    }
 
     /**
      * Get the member since of the user.

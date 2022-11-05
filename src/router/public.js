@@ -1,7 +1,7 @@
 export default [
   {
     path: "/",
-    component: () => import("layouts/AppLayout.vue"),
+    component: () => import("layouts/PublicLayout.vue"),
     children: [
       {
         path: "",

@@ -71,11 +71,6 @@ Route::namespace('Core')->group(function () {
             Route::post('enquiries/{enquiry}/reply', 'EnquiryController@reply')->name('enquiries.reply');
         });
         Route::apiResource('enquiries', 'EnquiryController');
-
-        //User Schedules
-        Route::middleware('can:view,user')->group(function () {
-            Route::get('users/{user}/schedules', 'Admin\UserController@schedules')->name('users.schedules');
-        });
     });
 });
 

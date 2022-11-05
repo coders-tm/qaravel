@@ -1,7 +1,6 @@
 <template>
   <base-section no-row>
     <div>
-      <div class="text-h5">Dashboard</div>
       <div class="sub-title">
         This page is blank, content is currently being developed.
       </div>

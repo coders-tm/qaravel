@@ -1,21 +1,6 @@
 import { defineStore } from "pinia";
 import Api from "../services/api";
 
-const type_options = [
-  {
-    label: "All",
-    value: null,
-  },
-  {
-    label: "Members only",
-    value: "users",
-  },
-  {
-    label: "Contact form",
-    value: "contact",
-  },
-];
-
 const default_status_options = [
   {
     label: "Pending",
@@ -146,24 +131,6 @@ export const useSupportStore = defineStore("support", {
       },
     ],
     toolbar: [
-      {
-        title: "Type",
-        action: "request",
-        component: "base-select",
-        dense: true,
-        outlined: true,
-        key: "type",
-        placeholder: "Select",
-        optionsDense: true,
-        style: "width: 180px",
-        mapOptions: true,
-        emitValue: true,
-        options: type_options,
-        deleted: "all",
-        prefix: "Type:",
-        guard: ["admins"],
-        width: "6",
-      },
       {
         title: "Status",
         action: "request",

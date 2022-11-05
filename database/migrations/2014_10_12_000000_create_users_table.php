@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
+            $table->string('phone_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_active')->nullable()->default(true);
-            $table->boolean('is_free_forever')->nullable()->default(false);
             $table->string('remember_token', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -34,10 +34,6 @@ class EnquiryController extends Controller
                 ->orWhere('email', 'like', "%{$request->filter}%");
         }
 
-        if ($request->filled('type')) {
-            $enquiry->whereType($request->type);
-        }
-
         if ($request->filled('status') && auth('admins')->check()) {
             if ($request->status == 'Open') {
                 $enquiry->where('status', '<>', StatusEnum::RESOLVED->value);
@@ -50,7 +46,7 @@ class EnquiryController extends Controller
             $enquiry->onlyTrashed();
         }
 
-        if (auth()->check()) {
+        if (is_user()) {
             $enquiry->onlyOwner();
         }
 

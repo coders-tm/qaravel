@@ -18,37 +18,37 @@
           @row-clicked="rowClicked"
           no-data-label="No member avaialble"
           no-permissions
-          :visible-columns="visibleColumns"
         >
           <template v-slot:body-cell-name="props">
-            <i
-              :class="`q-mr-sm q-icon fas fa-circle rag-${
-                props.row.rag || 'white'
-              }`"
-              style="font-size: 8px"
-              aria-hidden="true"
-              role="presentation"
-            ></i>
-            <base-btn
-              @click.stop
-              link
-              size="12px"
-              tag="a"
-              :to="{
-                name: 'Single Member',
-                params: {
-                  id: props.row.id,
-                },
-                query: {
-                  action: 'edit',
-                },
-              }"
-            >
-              {{ props.value }}
-            </base-btn>
-          </template>
-          <template v-slot:body-cell-status="props">
-            <base-status :type="props.value" />
+            <q-item class="q-pa-none" dense>
+              <q-item-section avatar>
+                <base-avatar
+                  rounded
+                  class="cursor-pointer"
+                  :user="props.row"
+                  size="40px"
+                />
+              </q-item-section>
+              <q-item-section avatar>
+                <base-btn
+                  @click.stop
+                  link
+                  size="12px"
+                  tag="a"
+                  :to="{
+                    name: 'Single Member',
+                    params: {
+                      id: props.row.id,
+                    },
+                    query: {
+                      action: 'edit',
+                    },
+                  }"
+                >
+                  {{ props.value }}
+                </base-btn>
+              </q-item-section>
+            </q-item>
           </template>
           <template v-slot:body-cell-is_active="props">
             <q-toggle
@@ -86,7 +86,7 @@ export default {
         rowsPerPage: 15,
         rowsNumber: 15,
         loaded: false,
-        includes: ["last_update", "last_ns_bookings"],
+        includes: ["last_update"],
       },
       useMemberStore: useMemberStore(),
     };
@@ -166,26 +166,6 @@ export default {
       "toolbar",
       "filters",
     ]),
-    visibleColumns() {
-      if (this.pagination.status === "no-show") {
-        return this.columns
-          .filter((item) => !["release_at"].includes(item.name))
-          .map((item) => item.name);
-      } else if (this.pagination.status === "blocked") {
-        return this.columns
-          .filter((item) => !["ns_bookings_count"].includes(item.name))
-          .map((item) => item.name);
-      } else {
-        return this.columns
-          .filter(
-            (item) =>
-              !["ns_bookings_count", "last_ns_bookings", "release_at"].includes(
-                item.name
-              )
-          )
-          .map((item) => item.name);
-      }
-    },
     permissions() {
       return [];
     },
