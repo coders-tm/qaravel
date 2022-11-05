@@ -8,6 +8,8 @@ yarn.lock
 .quasar
 .vs
 node_modules
+storage/*
+public/storage
 public/.well-known
 vendor
 tests

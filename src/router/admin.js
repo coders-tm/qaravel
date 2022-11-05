@@ -151,18 +151,6 @@ export default [
         component: () => import("pages/admins/members/MembersPage.vue"),
       },
       {
-        path: "reports",
-        name: "Reports",
-        meta: {
-          auth: true,
-          admin: true,
-          guard: "admins",
-          module: "Members",
-          base: "Members",
-        },
-        component: () => import("pages/admins/members/ReportsPage.vue"),
-      },
-      {
         path: ":id",
         name: "Single Member",
         meta: {
