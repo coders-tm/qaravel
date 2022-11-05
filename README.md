@@ -2,6 +2,10 @@
 
 Qaravel is a Combination of Laravel and Quasar
 
+<p>
+    <img src="./intro.gif">
+</p>
+
 ## 1. Add FontAwesome pro key
 
 We used Fontawesome pro version.
