@@ -10,11 +10,11 @@
       "host": "qaravel.gomedia"
     },
     "ssh": {
-      "user": "pro-fit28.uk",
+      "user": "coderstm.com",
       "server": "ssh.gb.stackcp.com",
       "folders": {
-        "live": "~/dev.pro-fit28.uk",
-        "alpha": "~/dev.pro-fit28.uk"
+        "live": "~/qaravel.coderstm.com",
+        "alpha": "~/qaravel.coderstm.com"
       }
     }
   },
