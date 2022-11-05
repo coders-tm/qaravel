@@ -3,6 +3,11 @@
 </template>
 <script>
 import { createMetaMixin } from "quasar";
+import { mapActions, mapState } from "pinia";
+import { useAppStore } from "./stores/app";
+
+const getTitle = (route) =>
+  route.params.title || route.meta.title || route.name;
 
 export default {
   mixins: [
@@ -23,18 +28,17 @@ export default {
   ],
   watch: {
     $route(to, from) {
-      this.title = to.name;
+      this.setTitle(getTitle(to));
     },
   },
+  methods: {
+    ...mapActions(useAppStore, ["setTitle"]),
+  },
   computed: {
-    title: {
-      get() {
-        return this.$route.name;
-      },
-      set(val) {
-        return val;
-      },
-    },
+    ...mapState(useAppStore, ["title"]),
+  },
+  mounted() {
+    this.setTitle(getTitle(this.$route));
   },
 };
 </script>

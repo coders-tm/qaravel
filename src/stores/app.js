@@ -3,16 +3,24 @@ import Api from "../services/api";
 import { LocalStorage } from "quasar";
 import { map } from "lodash";
 import app from "../../package.json";
+import { Plugins } from "@capacitor/core";
+
+const { Device } = Plugins;
 
 const user = LocalStorage.getItem("current_user");
+const token = LocalStorage.getItem("token");
 const authenticated = LocalStorage.has("current_user");
 
 export const useAppStore = defineStore("app", {
   state: () => ({
     user: user || {},
+    token,
     authenticated,
     version: app.version,
     isDirt: false,
+    isLoading: false,
+    stats: {},
+    title: null,
   }),
   getters: {
     hasPermission(state) {
@@ -60,10 +68,18 @@ export const useAppStore = defineStore("app", {
     isAuthenticated(state) {
       return state.authenticated;
     },
+    modules(state) {
+      return state.user.modules;
+    },
   },
   actions: {
     async login(playload) {
-      await Api.get("csrf-cookie");
+      if (process.env.API_MODE !== "token") {
+        await Api.get("csrf-cookie");
+      } else {
+        const { uuid } = await Device.getInfo();
+        playload.device_id = uuid;
+      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/login`, playload)
           .then((response) => {
@@ -77,7 +93,9 @@ export const useAppStore = defineStore("app", {
       });
     },
     async signUp(playload) {
-      await Api.get("csrf-cookie");
+      if (process.env.API_MODE !== "token") {
+        await Api.get("csrf-cookie");
+      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/signup`, playload)
           .then((response) => {
@@ -94,8 +112,14 @@ export const useAppStore = defineStore("app", {
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload}/me`)
           .then((response) => {
-            this.updateCurrentUser(response);
-            resolve(response);
+            const user = response;
+            if (!response.address) {
+              Object.assign(user, {
+                address: {},
+              });
+            }
+            this.updateCurrentUser(user);
+            resolve(user);
           })
           .catch((error) => {
             this.updateCurrentUser(false);
@@ -106,11 +130,20 @@ export const useAppStore = defineStore("app", {
     updateCurrentUser(playload) {
       if (playload) {
         this.authenticated = true;
-        this.user = playload;
-        LocalStorage.set("current_user", playload);
+        if ("token" in playload) {
+          const { user, token } = playload;
+          this.user = user;
+          this.token = token;
+          LocalStorage.set("current_user", user);
+          LocalStorage.set("token", token);
+        } else {
+          this.user = playload;
+          LocalStorage.set("current_user", playload);
+        }
       } else {
         this.authenticated = false;
         LocalStorage.remove("current_user");
+        LocalStorage.remove("token");
       }
     },
     update(playload) {
@@ -140,7 +173,7 @@ export const useAppStore = defineStore("app", {
       return new Promise((resolve, reject) => {
         Api.get(`application/stats`, playload)
           .then((response) => {
-            this.statistics = response;
+            this.stats = response;
             resolve(response);
           })
           .catch((error) => {
@@ -148,11 +181,21 @@ export const useAppStore = defineStore("app", {
           });
       });
     },
-    updateTags(playload) {
+    getSettings(playload) {
       return new Promise((resolve, reject) => {
-        Api.post("auth/users/tags", playload)
+        Api.get(`application/settings/${playload}`)
           .then((response) => {
-            this.updateCurrentUser(response);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    updateSettings(playload) {
+      return new Promise((resolve, reject) => {
+        Api.post(`application/settings`, playload)
+          .then((response) => {
             resolve(response);
           })
           .catch((error) => {
@@ -172,7 +215,9 @@ export const useAppStore = defineStore("app", {
       });
     },
     async forgotPassword(playload) {
-      await Api.get("csrf-cookie");
+      if (process.env.API_MODE !== "token") {
+        await Api.get("csrf-cookie");
+      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/forgot-password`, playload)
           .then((response) => {
@@ -184,7 +229,9 @@ export const useAppStore = defineStore("app", {
       });
     },
     async resetPassword(playload) {
-      await Api.get("csrf-cookie");
+      if (process.env.API_MODE !== "token") {
+        await Api.get("csrf-cookie");
+      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/reset-password`, playload)
           .then((response) => {
@@ -209,6 +256,15 @@ export const useAppStore = defineStore("app", {
     },
     setIsDirt(playload) {
       this.isDirt = playload;
+      if (!playload) {
+        this.isLoading = false;
+      }
+    },
+    setIsLoading(playload) {
+      this.isLoading = playload;
+    },
+    setTitle(playload) {
+      this.title = playload;
     },
   },
 });

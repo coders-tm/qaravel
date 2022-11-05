@@ -12,7 +12,11 @@
   >
     <template v-if="user.avatar">
       <img :src="user.avatar.url" />
-      <q-badge v-if="user.status" color="transparent" floating>
+      <q-badge
+        v-if="['online', 'offline'].includes(user.status)"
+        color="transparent"
+        floating
+      >
         <q-icon
           dense
           round
@@ -24,7 +28,11 @@
     </template>
     <template v-else-if="user.name">
       <span>{{ user.name.charAt(0) }}</span>
-      <q-badge v-if="user.status" color="transparent" floating>
+      <q-badge
+        v-if="['online', 'offline'].includes(user.status)"
+        color="transparent"
+        floating
+      >
         <q-icon
           dense
           round
@@ -36,7 +44,11 @@
     </template>
     <template v-else-if="user.company_name">
       <span>{{ user.company_name.charAt(0) }}</span>
-      <q-badge v-if="user.status" color="transparent" floating>
+      <q-badge
+        v-if="['online', 'offline'].includes(user.status)"
+        color="transparent"
+        floating
+      >
         <q-icon
           dense
           round

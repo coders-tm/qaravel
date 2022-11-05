@@ -1,18 +1,88 @@
 export default [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    redirect: "/dashboard",
+    component: () => import("layouts/AppLayout.vue"),
     children: [
       {
-        path: "",
-        name: "Homepage",
+        path: "dashboard",
+        name: "Dashboard",
+        meta: {
+          auth: true,
+          guard: "users",
+        },
         component: () => import("pages/IndexPage.vue"),
       },
     ],
   },
   {
+    path: "/support",
+    component: () => import("src/layouts/AppLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Support",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "users",
+          module: "Support",
+          title: "Messages",
+          base: "Support",
+        },
+        component: () => import("pages/core/supports/SupportsPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Support",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "users",
+          title: "Create Message",
+          module: "Support",
+          base: "Support",
+        },
+        component: () => import("pages/core/supports/SupportPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/classes",
+    redirect: "/classes/bookable",
+    component: () => import("src/layouts/AppLayout.vue"),
+    children: [
+      {
+        path: "bookable",
+        name: "Bookable",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "users",
+          title: "Bookable Classes",
+          module: "Bookable",
+          base: "Classes",
+        },
+        component: () => import("pages/users/BookablePage.vue"),
+      },
+      {
+        path: "booked",
+        name: "Classes",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "users",
+          title: "Booked Classes",
+          module: "Classes",
+          base: "Classes",
+        },
+        component: () => import("pages/users/ClassSchedulesPage.vue"),
+      },
+    ],
+  },
+  {
     path: "/",
-    component: () => import("layouts/AccountLayout.vue"),
+    component: () => import("layouts/AppLayout.vue"),
     children: [
       {
         path: "my-account",
@@ -61,7 +131,7 @@ export default [
   },
   {
     path: "/sign-up",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/AuthLayout.vue"),
     children: [
       {
         path: "",
@@ -71,6 +141,20 @@ export default [
           guard: "users",
         },
         component: () => import("pages/SignUpPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/class-schedules",
+    component: () => import("layouts/BlankLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Class Schedules",
+        meta: {
+          auth: false,
+        },
+        component: () => import("pages/public/ClassScheduleCalendarPage.vue"),
       },
     ],
   },

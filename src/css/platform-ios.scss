@@ -1,0 +1,11 @@
+body {
+  &.platform-ios {
+    .base-header {
+      border-color: $separator-color;
+      .q-toolbar {
+        height: $header-height-iso;
+        padding: 0 20px;
+      }
+    }
+  }
+}

@@ -4,9 +4,9 @@
     :square="square"
     :flat="flat"
     :bordered="bordered"
-    v-bind:class="`${contentClass}`"
+    class="base-section"
   >
-    <q-card-section class="q-pb-xs" v-if="hasTop">
+    <q-card-section :class="headClass" v-if="hasTop">
       <div class="flex">
         <div v-if="title" class="text-h6">{{ title }}</div>
         <q-space />
@@ -41,11 +41,8 @@ export default {
     flat: Boolean,
     bordered: Boolean,
     hasBottom: Boolean,
-    contentClass: {
-      type: String,
-      default: "base-section",
-    },
     bodyClass: String,
+    headClass: String,
     title: String,
     description: String,
     noRow: Boolean,

@@ -1,0 +1,60 @@
+  /*
+    Flaticon icon font: Flaticon
+    Creation date: 03/03/2021 09:09
+    */
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon.eot");
+  src: url("../fonts/Flaticond41d.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/Flaticon.woff2") format("woff2"),
+       url("../fonts/Flaticon.woff") format("woff"),
+       url("../fonts/Flaticon.ttf") format("truetype"),
+       url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-weightlifter:before { content: "\f100"; }
+.flaticon-fitness:before { content: "\f101"; }
+.flaticon-woman:before { content: "\f102"; }
+.flaticon-treadmill:before { content: "\f103"; }
+.flaticon-gym:before { content: "\f104"; }
+.flaticon-stationary-bike:before { content: "\f105"; }
+.flaticon-gym-1:before { content: "\f106"; }
+.flaticon-gym-station:before { content: "\f107"; }
+.flaticon-exercise:before { content: "\f108"; }
+.flaticon-gym-2:before { content: "\f109"; }
+.flaticon-fitness-gym:before { content: "\f10a"; }
+.flaticon-weightlifting:before { content: "\f10b"; }
+.flaticon-muscle:before { content: "\f10c"; }
+.flaticon-bench-press:before { content: "\f10d"; }
+.flaticon-boxing:before { content: "\f10e"; }
+.flaticon-yoga:before { content: "\f10f"; }
+.flaticon-workout:before { content: "\f110"; }
+.flaticon-calendar:before { content: "\f111"; }
+.flaticon-exercise-1:before { content: "\f112"; }
+.flaticon-lifting:before { content: "\f113"; }
+.flaticon-fitness-1:before { content: "\f114"; }
+.flaticon-barbell:before { content: "\f115"; }
+.flaticon-weight:before { content: "\f116"; }
+.flaticon-button:before { content: "\f117"; }
+.flaticon-phone:before { content: "\f118"; }
+.flaticon-placeholder:before { content: "\f119"; }
+.flaticon-clock:before { content: "\f11a"; }
+.flaticon-horizontal-bar:before { content: "\f11b"; }
+.flaticon-gym-machine:before { content: "\f11c"; }
+.flaticon-email:before { content: "\f11d"; }
+.flaticon-email-1:before { content: "\f11e"; }
+.flaticon-mobile-phone:before { content: "\f11f"; }

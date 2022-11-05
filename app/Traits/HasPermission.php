@@ -51,7 +51,7 @@ trait HasPermission
 
     public function hasPermission($permission)
     {
-        return (bool) $this->getAllPermissions()->where('scope', $permission)->count();
+        return (bool) $this->getAllPermissions()->where('pivot.access', 1)->where('scope', $permission)->count();
     }
 
     public function hasAnyPermission(...$permissions)

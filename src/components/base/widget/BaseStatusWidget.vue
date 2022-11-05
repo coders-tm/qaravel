@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { colors } from 'quasar';
+import { colors } from "quasar";
 const { getPaletteColor, changeAlpha } = colors;
 
 export default {
@@ -37,68 +37,71 @@ export default {
   },
   computed: {
     color() {
-      let color = getPaletteColor('grey');
+      let color = getPaletteColor("grey");
       switch (this.type) {
-        case 'Active':
-        case 'Enabled':
-        case 'Online':
-        case 'Returned':
-        case 'Completed':
-        case 'Paid':
-          color = getPaletteColor('positive');
+        case "Active":
+        case "Enabled":
+        case "Online":
+        case "Returned":
+        case "Completed":
+        case "Resolved":
+        case "Paid":
+          color = getPaletteColor("positive");
           break;
-        case 'Partially received':
-          color = getPaletteColor('teal-3');
+        case "Ongoing":
+        case "Partially received":
+          color = getPaletteColor("teal-3");
           break;
-        case 'Draft':
-          color = getPaletteColor('grey');
+        case "Draft":
+          color = getPaletteColor("grey");
           break;
-        case 'Pending':
-        case 'In progress':
-        case 'Scheduled':
-          color = getPaletteColor('warning');
+        case "Pending":
+        case "In progress":
+        case "Scheduled":
+          color = getPaletteColor("warning");
           break;
-        case 'Rejected':
-        case 'Cancelled':
-        case 'Failed':
-        case 'Disable':
-        case 'Disabled':
-        case 'Expired':
-          color = getPaletteColor('negative');
+        case "Rejected":
+        case "Cancelled":
+        case "Failed":
+        case "Disable":
+        case "Disabled":
+        case "Expired":
+        case "Deactive":
+          color = getPaletteColor("negative");
           break;
       }
       return color;
     },
     icon() {
-      let icon = 'fas fa-circle';
+      let icon = "fas fa-circle";
       switch (this.type) {
-        case 'Active':
-        case 'Enabled':
-        case 'Online':
-        case 'Completed':
-          icon = 'fas fa-check-circle';
+        case "Active":
+        case "Enabled":
+        case "Online":
+        case "Completed":
+          icon = "fas fa-check-circle";
           break;
-        case 'Partially received':
-          icon = 'fas fa-sort-circle-down';
+        case "Partially received":
+          icon = "fas fa-sort-circle-down";
           break;
-        case 'Paid':
-          icon = 'fas fa-usd-circle';
+        case "Paid":
+          icon = "fas fa-usd-circle";
           break;
-        case 'Draft':
-          icon = 'fas fa-draw-circle';
+        case "Draft":
+          icon = "fas fa-draw-circle";
           break;
-        case 'Pending':
-        case 'Scheduled':
-        case 'Open':
-          icon = 'fas fa-dot-circle';
+        case "Pending":
+        case "Scheduled":
+        case "Open":
+          icon = "fas fa-dot-circle";
           break;
-        case 'Rejected':
-        case 'Cancelled':
-        case 'Failed':
-        case 'Disable':
-        case 'Disabled':
-        case 'Expired':
-          icon = 'fas fa-exclamation-circle';
+        case "Rejected":
+        case "Cancelled":
+        case "Failed":
+        case "Disable":
+        case "Disabled":
+        case "Expired":
+          icon = "fas fa-exclamation-circle";
           break;
       }
       return icon;

@@ -1,0 +1,13 @@
+{
+  "name": "ProFit28",
+  "version": "1.0",
+  "description": "ProFit28 Members App",
+  "author": "DepokSarkar <dipak@coderstm.com>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "2.5.0",
+    "@capacitor/cli": "^2.0.0",
+    "@capacitor/core": "^2.0.0",
+    "@capacitor/ios": "^2.4.0"
+  }
+}

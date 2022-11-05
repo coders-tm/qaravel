@@ -30,31 +30,31 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia';
-import { useSubscriptionStore } from 'stores/subscription';
-import PdfViewer from 'components/PdfViewer.vue';
+import { mapActions, mapState } from "pinia";
+import { useSubscriptionStore } from "stores/subscription";
+import PdfViewer from "components/PdfViewer.vue";
 
 export default {
   data() {
     return {
       columns: [
         {
-          name: 'date',
-          label: 'Date',
-          field: 'date',
-          align: 'left',
+          name: "date",
+          label: "Date",
+          field: "date",
+          align: "left",
         },
         {
-          name: 'amount',
-          label: 'Amount',
-          field: 'amount',
-          align: 'left',
+          name: "amount",
+          label: "Amount",
+          field: "amount",
+          align: "left",
         },
         {
-          name: 'actions',
-          label: '',
-          field: 'actions',
-          align: 'right',
+          name: "actions",
+          label: "",
+          field: "actions",
+          align: "right",
         },
       ],
       pagination: {
@@ -65,9 +65,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useSubscriptionStore, ['getInvoices', 'downloadInvoice']),
+    ...mapActions(useSubscriptionStore, ["getInvoices", "downloadInvoice"]),
     onRequest(args) {
-      console.func('components/payment-methods/InvoiceManager:methods.onRequest()', arguments);
+      console.func(
+        "components/payment-methods/InvoiceManager:methods.onRequest()",
+        arguments
+      );
       this.loading = true;
       const { page, rowsPerPage } = args.pagination;
       this.getInvoices({
@@ -88,14 +91,17 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          this.$emit('error', error);
+          this.$emit("error", error);
         });
     },
     onViewInvoice(args) {
-      console.func('components/payment-methods/InvoiceManager:methods.onViewInvoice()', arguments);
+      console.func(
+        "components/payment-methods/InvoiceManager:methods.onViewInvoice()",
+        arguments
+      );
       this.downloadInvoice(args.id)
         .then((data) => {
-          const blob = new Blob([data], { type: 'application/pdf' });
+          const blob = new Blob([data], { type: "application/pdf" });
 
           this.$q
             .dialog({
@@ -110,7 +116,7 @@ export default {
             });
         })
         .catch((error) => {
-          this.$core.error(error, { title: 'Error' });
+          this.$core.error(error, { title: "Error" });
         });
     },
   },
@@ -120,7 +126,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(useSubscriptionStore, ['invoices']),
+    ...mapState(useSubscriptionStore, ["invoices"]),
   },
 };
 </script>

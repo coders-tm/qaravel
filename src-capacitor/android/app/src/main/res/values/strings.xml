@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ProFit28</string>
+    <string name="title_activity_main">ProFit28</string>
+    <string name="package_name">com.coderstm.profit28-members</string>
+    <string name="custom_url_scheme">com.coderstm.profit28-members</string>
+</resources>

@@ -20,6 +20,7 @@
     @update:model-value="onChange"
     @filter="onFilter"
     @new-value="onNewValue"
+    @clear="clear"
   >
     <template v-if="icon" v-slot:prepend>
       <q-icon size="xs" :name="icon" />
@@ -96,9 +97,9 @@
           </template>
         </q-input>
         <q-item v-close-popup clickable class="no-options">
-          <q-item-section class="text-grey">{{
-            noOptionMessage
-          }}</q-item-section>
+          <q-item-section class="text-grey">
+            {{ noOptionMessage }}
+          </q-item-section>
         </q-item>
       </slot>
       <slot name="button" v-bind:onCreate="onCreate">
@@ -121,6 +122,9 @@
     </template>
     <template v-slot:append>
       <slot name="append"></slot>
+    </template>
+    <template v-slot:after>
+      <slot name="after"></slot>
     </template>
   </q-select>
 </template>
@@ -173,7 +177,8 @@ export default {
       default: () => (val) => {
         return {
           filter: val,
-          limit: 5,
+          rowsPerPage: 5,
+          active: true,
         };
       },
     },
@@ -236,8 +241,8 @@ export default {
     },
     clear() {
       console.func("components/base/BaseSelect:methods.clear()", arguments);
-      this.value = null;
-      this.$emit("update:model-value", null);
+      this.value = undefined;
+      this.$emit("update:model-value", undefined);
     },
     done(val, mode) {
       if (mode) {
@@ -267,8 +272,13 @@ export default {
   computed: {
     showPlaceholder() {
       return (
-        (!this.value && !this.useChips) || !this.value || this.value.length < 1
+        (!this.hasValue && !this.useChips) ||
+        !this.hasValue ||
+        (this.multiple && this.value.length < 1)
       );
+    },
+    hasValue() {
+      return this.value !== undefined;
     },
   },
   watch: {

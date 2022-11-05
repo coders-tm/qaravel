@@ -19,6 +19,29 @@
           no-data-label="No group avaialble"
           no-permissions
         >
+          <template v-slot:body-cell-name="props">
+            <base-btn
+              @click.stop
+              link
+              size="12px"
+              tag="a"
+              :to="{
+                name: 'Single Group',
+                params: {
+                  id: props.row.id,
+                },
+                query: {
+                  action: 'edit',
+                },
+              }"
+            >
+              {{ props.value }}
+            </base-btn>
+          </template>
+
+          <template v-slot:body-cell-description="props">
+            <div class="ellipsis-2-lines">{{ props.value }}</div>
+          </template>
         </base-table>
       </q-card-section>
     </q-card>
@@ -81,7 +104,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          // this.$emit('error', error);
+          this.$core.error(error, { title: "Error" });
         });
     },
     async actionClicked(action, row) {

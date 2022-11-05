@@ -1,13 +1,12 @@
 import {
-  LocalStorage,
   Dialog,
   uid,
-  Cookies,
   openURL,
   Notify,
   exportFile,
   date,
   format,
+  Loading,
   copyToClipboard,
 } from "quasar";
 
@@ -22,35 +21,6 @@ export default {
   modules: {},
   async init() {
     console.func("services/core:init()", arguments);
-    if (Cookies.has("qaravel-gdpr-accept") !== true) {
-      Notify.create({
-        message:
-          "We use cookies to improve user experience, manage user sessions and analyze website traffic. By clicking “Accept” you consent to store on your device all the technologies described in our Cookie Policy. Please read our Terms and Conditions and Privacy Policy for full details by clicking the Learn More button.",
-        multiline: true,
-        classes: "bg-grey-10",
-        timeout: 0,
-        position: "bottom-right",
-        actions: [
-          {
-            label: "Accept",
-            color: "yellow",
-            handler() {
-              Cookies.set("qaravel-gdpr-accept", true, {
-                expires: 5 * 365,
-              });
-            },
-          },
-          {
-            label: "Learn more",
-            color: "grey",
-            noDismiss: true,
-            handler() {
-              openURL(process.env.COOKIE_URL);
-            },
-          },
-        ],
-      });
-    }
   },
   app: {},
   closeDate(refs) {
@@ -147,6 +117,19 @@ export default {
       console.log("OK");
     });
   },
+  warning(msg, o) {
+    console.func("services/core:warning()", arguments);
+    Dialog.create({
+      component: BaseAlert,
+      componentProps: {
+        msg: msg,
+        icon: o && o.icon ? o.icon : "warning",
+        title: o && o.title ? o.title : "Warning",
+      },
+    }).onOk(() => {
+      console.log("OK");
+    });
+  },
   random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   },
@@ -186,6 +169,7 @@ export default {
     });
   },
   wrapCsvValue(val, formatFn) {
+    // console.func('services/core:wrapCsvValue()', arguments);
     let formatted = formatFn !== undefined ? formatFn(val) : val;
 
     formatted =
@@ -201,7 +185,8 @@ export default {
 
     return `"${formatted}"`;
   },
-  export(table, name, type = "text/csv") {
+  exportCSV(table, name, type = "text/csv") {
+    console.func("services/core:exportCSV()", arguments);
     const content = [table.columns.map((col) => this.wrapCsvValue(col.label))]
       .concat(
         table.data.map((row) =>
@@ -222,12 +207,59 @@ export default {
     const status = exportFile(name + "_" + Date.now() + ".csv", content, type);
 
     if (status !== true) {
-      Notify.create({
+      this.$q.notify({
         message: "Browser denied file download...",
         color: "negative",
         icon: "warning",
       });
     }
+  },
+  async exportTable({ params, action, columns, name, data }) {
+    console.func("services/core:exportTable()", arguments);
+    Loading.show({
+      html: true,
+      message:
+        'Date exporting <b>process</b> is in progress.<br/><span class="text-orange text-weight-bold">Hang on...</span>',
+    });
+    try {
+      const tableData = action ? await this.getTableData(action, params) : data;
+      Loading.hide();
+      await this.exportCSV(
+        {
+          columns: columns,
+          data: tableData,
+        },
+        name
+      );
+    } catch (error) {
+      Loading.hide();
+      this.error(error, { title: "Error" });
+    }
+  },
+  async getTableData(action, args) {
+    console.func("services/core:getTableData()", arguments);
+    let tableData = [];
+    let lastPage = 1;
+    args.limit = 2250;
+    do {
+      await action(args).then((response) => {
+        if (!args.page) {
+          tableData = tableData.concat(response);
+          args.page++;
+        } else {
+          const { data, meta } = response;
+          if (!args.pdf) {
+            tableData = tableData.concat(data);
+          } else {
+            tableData = response;
+          }
+          lastPage = meta.last_page;
+          args.page++;
+        }
+      });
+    } while (args.page <= lastPage);
+
+    return tableData;
   },
   b64toBlob(b64Data, contentType = "", sliceSize = 512) {
     const byteCharacters = atob(b64Data);

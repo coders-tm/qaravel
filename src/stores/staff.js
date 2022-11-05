@@ -2,6 +2,17 @@ import { defineStore } from "pinia";
 import Api from "../services/api";
 import core from "../services/core";
 
+const status_options = [
+  {
+    label: "All",
+    value: null,
+  },
+  {
+    label: "Active",
+    value: true,
+  },
+];
+
 export const useStaffStore = defineStore("staff", {
   state: () => ({
     rows: [],
@@ -93,6 +104,23 @@ export const useStaffStore = defineStore("staff", {
     ],
     toolbar: [
       {
+        title: "Status",
+        action: "request",
+        component: "base-select",
+        dense: true,
+        outlined: true,
+        key: "active",
+        placeholder: "Select",
+        optionsDense: true,
+        style: "width: 150px",
+        mapOptions: true,
+        emitValue: true,
+        options: status_options,
+        prefix: "Status:",
+        deleted: "all",
+        width: "6",
+      },
+      {
         icon: "fad fa-plus-circle",
         label: "Add staff",
         permission: "New",
@@ -101,6 +129,7 @@ export const useStaffStore = defineStore("staff", {
         route: "Single Staff",
         color: "primary",
         deleted: "all",
+        width: "6",
       },
     ],
     filters: [],

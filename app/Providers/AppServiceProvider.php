@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Services\ResourceRegistrar;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -31,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
             'Address' => 'App\Models\Core\Address',
             'Group' => 'App\Models\Core\Group',
         ]);
+
+        Paginator::useBootstrapFive();
     }
 }

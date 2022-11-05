@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-page padding>
     <div class="q-gutter-y-lg">
       <q-card>
         <q-card-section>
@@ -162,13 +162,12 @@
         </q-card-section>
       </q-card>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
 import { mapActions, mapState } from "pinia";
 import { useAppStore } from "stores/app";
-const guard = "users";
 
 export default {
   data() {

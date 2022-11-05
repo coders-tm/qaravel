@@ -2,9 +2,10 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Relations\MorphToOne;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasMorphToOne
 {

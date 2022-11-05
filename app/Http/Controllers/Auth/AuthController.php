@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Models\Core\File;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Notifications\UserLogin;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,6 +26,7 @@ class AuthController extends Controller
                 'password.required' => 'Your password is required.',
             ]
         );
+
         if (Auth::guard($guard)->attempt($request->only(['email', 'password']))) {
             if (!$request->user($guard)->is_active) {
                 Auth::guard($guard)->logout();
@@ -34,6 +36,18 @@ class AuthController extends Controller
                 'type' => 'login'
             ]);
             $request->user($guard)->notify(new UserLogin($request));
+
+            if ($request->boolean('useToken')) {
+                $token = $request->user($guard)->createToken($request->device_id);
+                $user =  $request->user($guard);
+                $user['guard'] = $guard;
+
+                return response()->json([
+                    'user' => $user,
+                    'token' => $token->plainTextToken,
+                ], 200);
+            }
+
             return $this->me($guard);
         } else {
             return response()->json([
@@ -47,7 +61,11 @@ class AuthController extends Controller
 
     public function logout(Request $request, $guard = 'users')
     {
-        Auth::guard($guard)->logout();
+        if ($request->boolean('useToken')) {
+            $request->user($guard)->currentAccessToken()->delete();
+        } else {
+            Auth::guard($guard)->logout();
+        }
         return response()->json([
             'message' => 'You have been successfully logged out!'
         ], 200);
@@ -55,15 +73,17 @@ class AuthController extends Controller
 
     public function me($guard = null)
     {
-
-        $user = request()->user($guard)->fresh([
-            'address'
+        $user = current_user()->fresh([
+            'address',
+            'last_login'
         ]);
+
         if (guard() == 'users') {
-            $user = $user->append('default_payment_method')->toArray();
+            $user = $user->toArray();
         } else if (guard() == 'admins') {
             $user = $user->append('modules')->toArray();
         }
+
         $user['guard'] = guard();
 
         return response()->json($user, 200);
@@ -129,49 +149,59 @@ class AuthController extends Controller
 
     public function signup(Request $request, $guard = 'users')
     {
+        $request->merge([
+            'profit_id' => substr($request->profit_id, 2),
+            'id' => substr($request->profit_id, 2),
+        ]);
+
         $rules = [
-            'email' => 'required|email|unique:users',
-            'plan' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone_number' => 'required',
-            'line1' => 'required',
-            'city' => 'required',
-            'postal_code' => 'required',
-            'country' => 'required',
+            'email' => "required|email|exists:{$guard},email",
+            'profit_id' => "required|exists:{$guard},id",
+            'first_name' => [
+                'required',
+                Rule::exists('users')->where(function ($query) use ($request) {
+                    return $query->where($request->only('id', 'first_name'));
+                }),
+            ],
+            'last_name' => [
+                'required',
+                Rule::exists('users')->where(function ($query) use ($request) {
+                    return $query->where($request->only('id', 'last_name'));
+                }),
+            ],
             'password' => 'required|min:6|confirmed',
         ];
 
         // Validate those rules
         $this->validate($request, $rules);
 
-        $data = $request->only([
-            'email',
-            'plan',
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'line1',
-            'city',
-            'postal_code',
-            'country',
-            'password',
+        $request->merge([
+            'password' => Hash::make($request->password),
         ]);
 
-        $data['password'] = Hash::make($request->password);
+        $user = User::where($request->only([
+            'email',
+            'id',
+            'first_name',
+            'last_name',
+        ]))->first();
 
-        // create the user
-        $user = User::create($data);
+        if ($user->logs()->where('type', 'register')->count() > 0) {
+            abort(403, "Account already registered using this ID. Please use \"Account Recovery\" if you need to recover a lost account.");
+        }
+
+        // set password to user
+        $user->update($request->only(['password']));
 
         // add address to the user
-        $user->updateOrCreateAddress($data);
+        $user->updateOrCreateAddress([]);
 
         // login by user id
         Auth::guard($guard)->loginUsingId($user->id);
 
         $user->logs()->create([
-            'type' => 'login'
+            'type' => 'register',
+            'message' => 'User has been registered from member portal.'
         ]);
 
         return $this->me($guard);

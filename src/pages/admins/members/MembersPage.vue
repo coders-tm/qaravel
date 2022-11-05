@@ -18,61 +18,46 @@
           @row-clicked="rowClicked"
           no-data-label="No member avaialble"
           no-permissions
+          :visible-columns="visibleColumns"
         >
-          <template v-slot:body-cell="props">
-            <q-td :props="props">
-              <template v-if="props.col.name == 'name'">
-                <q-item class="q-pa-none" dense>
-                  <q-item-section avatar>
-                    <base-avatar-widget
-                      rounded
-                      class="cursor-pointer"
-                      :user="props.row"
-                      size="40px"
-                    />
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <base-btn
-                      @click.stop
-                      link
-                      size="12px"
-                      tag="a"
-                      :to="{
-                        name: 'Single Member',
-                        params: {
-                          id: props.row.id,
-                        },
-                        query: {
-                          action: 'edit',
-                        },
-                      }"
-                    >
-                      {{ props.value }}
-                    </base-btn>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <template v-else-if="props.col.name == 'is_active'">
-                <q-toggle
-                  @update:model-value="changeActive(props.row)"
-                  size="sm"
-                  dense
-                  :model-value="props.row.is_active"
-                  color="green"
-                />
-              </template>
-              <template v-else-if="props.col.name == 'groups'">
-                <q-chip
-                  size="12px"
-                  v-for="item in props.row.groups"
-                  :key="item.id"
-                  :label="item.name"
-                />
-              </template>
-              <template v-else>
-                <span v-html="props.value"></span>
-              </template>
-            </q-td>
+          <template v-slot:body-cell-name="props">
+            <i
+              :class="`q-mr-sm q-icon fas fa-circle rag-${
+                props.row.rag || 'white'
+              }`"
+              style="font-size: 8px"
+              aria-hidden="true"
+              role="presentation"
+            ></i>
+            <base-btn
+              @click.stop
+              link
+              size="12px"
+              tag="a"
+              :to="{
+                name: 'Single Member',
+                params: {
+                  id: props.row.id,
+                },
+                query: {
+                  action: 'edit',
+                },
+              }"
+            >
+              {{ props.value }}
+            </base-btn>
+          </template>
+          <template v-slot:body-cell-status="props">
+            <base-status-widget :type="props.value" />
+          </template>
+          <template v-slot:body-cell-is_active="props">
+            <q-toggle
+              @update:model-value="changeActive(props.row)"
+              size="sm"
+              dense
+              :model-value="props.row.is_active"
+              color="green"
+            />
           </template>
         </base-table>
       </q-card-section>
@@ -90,15 +75,18 @@ export default {
       loading: false,
       loaded: false,
       pagination: {
-        sortBy: "name",
-        descending: false,
+        sortBy: "id",
+        descending: true,
         page: 1,
         filter: "",
+        status: true,
+        rag: null,
         advancedFilter: {},
         deleted: false,
         rowsPerPage: 15,
         rowsNumber: 15,
         loaded: false,
+        includes: ["last_update", "last_ns_bookings"],
       },
       useMemberStore: useMemberStore(),
     };
@@ -133,7 +121,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          // this.$emit('error', error);
+          this.$core.error(error, { title: "Error" });
         });
     },
     async actionClicked(action, row) {
@@ -178,6 +166,26 @@ export default {
       "toolbar",
       "filters",
     ]),
+    visibleColumns() {
+      if (this.pagination.status === "no-show") {
+        return this.columns
+          .filter((item) => !["release_at"].includes(item.name))
+          .map((item) => item.name);
+      } else if (this.pagination.status === "blocked") {
+        return this.columns
+          .filter((item) => !["ns_bookings_count"].includes(item.name))
+          .map((item) => item.name);
+      } else {
+        return this.columns
+          .filter(
+            (item) =>
+              !["ns_bookings_count", "last_ns_bookings", "release_at"].includes(
+                item.name
+              )
+          )
+          .map((item) => item.name);
+      }
+    },
     permissions() {
       return [];
     },

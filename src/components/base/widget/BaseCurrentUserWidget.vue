@@ -5,7 +5,9 @@
         <base-avatar-widget size="28px" :user="user" />
       </q-item-section>
       <q-item-section class="q-pa-none">
-        <q-item-label class="gt-sm text-subtitle2">{{ user.name }}</q-item-label>
+        <q-item-label class="ellipsis text-subtitle2">{{
+          user.name
+        }}</q-item-label>
       </q-item-section>
       <q-item-section side class="q-pa-none" style="padding: 0">
         <q-icon color="white" name="fal fa-angle-down"></q-icon>
@@ -31,25 +33,25 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia';
-import { useAppStore } from 'stores/app';
+import { mapActions, mapState } from "pinia";
+import { useAppStore } from "stores/app";
 
 export default {
   methods: {
-    ...mapActions(useAppStore, ['logout']),
+    ...mapActions(useAppStore, ["logout"]),
     onLogout() {
       this.logout(this.$route.meta.guard)
         .then(() => {
-          this.$router.push({ name: 'Login' });
+          this.$router.push({ name: "Login" });
         })
         .catch((error) => {
           // this.$core.error(error);
-          this.$router.push({ name: 'Login' });
+          this.$router.push({ name: "Login" });
         });
     },
   },
   computed: {
-    ...mapState(useAppStore, ['user']),
+    ...mapState(useAppStore, ["user"]),
   },
 };
 </script>

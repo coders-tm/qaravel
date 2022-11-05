@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Core;
 
-use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Core\Group;
 use App\Models\Core\Module;
-use App\Models\Core\Permission;
-use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Core\Permission;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class AdminController extends Controller
 {
@@ -33,8 +34,7 @@ class AdminController extends Controller
         $admin = $admin->with('last_login', 'groups');
 
         if ($request->has('filter') && !empty($request->filter)) {
-            $admin->where('first_name', 'like', "%{$request->filter}%");
-            $admin->orWhere('last_name', 'like', "%{$request->filter}%");
+            $admin->where(DB::raw("CONCAT(first_name,' ',last_name)"), 'like', "%{$request->filter}%");
             $admin->orWhere('email', 'like', "%{$request->filter}%");
         }
 
@@ -44,7 +44,11 @@ class AdminController extends Controller
             });
         }
 
-        if ($request->input('deleted') ? $request->boolean('deleted') : false) {
+        if ($request->boolean('active')) {
+            $admin->onlyActive();
+        }
+
+        if ($request->boolean('deleted')) {
             $admin->onlyTrashed();
         }
 
@@ -125,7 +129,11 @@ class AdminController extends Controller
             $request->password = bcrypt($request->password);
         }
 
-        $admin->update($request->input());
+        if ($admin->id == $request->user('admins')->id) {
+            $admin->update($request->except(['is_active', 'is_supper_admin']));
+        } else {
+            $admin->update($request->input());
+        }
 
         $admin->syncGroups(collect($request->groups));
 
@@ -257,6 +265,12 @@ class AdminController extends Controller
      */
     public function change_admin(Request $request, Admin $admin)
     {
+        if ($admin->id == $request->user('admins')->id) {
+            return response()->json([
+                'message' => 'Staff can not update his/her self account.',
+            ], 403);
+        }
+
         $admin->update([
             'is_supper_admin' => !$admin->is_supper_admin
         ]);
@@ -274,6 +288,12 @@ class AdminController extends Controller
      */
     public function change_active(Request $request, Admin $admin)
     {
+        if ($admin->id == $request->user('admins')->id) {
+            return response()->json([
+                'message' => 'Staff can not update his/her self account.',
+            ], 403);
+        }
+
         $admin->update([
             'is_active' => !$admin->is_active
         ]);

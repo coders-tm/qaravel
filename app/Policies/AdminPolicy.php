@@ -10,6 +10,20 @@ class AdminPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before(Admin $admin, $ability)
+    {
+        if ($admin->is_supper_admin) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the admin can view any models.
      *
      * @param  \App\Models\Admin  $admin
@@ -17,7 +31,7 @@ class AdminPolicy
      */
     public function viewAny(Admin $admin)
     {
-        return $admin->can('staff:list') || $admin->is_supper_admin;
+        return $admin->can('staff:list');
     }
 
     /**
@@ -28,7 +42,7 @@ class AdminPolicy
      */
     public function view(Admin $admin)
     {
-        return $admin->can('staff:view') || $admin->is_supper_admin;
+        return $admin->can('staff:view');
     }
 
     /**
@@ -39,7 +53,7 @@ class AdminPolicy
      */
     public function create(Admin $admin)
     {
-        //
+        return $admin->can('staff:new');
     }
 
     /**
@@ -50,7 +64,7 @@ class AdminPolicy
      */
     public function update(Admin $admin)
     {
-        return $admin->can('staff:update') || $admin->is_supper_admin;
+        return $admin->can('staff:edit');
     }
 
     /**
@@ -61,7 +75,7 @@ class AdminPolicy
      */
     public function delete(Admin $admin)
     {
-        return $admin->can('staff:delete') || $admin->is_supper_admin;
+        return $admin->can('staff:delete');
     }
 
     /**
@@ -72,7 +86,7 @@ class AdminPolicy
      */
     public function restore(Admin $admin)
     {
-        return $admin->can('staff:restore') || $admin->is_supper_admin;
+        return $admin->can('staff:restore');
     }
 
     /**
@@ -83,6 +97,6 @@ class AdminPolicy
      */
     public function forceDelete(Admin $admin)
     {
-        return $admin->can('staff:forceDelete') || $admin->is_supper_admin;
+        return $admin->can('staff:forceDelete');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models\Core;
 
-use App\Models\User;
+use App\Models\Admin;
 use App\Traits\Fileable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +40,7 @@ class Log extends Model
      */
     protected $appends = [
         'date_time',
+        'can_edit',
         'created_at_human',
     ];
 
@@ -50,6 +51,7 @@ class Log extends Model
      */
     protected $with = [
         // 'media',
+        // 'admin',
     ];
 
     /**
@@ -83,7 +85,7 @@ class Log extends Model
      */
     public function admin()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class)->withOnly([]);
     }
 
     /**
@@ -94,11 +96,23 @@ class Log extends Model
         return $this->morphMany(static::class, 'logable');
     }
 
+    /**
+     * Get the can edit
+     *
+     * @return bool
+     */
+    public function getCanEditAttribute()
+    {
+        return $this->created_at->addMinutes(5)->gt(now());
+    }
+
     protected static function booted()
     {
         parent::booted();
         static::creating(function ($model) {
-            $model->admin_id = auth()->user('admins') ? auth()->user('admins')->id : null;
+            if (empty($model->admin_id) && auth('admins')->check()) {
+                $model->admin_id = auth('admins')->user()->id ?? null;
+            }
         });
     }
 }

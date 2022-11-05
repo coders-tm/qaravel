@@ -1,0 +1,7 @@
+{
+  "appId": "com.coderstm.profit28-members",
+  "appName": "ProFit28",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

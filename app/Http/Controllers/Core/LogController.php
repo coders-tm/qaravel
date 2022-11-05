@@ -49,7 +49,7 @@ class LogController extends Controller
 
         return response()->json([
             'data' => $log->fresh()->load([
-                'user',
+                'admin',
                 'media',
             ]),
             'message' => 'Log has been updated successfully!',
@@ -94,7 +94,7 @@ class LogController extends Controller
 
         return response()->json([
             'data' => $log->load([
-                'user',
+                'admin',
                 'media',
             ]),
             'message' => 'Log reply has been created successfully!',

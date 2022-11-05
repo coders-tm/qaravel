@@ -64,6 +64,7 @@ export const useGroupStore = defineStore("group", {
         route: "Single Group",
         color: "primary",
         deleted: "all",
+        width: "12",
       },
     ],
     filters: [],

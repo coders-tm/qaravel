@@ -19,69 +19,62 @@
           no-data-label="No staff avaialble"
           no-permissions
         >
-          <template v-slot:body-cell="props">
-            <q-td :props="props">
-              <template v-if="props.col.name == 'name'">
-                <q-item class="q-pa-none" dense>
-                  <q-item-section avatar>
-                    <base-avatar-widget
-                      rounded
-                      class="cursor-pointer"
-                      :user="props.row"
-                      size="40px"
-                    />
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <base-btn
-                      @click.stop
-                      link
-                      size="12px"
-                      tag="a"
-                      :to="{
-                        name: 'Single Staff',
-                        params: {
-                          id: props.row.id,
-                        },
-                        query: {
-                          action: 'edit',
-                        },
-                      }"
-                    >
-                      {{ props.value }}
-                    </base-btn>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <template v-else-if="props.col.name == 'is_active'">
-                <q-toggle
-                  @update:model-value="changeActive(props.row)"
-                  size="sm"
-                  dense
-                  :model-value="props.row.is_active"
-                  color="green"
+          <template v-slot:body-cell-name="props">
+            <q-item class="q-pa-none" dense>
+              <q-item-section avatar>
+                <base-avatar-widget
+                  rounded
+                  class="cursor-pointer"
+                  :user="props.row"
+                  size="40px"
                 />
-              </template>
-              <template v-else-if="props.col.name == 'is_supper_admin'">
-                <q-toggle
-                  @update:model-value="changeAdmin(props.row)"
-                  size="sm"
-                  dense
-                  :model-value="props.row.is_supper_admin"
-                  color="green"
-                />
-              </template>
-              <template v-else-if="props.col.name == 'groups'">
-                <q-chip
+              </q-item-section>
+              <q-item-section avatar>
+                <base-btn
+                  @click.stop
+                  link
                   size="12px"
-                  v-for="item in props.row.groups"
-                  :key="item.id"
-                  :label="item.name"
-                />
-              </template>
-              <template v-else>
-                <span v-html="props.value"></span>
-              </template>
-            </q-td>
+                  tag="a"
+                  :to="{
+                    name: 'Single Staff',
+                    params: {
+                      id: props.row.id,
+                    },
+                    query: {
+                      action: 'edit',
+                    },
+                  }"
+                >
+                  {{ props.value }}
+                </base-btn>
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:body-cell-is_active="props">
+            <q-toggle
+              @update:model-value="changeActive(props.row)"
+              size="sm"
+              dense
+              :model-value="props.row.is_active"
+              color="green"
+            />
+          </template>
+          <template v-slot:body-cell-is_supper_admin="props">
+            <q-toggle
+              @update:model-value="changeAdmin(props.row)"
+              size="sm"
+              dense
+              :model-value="props.row.is_supper_admin"
+              color="green"
+            />
+          </template>
+          <template v-slot:body-cell-groups="props">
+            <q-chip
+              size="12px"
+              v-for="item in props.row.groups"
+              :key="item.id"
+              :label="item.name"
+            />
           </template>
         </base-table>
       </q-card-section>
@@ -108,6 +101,7 @@ export default {
         rowsPerPage: 15,
         rowsNumber: 15,
         loaded: false,
+        active: null,
       },
       useStaffStore: useStaffStore(),
     };
@@ -145,7 +139,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          // this.$emit('error', error);
+          this.$core.error(error, { title: "Error" });
         });
     },
     async actionClicked(action, row) {

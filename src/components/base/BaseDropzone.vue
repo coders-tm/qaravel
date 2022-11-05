@@ -84,28 +84,7 @@
             v-for="file in files"
             :key="file.id"
           >
-            <q-responsive class="box rounded-borders cursor-pointer" :ratio="1">
-              <div v-if="file.is_image || file.is_embed" class="thumbnail">
-                <q-img loading="lazy" :src="file.url" contain>
-                  <template v-slot:loading>
-                    <q-spinner-orbit color="white" />
-                  </template>
-                </q-img>
-                <div v-if="file.is_embed" class="absolute-bottom-right q-pa-sm">
-                  <q-btn
-                    flat
-                    dense
-                    round
-                    color="grey"
-                    icon="fad fa-play-circle"
-                  />
-                </div>
-              </div>
-              <div v-else class="text-black flex flex-center file">
-                <div class="info overflow-hidden text-center">
-                  <q-icon :name="`fas fa-file-${file.icon}`" />
-                </div>
-              </div>
+            <file-card v-bind="file">
               <div class="absolute-full controller q-pa-sm">
                 <div
                   @click="onDetails(file)"
@@ -137,7 +116,7 @@
                   :val="file.id"
                 />
               </div>
-            </q-responsive>
+            </file-card>
           </div>
           <div
             class="relative-position file-box"
@@ -218,9 +197,10 @@ import FileEditor from "../FileEditor.vue";
 import FileFromSource from "../FileFromSource.vue";
 import BaseBtnDropdown from "./BaseBtnDropdown.vue";
 import { VueDraggableNext } from "vue-draggable-next";
+import FileCard from "../FileCard.vue";
 
 export default {
-  components: { BaseBtnDropdown, VueDraggableNext },
+  components: { BaseBtnDropdown, VueDraggableNext, FileCard },
   data() {
     return {
       selection: false,
@@ -363,6 +343,14 @@ export default {
   },
   computed: {
     headers() {
+      if (this.$useToken) {
+        return [
+          {
+            name: "Authorization",
+            value: `Bearer ${this.$app.token}`,
+          },
+        ];
+      }
       return [
         {
           name: "X-XSRF-TOKEN",

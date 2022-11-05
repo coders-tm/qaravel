@@ -21,16 +21,20 @@ class FileController extends Controller
     {
         $file = $file->query();
 
-        if ($request->has('filter') && !empty($request->filter)) {
+        if ($request->filled('filter')) {
             $file->where('original_file_name', 'like', "%{$request->filter}%");
+        }
+
+        if ($request->filled('type')) {
+            $file->where('mime_type', 'like', "%{$request->type}%");
         }
 
         if ($request->input('deleted') ? $request->boolean('deleted') : false) {
             $file->onlyTrashed();
         }
 
-        $file = $file->orderBy($request->has('order') ? $request->order : 'created_at', $request->has('descending') ? $request->descending : 'desc')
-            ->paginate($request->has('limit') ? $request->limit : 15);
+        $file = $file->orderBy(optional($request)->sortBy ?? 'created_at', optional($request)->direction ?? 'desc')
+            ->paginate(optional($request)->rowsPerPage ?? 15);
         return new ResourceCollection($file);
     }
 
@@ -99,9 +103,21 @@ class FileController extends Controller
         return response()->json($file, 200);
     }
 
-    public function download(File $file)
+    /**
+     * Download the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
     {
-        return Storage::disk($file->disk)->download($file->path, $file->original_file_name);
+        $file = File::findByHash($request->hash ?? '');
+        if ($request->has('download')) {
+            return Storage::disk($file->disk)->download($file->path, $file->original_file_name);
+        }
+        if ($file->disk == 'cloud') {
+            return response()->redirectTo(Storage::disk($file->disk)->url($file->path));
+        }
+        return response()->file(Storage::disk($file->disk)->path($file->path));
     }
 
     public function upload_from_source(Request $request)

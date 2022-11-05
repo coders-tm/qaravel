@@ -104,7 +104,7 @@ trait Helpers
                             $rowData = [];
                             $empty = 0;
                             foreach ($header as $i => $head) {
-                                $rowData[Str::slug($head)] = isset($row[$i]) ? $row[$i] : null;
+                                $rowData[Str::slug($head)] = isset($row[$i]) && $row[$i] != "NULL" ? $row[$i] : null;
                                 if (empty($rowData[Str::slug($head)])) {
                                     $empty++;
                                 }
@@ -138,5 +138,17 @@ trait Helpers
         } else {
             return round($miles, 2);
         }
+    }
+
+    protected function weeksBetweenTwoDates($start, $end)
+    {
+        $weeks = [];
+
+        while ($start->weekOfYear !== $end->weekOfYear) {
+            $weeks[] = $start->startOfWeek()->format('Y-m-d');
+            $start->addWeek();
+        }
+
+        return $weeks;
     }
 }

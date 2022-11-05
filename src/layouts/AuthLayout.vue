@@ -5,7 +5,13 @@
         <div class="login-container row vertical-middle">
           <div class="login-left col q-pa-xl">
             <div class="row items-center flex-center">
-              <img style="width: 150px" src="~assets/logo.png" transition="fade" :alt="app_name" class="gm-logo" />
+              <img
+                style="width: 150px"
+                src="~assets/logo.png"
+                transition="fade"
+                :alt="app_name"
+                class="gm-logo"
+              />
             </div>
             <router-view />
           </div>

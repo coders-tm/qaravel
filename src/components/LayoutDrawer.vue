@@ -8,6 +8,12 @@
     side="left"
     class="bg-white text-black"
   >
+    <q-toolbar v-if="user && $q.screen.lt.sm" class="q-pa-md">
+      <base-current-user-widget
+        class="q-pa-none cursor-pointer"
+        style="width: 100%"
+      />
+    </q-toolbar>
     <q-list class="bg-white">
       <links-list
         class="link-item"
@@ -20,7 +26,9 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
 import LinksList from "./LinksList.vue";
+import { useAppStore } from "src/stores/app";
 
 export default {
   components: {
@@ -45,6 +53,9 @@ export default {
     toggle() {
       this.$refs.drawer.toggle();
     },
+  },
+  computed: {
+    ...mapState(useAppStore, ["user"]),
   },
 };
 </script>

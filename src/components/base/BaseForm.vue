@@ -9,15 +9,15 @@
       <q-card-section class="q-pa-none form-body">
         <slot></slot>
       </q-card-section>
-      <q-card-section class="form-actions q-pa-none q-mt-md">
-        <slot name="actions">
+      <slot v-if="!noAction" name="actions">
+        <q-card-section class="text-right form-actions">
           <q-btn
             no-caps
             v-if="resetable && !submited"
             @click="onReset"
             label="Reset"
             color="grey"
-            class="q-mr-sm"
+            class="main-btn q-mr-sm"
           />
           <q-btn
             :disable="submited"
@@ -26,7 +26,7 @@
             @click="onCancel"
             label="Cancel"
             color="negative"
-            class="q-mr-sm"
+            class="main-btn q-mr-sm"
           />
           <q-btn
             :disable="disable"
@@ -36,9 +36,10 @@
             label="Save"
             type="submit"
             color="primary"
+            class="main-btn"
           />
-        </slot>
-      </q-card-section>
+        </q-card-section>
+      </slot>
     </q-card>
   </q-form>
 </template>
@@ -46,6 +47,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useAppStore } from "stores/app";
+
 export default {
   props: {
     submited: {
@@ -88,10 +90,11 @@ export default {
       type: String,
       default: () => "",
     },
+    noAction: Boolean,
   },
   emits: ["cancel", "reset"],
   methods: {
-    ...mapActions(useAppStore, ["setIsDirt"]),
+    ...mapActions(useAppStore, ["setIsDirt", "setIsLoading"]),
     onCancel() {
       console.func("components/base/base-form:methods.onCancel()", arguments);
       this.$emit("cancel");
@@ -128,11 +131,23 @@ export default {
     onSave() {
       console.func("components/base/base-form:methods.onSave()", arguments);
       this.$refs.baseForm.submit();
+      this.setIsLoading(true);
     },
   },
   watch: {
-    resetable(val) {
-      this.setIsDirt(val);
+    resetable: {
+      deep: true,
+      immediate: true,
+      handler(val) {
+        this.setIsDirt(val);
+      },
+    },
+    submited: {
+      deep: true,
+      immediate: true,
+      handler(val) {
+        this.setIsLoading(val);
+      },
     },
   },
   computed: {

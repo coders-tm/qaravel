@@ -1,8 +1,8 @@
 {
-  "id": "qaravel",
-  "name": "Qaravel",
-  "short_name": "qaravel",
-  "description": "Qaravel is a Combination of Laravel and Quasar",
+  "id": "profit28",
+  "name": "ProFit28",
+  "short_name": "profit28",
+  "description": "ProFit28 is a Combination of Laravel and Quasar",
   "display": "standalone",
   "start_url": "/",
   "orientation": "portrait",

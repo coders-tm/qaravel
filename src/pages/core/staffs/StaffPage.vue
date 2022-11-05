@@ -100,6 +100,14 @@
               </template>
             </q-input>
           </div>
+          <div class="col-xs-12">
+            <q-checkbox
+              dense
+              v-model="staff.is_active"
+              label="Active"
+              color="green"
+            />
+          </div>
         </base-section>
         <base-section
           title="Groups and Permissions"

@@ -55,6 +55,19 @@ return new class extends Migration
                     'Delete',
                 ],
             ],
+            'Tickets' => [
+                'sort_order' => 1,
+                'icon' => 'fas fa-square-question',
+                'url' => 'support',
+                'show_menu' => 1,
+                'sub_items' => [
+                    'View',
+                    'Edit',
+                    'List',
+                    'New',
+                    'Delete',
+                ],
+            ],
         ];
 
         foreach ($permissions as $name => $item) {

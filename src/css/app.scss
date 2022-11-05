@@ -339,4 +339,139 @@
       }
     }
   }
+  .q-table__grid-content {
+    .body-selection {
+      min-width: auto;
+    }
+    .body-item {
+      padding: 8px;
+    }
+  }
+}
+
+// base inputs
+.base-checkbox,
+.base-checkbox.q-item,
+.base-checkbox.q-item--dense {
+  min-height: auto;
+  padding: 5px 0px;
+  &.items-center {
+    align-items: start !important;
+  }
+}
+
+// base list
+.q-list.bordered .q-item:not(:last-child) {
+  border-bottom: 1px solid $separator-color;
+}
+
+.q-skeleton {
+  border-radius: 5px;
+}
+
+.q-pb-xs {
+  padding-bottom: 4px !important;
+}
+
+.q-px-lg {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+// base-table
+.toolbar-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  cursor: default;
+  .q-btn--outline .q-btn__content {
+    color: #272728;
+  }
+  .q-btn {
+    padding: 10.86px 20px;
+    font-size: 13px;
+  }
+  .q-btn .q-icon,
+  .q-btn .q-spinner {
+    font-size: 1.25em;
+  }
+}
+
+.base-select,
+.base-date-input {
+  .q-field__native > span,
+  .q-field__native.q-placeholder {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .q-field__control-container .q-field__prefix {
+    font-weight: 600;
+    color: #828282;
+  }
+  .q-field__focusable-action {
+    font-size: 18px;
+  }
+}
+
+// rag
+$icons: (
+  "red": "negative",
+  "green": "positive",
+  "amber": "warning",
+  "white": "white",
+);
+
+@each $name, $color in $icons {
+  .rag-#{$name} {
+    color: var(--q-#{$color}) !important;
+  }
+}
+
+// a-z color
+$icons: (
+  "a": "#b0dd09",
+  "b": "#f38308",
+  "c": "#f46198",
+  "d": "#417eff",
+  "e": "#46bec1",
+  "f": "#42acc4",
+  "g": "#f24626",
+  "h": "#41adc1",
+  "i": "#42b4b3",
+  "j": "#f24728",
+  "k": "#f36602",
+  "l": "#79be01",
+  "m": "#4db3ff",
+  "n": "#f582ae",
+  "o": "#4db4ff",
+  "p": "#fcf8f7",
+  "q": "#4badff",
+  "r": "#7abe01",
+  "s": "#f5a310",
+  "t": "#41adc1",
+  "u": "#f5a10f",
+  "v": "#78be01",
+  "w": "#50d2dd",
+  "x": "#f24829",
+  "y": "#4db5fd",
+  "z": "#287576",
+);
+
+@each $name, $color in $icons {
+  .class-bg-#{$name} {
+    background: $color !important;
+  }
+}
+
+.border-all {
+  border: 1px solid $separator-color !important;
+}
+.border-right {
+  border-right: 1px solid $separator-color !important;
 }

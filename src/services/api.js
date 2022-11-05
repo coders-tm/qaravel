@@ -7,9 +7,21 @@ export default {
   init() {
     console.log("api.init()", arguments);
   },
-  async call(method, endpoint, data, o) {
+  async call(method, endpoint, data = {}, o) {
     console.func("services/api:request.call()", arguments);
     LoadingBar.start();
+
+    // check api mode
+    if (core.$useToken) {
+      core.$axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${core.$appStore.token}`;
+      // core.$axios.defaults.headers.Accept = "application/json";
+      Object.assign(data, {
+        useToken: true,
+      });
+    }
+
     return new Promise((resolve, reject) => {
       var playload = {
         url: endpoint,
@@ -53,10 +65,12 @@ export default {
             // that falls out of the range of 2xx
 
             if (["419", "401"].includes(error.response.status)) {
+              reject(error);
               router.push({
                 name: "Login",
               });
             } else if (error.response.status === 404) {
+              reject(error);
               router.push({
                 name: "Error 404",
               });

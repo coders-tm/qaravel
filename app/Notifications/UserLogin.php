@@ -55,7 +55,7 @@ class UserLogin extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('A new device has logged in to your account | ' . config('app.name'))
+            ->subject('A new device has logged in to your account')
             ->greeting("Hi {$this->user->name},")
             ->line('We noticed a new sign in to your account.')
             ->line(new HtmlString($this->info))

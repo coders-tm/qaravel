@@ -10,6 +10,20 @@ class GroupPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before(Admin $admin, $ability)
+    {
+        if ($admin->is_supper_admin) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the admin can view any models.
      *
      * @param  \App\Models\Admin  $admin
@@ -17,7 +31,7 @@ class GroupPolicy
      */
     public function viewAny(Admin $admin)
     {
-        return $admin->can('groups:list') || $admin->is_supper_admin;
+        return $admin->can('groups:list');
     }
 
     /**
@@ -28,7 +42,7 @@ class GroupPolicy
      */
     public function view(Admin $admin)
     {
-        return $admin->can('groups:view') || $admin->is_supper_admin;
+        return $admin->can('groups:view');
     }
 
     /**
@@ -39,7 +53,7 @@ class GroupPolicy
      */
     public function create(Admin $admin)
     {
-        //
+        return $admin->can('groups:new');
     }
 
     /**
@@ -50,7 +64,7 @@ class GroupPolicy
      */
     public function update(Admin $admin)
     {
-        return $admin->can('groups:update') || $admin->is_supper_admin;
+        return $admin->can('groups:edit');
     }
 
     /**
@@ -61,7 +75,7 @@ class GroupPolicy
      */
     public function delete(Admin $admin)
     {
-        return $admin->can('groups:delete') || $admin->is_supper_admin;
+        return $admin->can('groups:delete');
     }
 
     /**
@@ -72,7 +86,7 @@ class GroupPolicy
      */
     public function restore(Admin $admin)
     {
-        return $admin->can('groups:restore') || $admin->is_supper_admin;
+        return $admin->can('groups:restore');
     }
 
     /**
@@ -83,6 +97,6 @@ class GroupPolicy
      */
     public function forceDelete(Admin $admin)
     {
-        return $admin->can('groups:forceDelete') || $admin->is_supper_admin;
+        return $admin->can('groups:forceDelete');
     }
 }

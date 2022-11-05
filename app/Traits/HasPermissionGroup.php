@@ -44,16 +44,20 @@ trait HasPermissionGroup
 
     public function getModulesAttribute()
     {
-        $permissions = $this->getAllPermissions()
-            ->filter(function ($permission) {
-                return $permission->pivot->access == 1;
-            });
-        $permissionByModule = $permissions->groupBy('module_id');
+        if ($this->is_supper_admin) {
+            $modules = Module::with('permissions')->get();
+        } else {
+            $permissions = $this->getAllPermissions()
+                ->filter(function ($permission) {
+                    return $permission->pivot->access == 1;
+                });
+            $permissionByModule = $permissions->groupBy('module_id');
 
-        $modules = Module::find($permissionByModule->keys())->load('permissions');
+            $modules = Module::find($permissionByModule->keys())->load('permissions');
 
-        foreach ($modules as &$module) {
-            $module['permissions'] = $permissionByModule->get($module->id);
+            foreach ($modules as &$module) {
+                $module['permissions'] = $permissionByModule->get($module->id);
+            }
         }
 
         return $modules;

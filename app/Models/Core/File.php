@@ -12,7 +12,6 @@ class File extends Model
     use Core;
 
     protected $file;
-    protected $disk = 'public';
 
     /**
      * The attributes that are mass assignable.
@@ -20,10 +19,15 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'is_embed',
-        'embed_type',
-        'embed_id',
-        'embed_url',
+        'disk',
+        'url',
+        'path',
+        'original_file_name',
+        'hash',
+        'mime_type',
+        'extension',
+        'size',
+        'ref',
     ];
 
     /**
@@ -34,6 +38,7 @@ class File extends Model
     protected $appends = [
         'name',
         'is_image',
+        'is_pdf',
         'icon',
     ];
 
@@ -49,6 +54,7 @@ class File extends Model
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
+        $this->attributes['disk'] = isset($attributes['disk']) ? $attributes['disk'] :  config('filesystems.default');
     }
 
     public function setHttpFile($file)
@@ -94,7 +100,10 @@ class File extends Model
 
     public function getUrlAttribute($value)
     {
-        return Storage::disk($this->disk)->url($this->path);
+        return route('files.download', [
+            'hash' => $this->hash,
+            'path' => $this->original_file_name,
+        ]);
     }
 
     public function getNameAttribute()
@@ -105,6 +114,11 @@ class File extends Model
     public function getIsImageAttribute()
     {
         return Str::contains($this->mime_type, 'image') && !$this->is_embed;
+    }
+
+    public function getIsPdfAttribute()
+    {
+        return Str::contains($this->mime_type, 'pdf');
     }
 
     public function getIconAttribute()
@@ -151,5 +165,10 @@ class File extends Model
                 $type = 'alt';
         }
         return $type;
+    }
+
+    static public function findByHash(string $hash)
+    {
+        return static::where('hash', $hash)->firstOrFail();
     }
 }

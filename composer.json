@@ -10,10 +10,11 @@
   "require": {
     "php": "^8.0.2",
     "ankitpokhrel/tus-php": "^2.2",
+    "barryvdh/laravel-dompdf": "^2.0",
     "creativeorange/gravatar": "^1.0",
+    "doctrine/dbal": "^3.4",
     "guzzlehttp/guzzle": "^7.2",
     "hisorange/browser-detect": "^4.5",
-    "laravel/cashier": "^13.13",
     "laravel/framework": "^9.19",
     "laravel/sanctum": "^2.15",
     "laravel/tinker": "^2.7",

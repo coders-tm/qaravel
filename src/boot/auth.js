@@ -21,7 +21,8 @@ export default boot(async ({ router, store }) => {
     }
   });
   router.beforeResolve((to, from, next) => {
-    const module = to.meta.module;
+    // const module = to.meta.module;
+    const module = false;
     if (module) {
       if (app.hasPermission(module)) {
         next();

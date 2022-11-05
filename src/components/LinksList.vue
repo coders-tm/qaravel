@@ -19,9 +19,6 @@
       :to="{ name: item.route, params: item.params }"
       v-ripple
       active-class="active"
-      :class="{
-        active: isActive(item),
-      }"
       exact
     >
       <q-item-section avatar style="min-width: auto" class="q-pr-md">

@@ -15,7 +15,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class Admin extends User
 {
-    use Core, Notifiable, HasApiTokens, Addressable, Fileable, HasPermissionGroup;
+    use Notifiable, HasPermissionGroup, HasApiTokens, Fileable, Addressable, Core;
 
     /**
      * The attributes that are mass assignable.
@@ -74,7 +74,6 @@ class Admin extends User
     protected $with = [
         'avatar',
         'address',
-        'last_login',
     ];
 
     /**
