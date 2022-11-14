@@ -1,4 +1,4 @@
-package com.coderstm.qaravel-members;
+package com.coderstm.qaravelmembers;
 
 import android.os.Bundle;
 
