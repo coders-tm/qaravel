@@ -1,7 +1,7 @@
 {
   "name": "Qaravel",
   "version": "1.0",
-  "description": "Qaravel Members App",
+  "description": "Qaravel is a Combination of Laravel and Quasar",
   "author": "DepokSarkar <dipak@coderstm.com>",
   "private": true,
   "dependencies": {
