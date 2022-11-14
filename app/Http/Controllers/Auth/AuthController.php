@@ -10,6 +10,7 @@ use App\Notifications\UserLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -28,34 +29,44 @@ class AuthController extends Controller
         );
 
         if (Auth::guard($guard)->attempt($request->only(['email', 'password']))) {
-            if (!$request->user($guard)->is_active) {
+            $user = $request->user($guard);
+
+            // check user status
+            if (!$user->is_active) {
                 Auth::guard($guard)->logout();
                 abort(403, 'Your account has been disabled and cannot access this application. Please contact with admin.');
             }
-            $request->user($guard)->logs()->create([
+
+            // create log
+            $user->logs()->create([
                 'type' => 'login'
             ]);
-            $request->user($guard)->notify(new UserLogin($request));
 
+            try {
+                // send login alert to user if smtp configured
+                $user->notify(new UserLogin($request));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+            // use token mode
             if ($request->boolean('useToken')) {
-                $token = $request->user($guard)->createToken($request->device_id);
-                $user =  $request->user($guard);
+                $token = $user->createToken($request->device_id, [$guard]);
                 $user['guard'] = $guard;
 
+                // return user with token
                 return response()->json([
                     'user' => $user,
                     'token' => $token->plainTextToken,
                 ], 200);
             }
 
+            // return user
             return $this->me($guard);
         } else {
-            return response()->json([
-                'message' => 'Your password doesn\'t match with record.',
-                'errors' => [
-                    'password' => ['Your password doesn\'t match with our records.']
-                ]
-            ], 403);
+            throw ValidationException::withMessages([
+                'password' => ['Your password doesn\'t match with our records.'],
+            ]);
         }
     }
 
