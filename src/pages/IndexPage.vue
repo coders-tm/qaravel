@@ -6,10 +6,8 @@
         Qaravel is a Combination of Laravel and Quasar.
       </div>
       <div class="q-pt-sm q-gutter-x-sm">
-        <base-btn :href="`http://admin.${app_domain}/`">
-          Admin Dashboard
-        </base-btn>
-        <base-btn :href="`http://app.${app_domain}/`">App Dashboard</base-btn>
+        <base-btn :href="adminLink"> Admin Dashboard </base-btn>
+        <base-btn :href="appLink">App Dashboard</base-btn>
       </div>
     </div>
   </q-page>
@@ -18,8 +16,20 @@
 <script>
 export default {
   computed: {
-    app_domain() {
+    adminLink() {
+      return this.origin.replace(this.hostname, `admin.${this.appDomain}`);
+    },
+    appLink() {
+      return this.origin.replace(this.hostname, `app.${this.appDomain}`);
+    },
+    appDomain() {
       return process.env.APP_DOMAIN;
+    },
+    origin() {
+      return window.location.origin;
+    },
+    hostname() {
+      return window.location.hostname;
     },
   },
 };

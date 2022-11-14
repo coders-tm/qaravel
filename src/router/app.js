@@ -11,7 +11,7 @@ export default [
           auth: true,
           guard: "users",
         },
-        component: () => import("pages/IndexPage.vue"),
+        component: () => import("pages/app/IndexPage.vue"),
       },
     ],
   },

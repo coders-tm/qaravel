@@ -29,24 +29,9 @@ export default {
           route: "Dashboard",
         },
         {
-          title: "Messages",
-          icon: "fas fa-message-quote",
+          title: "Tickets",
+          icon: "fas fa-square-question",
           route: "Support",
-        },
-        {
-          title: "Classes",
-          icon: "fas fa-book-sparkles",
-          route: "Classes",
-          subLinks: [
-            {
-              title: "Booked",
-              route: "Classes",
-            },
-            {
-              title: "Bookable",
-              route: "Bookable",
-            },
-          ],
         },
       ];
     },
