@@ -50,14 +50,14 @@ if (!function_exists('user')) {
 if (!function_exists('is_user')) {
     function is_user()
     {
-        return guard() == 'users' || auth()->user()->tokenCan('role:users');
+        return guard() == 'users' || auth()->user()->tokenCan('users');
     }
 }
 
 if (!function_exists('is_admin')) {
     function is_admin()
     {
-        return guard() == 'admins' || auth()->user()->tokenCan('role:admins');
+        return guard() == 'admins' || auth()->user()->tokenCan('admins');
     }
 }
 

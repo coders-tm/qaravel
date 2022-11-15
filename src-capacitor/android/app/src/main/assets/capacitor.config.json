@@ -3,5 +3,8 @@
   "appName": "Qaravel",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.1.103:9000"
+  }
 }

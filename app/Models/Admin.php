@@ -17,6 +17,8 @@ class Admin extends User
 {
     use Notifiable, HasPermissionGroup, HasApiTokens, Fileable, Addressable, Core;
 
+    protected $guard = "admins";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -64,6 +66,7 @@ class Admin extends User
      */
     protected $appends = [
         'name',
+        'guard',
     ];
 
     /**
@@ -76,6 +79,7 @@ class Admin extends User
         'address',
     ];
 
+
     /**
      * Get the full name of the user.
      *
@@ -84,6 +88,11 @@ class Admin extends User
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getGuardAttribute()
+    {
+        return $this->guard;
     }
 
     public function last_login()

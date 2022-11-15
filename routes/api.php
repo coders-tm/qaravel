@@ -59,7 +59,7 @@ Route::namespace('Core')->group(function () {
     // File Download
     Route::get('files/{path}', 'FileController@download')->name('files.download');
 
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth:admins,users'])->group(function () {
         // Files
         Route::post('files/upload-from-source', 'FileController@upload_from_source')->name('files.upload_source');
         Route::apiResource('files', 'FileController')->except([

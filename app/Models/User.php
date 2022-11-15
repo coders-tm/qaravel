@@ -12,6 +12,8 @@ class User extends Admin implements MustVerifyEmail
 {
     use HasBelongsToOne;
 
+    protected $guard = "users";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -58,6 +60,7 @@ class User extends Admin implements MustVerifyEmail
      */
     protected $appends = [
         'name',
+        'guard',
         'member_since',
     ];
 

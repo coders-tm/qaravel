@@ -52,7 +52,6 @@ class AuthController extends Controller
             // use token mode
             if ($request->boolean('useToken')) {
                 $token = $user->createToken($request->device_id, [$guard]);
-                $user['guard'] = $guard;
 
                 // return user with token
                 return response()->json([
@@ -94,8 +93,6 @@ class AuthController extends Controller
         } else if (guard() == 'admins') {
             $user = $user->append('modules')->toArray();
         }
-
-        $user['guard'] = guard();
 
         return response()->json($user, 200);
     }
