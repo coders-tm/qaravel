@@ -99,7 +99,7 @@ class AuthController extends Controller
 
     public function update(Request $request, $guard = 'users')
     {
-        $user = $request->user($guard);
+        $user = current_user();
 
         $rules = [
             'first_name' => 'required',
@@ -121,7 +121,7 @@ class AuthController extends Controller
         // add address to the user
         $user->updateOrCreateAddress($request->input('address'));
 
-        if ($request->avatar && !empty($request->avatar)) {
+        if ($request->filled('avatar')) {
             $image = File::find($request->avatar['id']);
             $user->avatar()->save($image);
         }

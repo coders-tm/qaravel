@@ -32,15 +32,15 @@ export const useSupportStore = defineStore("support", {
   state: () => ({
     rows: [],
     module: {
-      name: "Supports",
-      singular: "support",
-      plural: "supports",
+      name: "Tickets",
+      singular: "ticket",
+      plural: "tickets",
     },
     columns: [
       {
         name: "id",
         align: "left",
-        label: "Support",
+        label: "Ticket",
         field: (row) => `[${row.id}] ${row.subject}`,
         style: "width: 250px; white-space: normal;",
         sortable: true,
@@ -151,7 +151,7 @@ export const useSupportStore = defineStore("support", {
       },
       {
         icon: "fad fa-plus-circle",
-        label: "Create message",
+        label: "Create ticket",
         permission: "New",
         action: "route",
         params: { id: "add" },
