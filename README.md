@@ -32,12 +32,7 @@ authentication system for SPAs (single page applications), mobile applications, 
 based APIs. Sanctum allows each user of your application to generate multiple API tokens for their
 account. These tokens may be granted abilities / scopes which specify which actions the tokens are
 allowed to perform. Please check laravel default
-[sanctum configuration](https://laravel.com/docs/9.x/sanctum#spa-authentication)
-
-```bash
-SANCTUM_STATEFUL_DOMAINS=qaravel.gomedia:9000 (for local you have to include your port)
-SESSION_DOMAIN=.qaravel.gomedia
-```
+[sanctum configuration](https://laravel.com/docs/9.x/sanctum#api-token-authentication)
 
 ## 5. Migrate the Database
 
