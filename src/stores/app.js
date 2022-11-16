@@ -74,12 +74,8 @@ export const useAppStore = defineStore("app", {
   },
   actions: {
     async login(playload) {
-      if (process.env.API_MODE !== "token") {
-        await Api.get("csrf-cookie");
-      } else {
-        const { uuid } = await Device.getInfo();
-        playload.device_id = uuid;
-      }
+      const { uuid } = await Device.getInfo();
+      playload.device_id = uuid;
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/login`, playload)
           .then((response) => {
@@ -93,9 +89,6 @@ export const useAppStore = defineStore("app", {
       });
     },
     async signUp(playload) {
-      if (process.env.API_MODE !== "token") {
-        await Api.get("csrf-cookie");
-      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/signup`, playload)
           .then((response) => {
