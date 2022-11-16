@@ -340,18 +340,10 @@ export default {
   },
   computed: {
     headers() {
-      if (this.$useToken) {
-        return [
-          {
-            name: "Authorization",
-            value: `Bearer ${this.$app.token}`,
-          },
-        ];
-      }
       return [
         {
-          name: "X-XSRF-TOKEN",
-          value: this.$q.cookies.get("XSRF-TOKEN"),
+          name: "Authorization",
+          value: `Bearer ${this.$app.token}`,
         },
       ];
     },

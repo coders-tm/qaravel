@@ -11,16 +11,10 @@ export default {
     console.func("services/api:request.call()", arguments);
     LoadingBar.start();
 
-    // check api mode
-    if (core.$useToken) {
-      core.$axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${core.$appStore.token}`;
-      // core.$axios.defaults.headers.Accept = "application/json";
-      Object.assign(data, {
-        useToken: true,
-      });
-    }
+    core.$axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${core.$appStore.token}`;
+    // core.$axios.defaults.headers.Accept = "application/json";
 
     return new Promise((resolve, reject) => {
       var playload = {
