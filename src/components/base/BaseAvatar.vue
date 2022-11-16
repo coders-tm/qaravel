@@ -26,8 +26,8 @@
         />
       </q-badge>
     </template>
-    <template v-else-if="user.name">
-      <span>{{ user.name.charAt(0) }}</span>
+    <template v-else-if="user.name || user.company_name">
+      <span>{{ letters }}</span>
       <q-badge
         v-if="['online', 'offline'].includes(user.status)"
         color="transparent"
@@ -42,25 +42,7 @@
         />
       </q-badge>
     </template>
-    <template v-else-if="user.company_name">
-      <span>{{ user.company_name.charAt(0) }}</span>
-      <q-badge
-        v-if="['online', 'offline'].includes(user.status)"
-        color="transparent"
-        floating
-      >
-        <q-icon
-          dense
-          round
-          name="brightness_1"
-          :color="user.status == 'online' ? 'positive' : 'grey'"
-          size="10px"
-        />
-      </q-badge>
-    </template>
-    <base-tooltip v-if="tooltip" position="top">{{
-      user.name
-    }}</base-tooltip>
+    <base-tooltip v-if="tooltip" position="top">{{ user.name }}</base-tooltip>
   </q-avatar>
 </template>
 
@@ -78,6 +60,14 @@ export default {
     },
     tooltip: Boolean,
     rounded: Boolean,
+  },
+  computed: {
+    letters() {
+      return (this.user.name || this.user.company_name)
+        .split(" ")
+        .map((item) => item.charAt(0))
+        .join("");
+    },
   },
 };
 </script>
