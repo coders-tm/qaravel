@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Public file download route
 Route::get('files/{path}', 'Core\FileController@download')->name('files.download');
 
+// Frontend routes
 Route::get('{any}', function () {
     return view('app');
 })->where('any', '.*')->name('web');

@@ -5,59 +5,31 @@ use App\Models\AppSetting;
 if (!function_exists('guard')) {
     function guard()
     {
-        if (request()->route('guard')) {
-            return request()->route('guard');
-        } else if (auth('admins')->check()) {
-            return 'admins';
-        } else if (auth('users')->check()) {
-            return 'users';
-        } else {
-            return config('auth.defaults.guard');
+        if (request()->user()) {
+            return request()->user()->guard;
         }
+        return null;
     }
 }
 
 if (!function_exists('current_user')) {
     function current_user()
     {
-        if (request()->boolean('useToken')) {
-            return auth()->user(guard());
-        }
-        return auth(guard())->user();
-    }
-}
-
-if (!function_exists('admin')) {
-    function admin()
-    {
-        if (request()->boolean('useToken')) {
-            return auth()->user('admins');
-        }
-        return auth('admins')->user();
-    }
-}
-
-if (!function_exists('user')) {
-    function user()
-    {
-        if (request()->boolean('useToken')) {
-            return auth()->user('users');
-        }
-        return auth('users')->user();
+        return request()->user();
     }
 }
 
 if (!function_exists('is_user')) {
     function is_user()
     {
-        return guard() == 'users' || auth()->user()->tokenCan('users');
+        return guard() == 'users';
     }
 }
 
 if (!function_exists('is_admin')) {
     function is_admin()
     {
-        return guard() == 'admins' || auth()->user()->tokenCan('admins');
+        return guard() == 'admins';
     }
 }
 

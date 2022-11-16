@@ -49,19 +49,12 @@ class AuthController extends Controller
                 //throw $th;
             }
 
-            // use token mode
-            if ($request->boolean('useToken')) {
-                $token = $user->createToken($request->device_id, [$guard]);
-
-                // return user with token
-                return response()->json([
-                    'user' => $user,
-                    'token' => $token->plainTextToken,
-                ], 200);
-            }
-
-            // return user
-            return $this->me($guard);
+            // create and return user with token
+            $token = $user->createToken($request->device_id, [$guard]);
+            return response()->json([
+                'user' => $user,
+                'token' => $token->plainTextToken,
+            ], 200);
         } else {
             throw ValidationException::withMessages([
                 'password' => ['Your password doesn\'t match with our records.'],
@@ -71,11 +64,13 @@ class AuthController extends Controller
 
     public function logout(Request $request, $guard = 'users')
     {
-        if ($request->boolean('useToken')) {
-            $request->user($guard)->currentAccessToken()->delete();
-        } else {
+        try {
             Auth::guard($guard)->logout();
+            $request->user($guard)->currentAccessToken()->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
         }
+
         return response()->json([
             'message' => 'You have been successfully logged out!'
         ], 200);

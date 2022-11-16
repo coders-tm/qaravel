@@ -29,7 +29,7 @@ Route::prefix('auth/{guard?}')->namespace('Auth')->group(function () {
 
 // Core Routes
 Route::namespace('Core')->group(function () {
-    Route::middleware(['auth:admins'])->group(function () {
+    Route::middleware(['auth:sanctum', 'guard:admins'])->group(function () {
         // Application Settings
         Route::get('application/stats', 'ApplicationController@stats')->name('application.stats');
         Route::get('application/settings/{key}', 'ApplicationController@get_settings')->name('application.get-settings');
@@ -80,7 +80,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // Admin Routes
-Route::namespace('Admin')->middleware(['auth:admins'])->group(function () {
+Route::namespace('Admin')->middleware(['auth:sanctum', 'guard:admins'])->group(function () {
     // Users
     Route::middleware('can:update,user')->group(function () {
         Route::post('users/{user}/reset-password-request', 'UserController@reset_password_request')->name('users.reset-password-request');
