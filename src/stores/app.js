@@ -208,9 +208,6 @@ export const useAppStore = defineStore("app", {
       });
     },
     async forgotPassword(playload) {
-      if (process.env.API_MODE !== "token") {
-        await Api.get("csrf-cookie");
-      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/forgot-password`, playload)
           .then((response) => {
@@ -222,9 +219,6 @@ export const useAppStore = defineStore("app", {
       });
     },
     async resetPassword(playload) {
-      if (process.env.API_MODE !== "token") {
-        await Api.get("csrf-cookie");
-      }
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/reset-password`, playload)
           .then((response) => {
