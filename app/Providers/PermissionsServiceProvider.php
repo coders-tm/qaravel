@@ -39,7 +39,7 @@ class PermissionsServiceProvider extends ServiceProvider
 
         //Blade directives
         Blade::directive('group', function ($group, $guard = 'users') {
-            return "if(auth({$guard})->check() && auth({$guard})->user()->hasGroup({$group})) :"; //return this if statement inside php tag
+            return "if(current_user()->guard == {$guard} && current_user()->hasGroup({$group})) :"; //return this if statement inside php tag
         });
 
         Blade::directive('endgroup', function ($group) {

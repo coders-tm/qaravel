@@ -129,7 +129,7 @@ class AdminController extends Controller
             $request->password = bcrypt($request->password);
         }
 
-        if ($admin->id == $request->user('admins')->id) {
+        if ($admin->id == current_user()->id) {
             $admin->update($request->except(['is_active', 'is_supper_admin']));
         } else {
             $admin->update($request->input());
@@ -265,7 +265,7 @@ class AdminController extends Controller
      */
     public function change_admin(Request $request, Admin $admin)
     {
-        if ($admin->id == $request->user('admins')->id) {
+        if ($admin->id == current_user()->id) {
             return response()->json([
                 'message' => 'Staff can not update his/her self account.',
             ], 403);
@@ -288,7 +288,7 @@ class AdminController extends Controller
      */
     public function change_active(Request $request, Admin $admin)
     {
-        if ($admin->id == $request->user('admins')->id) {
+        if ($admin->id == current_user()->id) {
             return response()->json([
                 'message' => 'Staff can not update his/her self account.',
             ], 403);

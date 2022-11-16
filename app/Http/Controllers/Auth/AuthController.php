@@ -46,7 +46,7 @@ class AuthController extends Controller
                 // send login alert to user if smtp configured
                 $user->notify(new UserLogin($request));
             } catch (\Throwable $th) {
-                //throw $th;
+                report($th);
             }
 
             // create and return user with token
@@ -68,7 +68,7 @@ class AuthController extends Controller
             Auth::guard($guard)->logout();
             $request->user($guard)->currentAccessToken()->delete();
         } catch (\Throwable $th) {
-            //throw $th;
+            report($th);
         }
 
         return response()->json([

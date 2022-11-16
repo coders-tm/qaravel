@@ -32,7 +32,7 @@ class EnquiryPolicy
      */
     public function viewAny(Admin $admin)
     {
-        if (auth()->check()) {
+        if (is_user()) {
             return true;
         }
         return $admin->can('tickets:list');
@@ -47,8 +47,8 @@ class EnquiryPolicy
      */
     public function view(Admin $admin, Enquiry $enquiry)
     {
-        if (auth()->check()) {
-            return $enquiry->email == auth()->user()->email;
+        if (is_user()) {
+            return $enquiry->email == current_user()->email;
         }
         return $admin->can('tickets:view');
     }
@@ -61,7 +61,7 @@ class EnquiryPolicy
      */
     public function create(Admin $admin)
     {
-        if (auth()->check()) {
+        if (is_user()) {
             return true;
         }
         return $admin->can('tickets:new');
@@ -76,8 +76,8 @@ class EnquiryPolicy
      */
     public function update(Admin $admin, Enquiry $enquiry)
     {
-        if (auth()->check()) {
-            return $enquiry->email == auth()->user()->email;
+        if (is_user()) {
+            return $enquiry->email == current_user()->email;
         }
         return $admin->can('tickets:edit');
     }

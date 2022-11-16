@@ -45,7 +45,7 @@ class UserPolicy
     public function view(Admin $admin, User $user)
     {
         if (auth()->check()) {
-            return $user->id == auth()->user()->id;
+            return $user->id == current_user()->id;
         }
         return $admin->can('members:view');
     }

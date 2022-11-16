@@ -106,7 +106,7 @@ class RegistrationController extends Controller
         if ($request->boolean('has_sign_off')) {
             $request->merge([
                 'sign_off_at' => now(),
-                'admin_id' => auth('admins')->user()->id
+                'admin_id' => current_user()->id
             ]);
         } else {
             $request->merge([
