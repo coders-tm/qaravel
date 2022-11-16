@@ -110,7 +110,7 @@ class Log extends Model
     {
         parent::booted();
         static::creating(function ($model) {
-            if (empty($model->admin_id) && auth('admins')->check()) {
+            if (empty($model->admin_id) && is_admin()) {
                 $model->admin_id = current_user()->id ?? null;
             }
         });

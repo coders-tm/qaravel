@@ -34,7 +34,7 @@ class EnquiryController extends Controller
                 ->orWhere('email', 'like', "%{$request->filter}%");
         }
 
-        if ($request->filled('status') && auth('admins')->check()) {
+        if ($request->filled('status')) {
             if ($request->status == 'Open') {
                 $enquiry->where('status', '<>', StatusEnum::RESOLVED->value);
             } else {
