@@ -55,10 +55,10 @@ return new class extends Migration
                     'Delete',
                 ],
             ],
-            'Tickets' => [
+            'Enquiries' => [
                 'sort_order' => 1,
                 'icon' => 'fas fa-square-question',
-                'url' => 'support',
+                'url' => 'enquiries',
                 'show_menu' => 1,
                 'sub_items' => [
                     'View',

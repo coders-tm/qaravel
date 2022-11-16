@@ -28,7 +28,7 @@ const status_options = [
   ...default_status_options,
 ];
 
-export const useSupportStore = defineStore("support", {
+export const useEnquiryStore = defineStore("enquiry", {
   state: () => ({
     rows: [],
     module: {
@@ -109,7 +109,7 @@ export const useSupportStore = defineStore("support", {
         label: "Reply",
         permission: "Edit",
         action: "route",
-        route: "Single Support",
+        route: "Single Enquiry",
         params: (row) => ({ id: row.id }),
         query: (row) => ({ action: "edit" }),
         icon: "fas fa-paper-plane",
@@ -151,11 +151,11 @@ export const useSupportStore = defineStore("support", {
       },
       {
         icon: "fad fa-plus-circle",
-        label: "Create ticket",
+        label: "New enquiry",
         permission: "New",
         action: "route",
         params: { id: "add" },
-        route: "Single Support",
+        route: "Single Enquiry",
         color: "primary",
         deleted: "all",
         guard: ["users"],

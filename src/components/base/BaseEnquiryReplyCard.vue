@@ -105,7 +105,7 @@ import { cloneDeep } from "lodash";
 import { useAppStore } from "stores/app";
 import { mapActions, mapState } from "pinia";
 import FileSelector from "../FileSelectorDialog.vue";
-import { useSupportStore } from "stores/support";
+import { useEnquiryStore } from "stores/enquiry";
 
 const note = {
   status: null,
@@ -147,7 +147,7 @@ export default {
   },
   emits: ["create"],
   methods: {
-    ...mapActions(useSupportStore, ["reply"]),
+    ...mapActions(useEnquiryStore, ["reply"]),
     onSubmit() {
       console.func(
         "components/base/BaseNoteCard:methods.onSubmit()",
@@ -196,7 +196,7 @@ export default {
     ...mapState(useAppStore, {
       current: "user",
     }),
-    ...mapState(useSupportStore, {
+    ...mapState(useEnquiryStore, {
       status_options: "default_status_options",
     }),
     currentUser() {

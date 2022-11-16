@@ -2,7 +2,7 @@
   <q-page padding>
     <base-section no-row>
       <base-table
-        :store="useSupportStore"
+        :store="useEnquiryStore"
         :module="module"
         :columns="getColumns"
         :rows="rows"
@@ -13,7 +13,7 @@
         @request="onRequest"
         @toolbar-clicked="toolbarClicked"
         @row-clicked="rowClicked"
-        no-data-label="No supports avaialble"
+        no-data-label="No enquiries avaialble"
         no-permissions
       >
         <template v-slot:body-cell-id="props">
@@ -23,7 +23,7 @@
             size="12px"
             tag="a"
             :to="{
-              name: 'Single Support',
+              name: 'Single Enquiry',
               params: {
                 id: props.row.id,
                 title: props.row.subject || 'Contact us',
@@ -72,7 +72,7 @@
 
 <script>
 import { mapState, mapActions } from "pinia";
-import { useSupportStore } from "stores/support";
+import { useEnquiryStore } from "stores/enquiry";
 
 export default {
   data() {
@@ -91,14 +91,14 @@ export default {
         rowsNumber: 15,
         loaded: false,
       },
-      useSupportStore: useSupportStore(),
+      useEnquiryStore: useEnquiryStore(),
     };
   },
   methods: {
-    ...mapActions(useSupportStore, ["get"]),
+    ...mapActions(useEnquiryStore, ["get"]),
     onRequest(props) {
       console.func(
-        "admins/supports/SupportsPage:methods.onRequest()",
+        "admins/enquiries/EnquirysPage:methods.onRequest()",
         arguments
       );
       const { page, rowsPerPage, sortBy, descending } = props.pagination;
@@ -132,23 +132,23 @@ export default {
     },
     async actionClicked(action, row) {
       console.func(
-        "admins/supports/SupportsPage:methods.actionClicked()",
+        "admins/enquiries/EnquirysPage:methods.actionClicked()",
         arguments
       );
     },
     async toolbarClicked(action, row) {
       console.func(
-        "admins/supports/SupportsPage:methods.toolbarClicked()",
+        "admins/enquiries/EnquirysPage:methods.toolbarClicked()",
         arguments
       );
     },
     async rowClicked(evt, row) {
       console.func(
-        "admins/supports/SupportsPage:methods.rowClicked()",
+        "admins/enquiries/EnquirysPage:methods.rowClicked()",
         arguments
       );
       this.$router.push({
-        name: "Single Support",
+        name: "Single Enquiry",
         params: {
           id: row.id,
           title: row.subject || "Contact us",
@@ -165,7 +165,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(useSupportStore, [
+    ...mapState(useEnquiryStore, [
       "actions",
       "rows",
       "columns",

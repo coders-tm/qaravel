@@ -13,13 +13,13 @@
       <div class="q-gutter-md">
         <base-section
           :title="
-            creating ? 'General information' : support.subject || 'Contact us'
+            creating ? 'General information' : enquiry.subject || 'Contact us'
           "
         >
           <template v-if="creating || !isAdmin">
             <div v-if="creating" class="col-xs-12">
               <div class="text-label">Subject</div>
-              <base-input v-model="support.subject" />
+              <base-input v-model="enquiry.subject" />
             </div>
             <div class="col-xs-12 col-sm-6">
               <div class="text-label">Message</div>
@@ -28,30 +28,30 @@
                 :readonly="!creating"
                 type="textarea"
                 rows="9"
-                v-model="support.message"
+                v-model="enquiry.message"
               />
             </div>
             <div class="col-xs-12 col-sm-6">
               <template v-if="creating">
                 <div class="text-label">Attachment</div>
-                <base-dropzone v-model="support.media" />
+                <base-dropzone v-model="enquiry.media" />
               </template>
             </div>
           </template>
           <template v-else>
             <div class="col-xs-12 col-sm-2">
-              <base-input prefix="ID:" readonly v-model="support.id" />
+              <base-input prefix="ID:" readonly v-model="enquiry.id" />
             </div>
             <div class="col-xs-12 col-sm-2">
               <base-input
                 prefix="Date:"
                 readonly
-                v-model="support.created_at"
+                v-model="enquiry.created_at"
               />
             </div>
             <div class="col-xs-12 col-sm-2">
-              <base-input prefix="User:" readonly v-model="support.name">
-                <template v-if="support.user" v-slot:append>
+              <base-input prefix="User:" readonly v-model="enquiry.name">
+                <template v-if="enquiry.user" v-slot:append>
                   <q-btn
                     color="primary"
                     icon="fas fa-arrow-up-right-from-square"
@@ -63,7 +63,7 @@
                     :to="{
                       name: 'Single Member',
                       params: {
-                        id: support.user.id,
+                        id: enquiry.user.id,
                       },
                       query: {
                         action: 'edit',
@@ -74,13 +74,13 @@
               </base-input>
             </div>
             <div class="col-xs-12 col-sm-2">
-              <base-input prefix="Email:" readonly v-model="support.email" />
+              <base-input prefix="Email:" readonly v-model="enquiry.email" />
             </div>
             <div class="col-xs-12 col-sm-2">
-              <base-input prefix="Phone:" readonly v-model="support.phone" />
+              <base-input prefix="Phone:" readonly v-model="enquiry.phone" />
             </div>
             <div class="col-xs-12 col-sm-2">
-              <base-input prefix="Status:" readonly v-model="support.status" />
+              <base-input prefix="Status:" readonly v-model="enquiry.status" />
             </div>
             <div class="col-xs-12 col-sm-12">
               <base-input
@@ -88,17 +88,17 @@
                 autogrow
                 type="textarea"
                 readonly
-                v-model="support.message"
+                v-model="enquiry.message"
               />
             </div>
           </template>
 
           <template v-if="!creating">
             <div class="col-xs-12">
-              <div v-if="support.media.length" class="files">
+              <div v-if="enquiry.media.length" class="files">
                 <div class="row q-col-gutter-sm">
                   <div
-                    v-for="media in support.media"
+                    v-for="media in enquiry.media"
                     :key="media.id"
                     class="col-sm-2 col-xs-12"
                   >
@@ -118,7 +118,7 @@
         >
           <q-timeline class="comments" color="secondary">
             <base-enquiry-reply-card
-              :module-id="support.id"
+              :module-id="enquiry.id"
               class="comment"
               creating
               @create="onCreateNote"
@@ -126,10 +126,10 @@
             />
             <base-enquiry-reply-card
               class="comment"
-              v-for="note in support.replies"
+              v-for="note in enquiry.replies"
               :key="note.id"
               v-bind="note"
-              :module-id="support.id"
+              :module-id="enquiry.id"
               :user="note.user"
             />
           </q-timeline>
@@ -144,9 +144,9 @@
 import { cloneDeep } from "lodash";
 import { mapActions } from "pinia";
 import SkeletonSinglePage from "components/skeleton/SkeletonSinglePage.vue";
-import { useSupportStore } from "stores/support";
+import { useEnquiryStore } from "stores/enquiry";
 
-const support = {
+const enquiry = {
   media: [],
 };
 
@@ -156,29 +156,29 @@ export default {
   },
   data() {
     return {
-      default: cloneDeep(support),
-      support: cloneDeep(support),
+      default: cloneDeep(enquiry),
+      enquiry: cloneDeep(enquiry),
       loaded: false,
       submited: false,
     };
   },
   methods: {
-    ...mapActions(useSupportStore, ["store", "show", "update"]),
+    ...mapActions(useEnquiryStore, ["store", "show", "update"]),
     onSubmit(props) {
       console.func(
-        "pages/core/supports/SupportPage:methods.onSubmit()",
+        "pages/core/enquiries/EnquiryPage:methods.onSubmit()",
         arguments
       );
       this.submited = true;
       const method = this.creating ? this.store : this.update;
-      method(this.support)
+      method(this.enquiry)
         .then(({ data, message }) => {
           this.submited = false;
           this.$q.notify(message);
-          this.support = data;
+          this.enquiry = data;
           this.default = cloneDeep(data);
           this.$router.push({
-            name: "Single Support",
+            name: "Single Enquiry",
             params: {
               id: data.id,
             },
@@ -194,34 +194,34 @@ export default {
     },
     onReset(props) {
       console.func(
-        "pages/core/supports/SupportPage:methods.onReset()",
+        "pages/core/enquiries/EnquiryPage:methods.onReset()",
         arguments
       );
       this.loaded = false;
       this.$nextTick(() => {
-        this.support = cloneDeep(this.default);
+        this.enquiry = cloneDeep(this.default);
         this.loaded = true;
       });
     },
     onCancel(props) {
       console.func(
-        "pages/core/supports/SupportPage:methods.onCancel()",
+        "pages/core/enquiries/EnquiryPage:methods.onCancel()",
         arguments
       );
       this.$router.go(-1);
     },
     onCreateNote(props) {
       console.func(
-        "pages/core/supports/SupportPage:methods.onCreateNote()",
+        "pages/core/enquiries/EnquiryPage:methods.onCreateNote()",
         arguments
       );
       if (props) {
-        this.support.replies.splice(0, 0, cloneDeep(props));
+        this.enquiry.replies.splice(0, 0, cloneDeep(props));
         this.default.replies.splice(0, 0, cloneDeep(props));
       } else {
-        this.show(this.id).then((support) => {
-          this.support = support;
-          this.default = cloneDeep(support);
+        this.show(this.id).then((enquiry) => {
+          this.enquiry = enquiry;
+          this.default = cloneDeep(enquiry);
         });
       }
     },
@@ -231,7 +231,7 @@ export default {
       this.show(this.id)
         .then((data) => {
           this.$app.setTitle(data.subject || "Contact us");
-          this.support = data;
+          this.enquiry = data;
           this.default = cloneDeep(data);
           this.loaded = true;
         })
@@ -258,7 +258,7 @@ export default {
     disable() {
       return (
         this.default &&
-        JSON.stringify(this.support) === JSON.stringify(this.default)
+        JSON.stringify(this.enquiry) === JSON.stringify(this.default)
       );
     },
     guard() {
@@ -270,7 +270,7 @@ export default {
     resetable() {
       return (
         this.default &&
-        JSON.stringify(this.support) !== JSON.stringify(this.default)
+        JSON.stringify(this.enquiry) !== JSON.stringify(this.default)
       );
     },
   },

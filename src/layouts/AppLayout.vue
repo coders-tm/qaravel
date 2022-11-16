@@ -29,9 +29,9 @@ export default {
           route: "Dashboard",
         },
         {
-          title: "Tickets",
+          title: "Enquiries",
           icon: "fas fa-square-question",
-          route: "Support",
+          route: "Enquiries",
         },
       ];
     },
