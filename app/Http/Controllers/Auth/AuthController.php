@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         try {
             Auth::guard($guard)->logout();
-            $request->user($guard)->currentAccessToken()->delete();
+            $request->user()->currentAccessToken()->delete();
         } catch (\Throwable $th) {
             report($th);
         }
@@ -134,7 +134,7 @@ class AuthController extends Controller
         // Validate those rules
         $this->validate($request, $rules);
 
-        $user = $request->user($guard);
+        $user = current_user();
         if (Hash::check($request->old_password,  $user->password)) {
             $user->update([
                 'password' => bcrypt($request->password)
