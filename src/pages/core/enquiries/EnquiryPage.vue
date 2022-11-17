@@ -21,7 +21,7 @@
               <div class="text-label">Subject</div>
               <base-input v-model="enquiry.subject" />
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div :class="{ 'col-xs-12': true, 'col-sm-6': creating }">
               <div class="text-label">Message</div>
               <base-input
                 :autogrow="!creating"
@@ -31,11 +31,9 @@
                 v-model="enquiry.message"
               />
             </div>
-            <div class="col-xs-12 col-sm-6">
-              <template v-if="creating">
-                <div class="text-label">Attachment</div>
-                <base-dropzone v-model="enquiry.media" />
-              </template>
+            <div v-if="creating" class="col-xs-12 col-sm-6">
+              <div class="text-label">Attachment</div>
+              <base-dropzone v-model="enquiry.media" />
             </div>
           </template>
           <template v-else>
@@ -93,9 +91,9 @@
             </div>
           </template>
 
-          <template v-if="!creating">
+          <template v-if="!creating && enquiry.media.length">
             <div class="col-xs-12">
-              <div v-if="enquiry.media.length" class="files">
+              <div class="files">
                 <div class="row q-col-gutter-sm">
                   <div
                     v-for="media in enquiry.media"
