@@ -21,10 +21,10 @@ export default boot(async ({ router, store }) => {
     }
   });
   router.beforeResolve((to, from, next) => {
-    // const module = to.meta.module;
-    const module = false;
+    const module = to.meta.module;
+    const permission = to.meta.permission;
     if (module) {
-      if (app.hasPermission(module)) {
+      if (app.hasModulePermission(module, permission)) {
         next();
       } else {
         next({ name: "Dashboard" });

@@ -37,15 +37,15 @@ export const useAppStore = defineStore("app", {
     hasModulePermission(state) {
       return (module, permission = false) => {
         if (state.user.modules) {
-          const _module = state.user.modules.find(
+          const userModule = state.user.modules.find(
             (item) => item.name === module
           );
-          if (!permission && _module) {
+          if (!permission && userModule) {
             return true;
           } else if (
             permission &&
-            _module &&
-            _module.permissions.find((item) => item.action === permission)
+            userModule &&
+            userModule.permissions.find((item) => item.action === permission)
           ) {
             return true;
           }
