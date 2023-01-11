@@ -24,9 +24,7 @@ export default [
         name: "Enquiries",
         meta: {
           auth: true,
-          admin: true,
           guard: "users",
-          module: "Enquiries",
           base: "Enquiries",
         },
         component: () => import("pages/core/enquiries/EnquiriesPage.vue"),
@@ -36,13 +34,38 @@ export default [
         name: "Single Enquiry",
         meta: {
           auth: true,
-          admin: true,
           guard: "users",
           title: "Create Enquiry",
-          module: "Enquiries",
           base: "Enquiries",
         },
         component: () => import("pages/core/enquiries/EnquiryPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/posts",
+    component: () => import("layouts/AppLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Posts",
+        meta: {
+          auth: true,
+          guard: "users",
+          base: "Posts",
+        },
+        component: () => import("pages/app/posts/IndexPage.vue"),
+      },
+      {
+        path: ":post",
+        name: "Single Post",
+        meta: {
+          auth: true,
+          guard: "users",
+          title: "Create Post",
+          base: "Posts",
+        },
+        component: () => import("pages/app/posts/SinglePostPage.vue"),
       },
     ],
   },

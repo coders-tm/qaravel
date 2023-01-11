@@ -33,6 +33,11 @@ export default {
           icon: "fas fa-square-question",
           route: "Enquiries",
         },
+        {
+          title: "Posts",
+          icon: "fas fa-square-question",
+          route: "Posts",
+        },
       ];
     },
   },

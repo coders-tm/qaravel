@@ -76,7 +76,7 @@ Route::namespace('Core')->group(function () {
 
 // Common Routes
 Route::middleware(['auth:sanctum'])->group(function () {
-    //
+    Route::apiResource('posts', 'PostController');
 });
 
 // Admin Routes
