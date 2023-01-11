@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr fFf" class="bg-main">
+  <q-layout view="hHh LpR lFr" class="bg-main">
     <layout-header @update-left-drawer="$refs.layoutDrawer.toggle()" />
 
     <layout-drawer
@@ -17,13 +17,10 @@
 <script>
 import LayoutHeader from "components/LayoutHeader.vue";
 import LayoutDrawer from "components/LayoutDrawer.vue";
-import { mapState } from "pinia";
-import { useAppStore } from "stores/app";
 
 export default {
   components: { LayoutHeader, LayoutDrawer },
   computed: {
-    ...mapState(useAppStore, ["statistics"]),
     sideMenus() {
       return [
         {
@@ -32,35 +29,34 @@ export default {
           route: "Dashboard",
         },
         {
-          title: "Confidential Listings",
-          icon: "fas fa-laptop-house",
-          route: "Confidential Listings",
-        },
-        {
-          title: "Listings",
-          icon: "fas fa-home",
-          route: "Property Listings",
-        },
-        {
           title: "Enquiries",
-          icon: "fas fa-paper-plane",
-          route: "Enquiry Index",
-          notification: this.statistics.unseen_enquiry,
+          icon: "fas fa-square-question",
+          route: "Enquiries",
         },
         {
-          title: "Tags",
-          icon: "fas fa-tag",
-          route: "Tags",
+          title: "Members",
+          icon: "fas fa-user-tag",
+          route: "Members",
         },
         {
-          title: "Types",
-          icon: "fas fa-tag",
-          route: "Types",
+          title: "Staff",
+          icon: "fas fa-user-shield",
+          route: "Staff",
+          subLinks: [
+            {
+              title: "All Staff",
+              route: "Staff",
+            },
+            {
+              title: "Groups",
+              route: "Groups",
+            },
+          ],
         },
         {
-          title: "Categories",
-          icon: "fas fa-tag",
-          route: "Categories",
+          title: "Settings",
+          icon: "fas fa-gear",
+          route: "Settings",
         },
       ];
     },

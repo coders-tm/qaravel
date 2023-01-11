@@ -1,10 +1,36 @@
 <template>
   <q-page padding class="flex flex-center">
-    <div class="row" style="width: 300px">
-      <div class="text-h5">Homepage</div>
+    <div class="text-center" style="width: 300px">
+      <img style="width: 150px" src="/images/logo.png" />
       <div class="sub-title">
-        This page is blank, content is currently being developed.
+        Qaravel is a Combination of Laravel and Quasar.
+      </div>
+      <div class="q-pt-sm q-gutter-x-sm">
+        <base-btn :href="adminLink"> Admin Dashboard </base-btn>
+        <base-btn :href="appLink">App Dashboard</base-btn>
       </div>
     </div>
   </q-page>
 </template>
+
+<script>
+export default {
+  computed: {
+    adminLink() {
+      return this.origin.replace(this.hostname, `admin.${this.appDomain}`);
+    },
+    appLink() {
+      return this.origin.replace(this.hostname, `app.${this.appDomain}`);
+    },
+    appDomain() {
+      return process.env.APP_DOMAIN;
+    },
+    origin() {
+      return window.location.origin;
+    },
+    hostname() {
+      return window.location.hostname;
+    },
+  },
+};
+</script>

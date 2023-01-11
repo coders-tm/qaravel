@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-page padding>
     <div class="q-gutter-y-lg">
       <q-card>
         <q-card-section>
@@ -24,11 +24,11 @@
                 <div class="text-label">Surname</div>
 
                 <q-input
-                  :error-message="$core.errorMessage('surname', errors)"
-                  :error="$core.hasError('surname', errors)"
+                  :error-message="$core.errorMessage('last_name', errors)"
+                  :error="$core.hasError('last_name', errors)"
                   dense
                   outlined
-                  v-model="user.surname"
+                  v-model="user.last_name"
                   type="text"
                 />
               </div>
@@ -162,13 +162,12 @@
         </q-card-section>
       </q-card>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
 import { mapActions, mapState } from "pinia";
 import { useAppStore } from "stores/app";
-const guard = "users";
 
 export default {
   data() {

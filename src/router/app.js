@@ -1,42 +1,54 @@
 export default [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    redirect: "/dashboard",
+    component: () => import("layouts/AppLayout.vue"),
     children: [
       {
-        path: "",
-        name: "Homepage",
-        component: () => import("pages/IndexPage.vue"),
+        path: "dashboard",
+        name: "Dashboard",
+        meta: {
+          auth: true,
+          guard: "users",
+        },
+        component: () => import("pages/app/IndexPage.vue"),
       },
     ],
   },
   {
-    path: "/posts",
-    component: () => import("layouts/MainLayout.vue"),
+    path: "/enquiries",
+    component: () => import("layouts/AppLayout.vue"),
     children: [
       {
         path: "",
-        name: "Posts",
+        name: "Enquiries",
         meta: {
           auth: true,
+          admin: true,
           guard: "users",
+          module: "Enquiries",
+          base: "Enquiries",
         },
-        component: () => import("pages/users/IndexPage.vue"),
+        component: () => import("pages/core/enquiries/EnquiriesPage.vue"),
       },
       {
-        path: ":post",
-        name: "Post",
+        path: ":id",
+        name: "Single Enquiry",
         meta: {
           auth: true,
+          admin: true,
           guard: "users",
+          title: "Create Enquiry",
+          module: "Enquiries",
+          base: "Enquiries",
         },
-        component: () => import("pages/users/SinglePostPage.vue"),
+        component: () => import("pages/core/enquiries/EnquiryPage.vue"),
       },
     ],
   },
   {
     path: "/",
-    component: () => import("layouts/AccountLayout.vue"),
+    component: () => import("layouts/AppLayout.vue"),
     children: [
       {
         path: "my-account",
@@ -80,21 +92,6 @@ export default [
         },
         name: "Reset Password",
         component: () => import("pages/core/auth/ResetPasswordPage.vue"),
-      },
-    ],
-  },
-  {
-    path: "/sign-up",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [
-      {
-        path: "",
-        name: "Sign up",
-        meta: {
-          auth: false,
-          guard: "users",
-        },
-        component: () => import("pages/SignUpPage.vue"),
       },
     ],
   },

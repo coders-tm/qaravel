@@ -5,9 +5,11 @@
     :icon="icon"
     :label="title"
     expand-icon-class="hidden"
-    active-class="sublink-active"
+    class="sublinks"
+    :header-class="{
+      'sublink-active': active,
+    }"
     :to="{ name: route }"
-    dense
   >
     <q-item
       v-for="(item, index) in subLinks"
@@ -17,10 +19,6 @@
       :to="{ name: item.route, params: item.params }"
       v-ripple
       active-class="active"
-      :class="{
-        active: isActive(item),
-      }"
-      exact
     >
       <q-item-section avatar style="min-width: auto" class="q-pr-md">
         <q-icon :name="item.icon" size="18px"></q-icon>
@@ -70,7 +68,7 @@ export default {
     },
     route: {
       type: String,
-      default: '',
+      default: "",
     },
     params: {
       type: Object,
@@ -78,7 +76,7 @@ export default {
     },
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
     notification: [String, Number],
     subLinks: {

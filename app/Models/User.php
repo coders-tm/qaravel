@@ -2,34 +2,55 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\StatusEnum;
+use App\Models\Core\Log;
+use App\Models\Core\Enquiry;
+use App\Traits\HasBelongsToOne;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Traits\HasPermissionsTrait;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Notifications\Notifiable;
-use Creativeorange\Gravatar\Facades\Gravatar;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class User extends Admin implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyEmail, HasPermissionsTrait;
+    use HasBelongsToOne;
+
+    protected $guard = "users";
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'first_name',
         'last_name',
-        'avater',
         'email',
         'password',
+        'phone_number',
+        'calendar_color',
         'is_active',
-        'is_admin',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'status' => StatusEnum::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'is_active' => 'boolean',
+        'created_at' => 'datetime:d M, Y \a\t h:i a',
     ];
 
     /**
@@ -38,8 +59,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'avatar_url',
         'name',
+        'guard',
+        'member_since',
     ];
 
     /**
@@ -47,44 +69,52 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = [];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'avater',
-        'password',
-        'remember_token',
+    protected $with = [
+        'avatar',
+        'address',
+        'last_login',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     * Get the full name of the user.
+     * Get the member since of the user.
      *
      * @return bool
      */
-    public function getNameAttribute()
+    public function getMemberSinceAttribute()
     {
-        return "{$this->first_name} {$this->last_name}";
+        return $this->created_at->format('Y');
     }
 
-    public function getAvatarUrlAttribute()
+    public function logs()
     {
-        if ($this->avater == null) {
-            return Gravatar::get($this->email, ['size' => 200]);
-        } else {
-            return Storage::disk('public')->url($this->avater);
-        }
+        return $this->morphMany(Log::class, 'logable')->whereNotIn('type', ['login'])->orderBy('created_at', 'desc');
+    }
+
+    public function last_update()
+    {
+        return $this->morphOne(Log::class, 'logable')->whereNotIn('type', ['login', 'created'])->latestOfMany();
+    }
+
+    /**
+     * Scope a query to only include onlyActive
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOnlyActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::updated(function ($model) {
+            Enquiry::withoutEvents(function () use ($model) {
+                Enquiry::where('email', $model->getOriginal('email'))->update([
+                    'email' => $model->email
+                ]);
+            });
+        });
     }
 }

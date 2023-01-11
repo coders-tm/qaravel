@@ -10,8 +10,11 @@ export default boot(async ({ router, store }) => {
     if (auth) {
       if (app.isAuthenticated) {
         next();
+        app.currentUser(to.meta.guard).catch((error) => {
+          router.push({ name: "Login", query: { redirect: to.fullPath } });
+        });
       } else {
-        next({ name: "Login", params: { to: to } });
+        next({ name: "Login", query: { redirect: to.fullPath } });
       }
     } else {
       next();
@@ -19,10 +22,9 @@ export default boot(async ({ router, store }) => {
   });
   router.beforeResolve((to, from, next) => {
     const module = to.meta.module;
+    const permission = to.meta.permission;
     if (module) {
-      if (module === "Dashboard" && !app.hasPermission(module)) {
-        next({ name: "Error 404" });
-      } else if (app.hasPermission(module)) {
+      if (app.hasModulePermission(module, permission)) {
         next();
       } else {
         next({ name: "Dashboard" });

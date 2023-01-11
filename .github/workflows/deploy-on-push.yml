@@ -1,0 +1,46 @@
+name: Deploy to Server on Push
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-server:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Fontawesome Key
+        run: npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }}
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: yarn action:add-known-hosts
+
+      - name: Create Frontend Env File
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_APP_ENV: ${{ secrets.APP_ENV }}
+          envkey_APP_NAME: ${{ secrets.APP_NAME }}
+          envkey_API_URL: ${{ secrets.API_URL }}
+          envkey_APP_DEBUG: ${{ secrets.APP_DEBUG }}
+          envkey_COOKIE_URL: ${{ secrets.COOKIE_URL }}
+          envkey_APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+          file_name: .env.frontend.alpha
+
+      - name: Install dependencies and Build package
+        run: yarn global add @quasar/cli && yarn global add @quasar/icongenie && yarn install && export TERM=xterm
+
+      - name: Deploy Alpha Mode
+        run: yarn build:alpha && yarn sync:alpha

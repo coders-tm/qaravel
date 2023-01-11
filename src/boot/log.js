@@ -4,7 +4,7 @@ export default () => {
       origConsole = {};
     }
 
-    var isDebug = process.env.DEV,
+    var isDebug = process.env.APP_DEBUG === "true",
       isSaveLog = false,
       logArray = {
         logs: [],

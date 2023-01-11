@@ -25,6 +25,17 @@ export default [
         },
         component: () => import("pages/admins/MyAccountPage.vue"),
       },
+      {
+        path: "settings",
+        name: "Settings",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          title: "Settings",
+        },
+        component: () => import("pages/admins/SettingsPage.vue"),
+      },
     ],
   },
   {
@@ -60,6 +71,126 @@ export default [
         },
         name: "Reset Password",
         component: () => import("pages/core/auth/ResetPasswordPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/staff",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Staff",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Staff",
+        },
+        component: () => import("pages/core/staffs/StaffsPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Staff",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Staff",
+        },
+        component: () => import("pages/core/staffs/StaffPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/groups",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Groups",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Groups",
+        },
+        component: () => import("pages/core/groups/GroupsPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Group",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          base: "Staff",
+          module: "Groups",
+        },
+        component: () => import("pages/core/groups/GroupPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/members",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Members",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Members",
+          base: "Members",
+        },
+        component: () => import("pages/admins/members/MembersPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Member",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Members",
+          base: "Members",
+        },
+        component: () => import("pages/admins/members/MemberPage.vue"),
+      },
+    ],
+  },
+  {
+    path: "/enquiries",
+    component: () => import("src/layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: "Enquiries",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Enquiries",
+          base: "Enquiries",
+        },
+        component: () => import("pages/core/enquiries/EnquiriesPage.vue"),
+      },
+      {
+        path: ":id",
+        name: "Single Enquiry",
+        meta: {
+          auth: true,
+          admin: true,
+          guard: "admins",
+          module: "Enquiries",
+          base: "Enquiries",
+        },
+        component: () => import("pages/core/enquiries/EnquiryPage.vue"),
       },
     ],
   },

@@ -42,6 +42,7 @@ class RouteServiceProvider extends ServiceProvider
             if (config('app.tunnel_domain')) {
                 Route::domain(config('app.tunnel_domain'))
                     ->middleware('api')
+                    ->namespace($this->namespace)
                     ->group(base_path('routes/api.php'));
             }
 
@@ -57,6 +58,16 @@ class RouteServiceProvider extends ServiceProvider
                     ->namespace($this->namespace)
                     ->group(base_path('routes/api.php'));
             }
+
+            Route::domain('admin.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/admin.php'));
+
+            Route::domain('members.' . config('app.domain'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/admin.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)

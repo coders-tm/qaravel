@@ -8,9 +8,8 @@ yarn.lock
 .quasar
 .vs
 node_modules
-storage/logs
-public/storage
 storage/*
+public/storage
 public/.well-known
 vendor
 tests
@@ -21,3 +20,4 @@ dist
 *.pem
 resources/frontend
 .DS_Store
+old-site

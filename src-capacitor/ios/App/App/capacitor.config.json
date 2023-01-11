@@ -1,0 +1,7 @@
+{
+  "appId": "com.coderstm.qaravelmembers",
+  "appName": "Qaravel",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

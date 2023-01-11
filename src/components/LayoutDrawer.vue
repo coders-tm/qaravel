@@ -6,16 +6,29 @@
     show-if-above
     :width="250"
     side="left"
-    class="bg-main text-black"
+    class="bg-white text-black"
   >
+    <q-toolbar v-if="user && $q.screen.lt.sm" class="q-pa-md">
+      <base-current-user
+        class="q-pa-none cursor-pointer"
+        style="width: 100%"
+      />
+    </q-toolbar>
     <q-list class="bg-white">
-      <links-list class="link-item" v-for="link in sideMenus" :key="link.title" v-bind="link" />
+      <links-list
+        class="link-item"
+        v-for="link in sideMenus"
+        :key="link.title"
+        v-bind="link"
+      />
     </q-list>
   </q-drawer>
 </template>
 
 <script>
-import LinksList from './LinksList.vue';
+import { mapState } from "pinia";
+import LinksList from "./LinksList.vue";
+import { useAppStore } from "src/stores/app";
 
 export default {
   components: {
@@ -30,7 +43,7 @@ export default {
       type: Array,
     },
   },
-  emits: ['update:model-value'],
+  emits: ["update:model-value"],
   data() {
     return {
       value: this.modelValue,
@@ -40,6 +53,9 @@ export default {
     toggle() {
       this.$refs.drawer.toggle();
     },
+  },
+  computed: {
+    ...mapState(useAppStore, ["user"]),
   },
 };
 </script>

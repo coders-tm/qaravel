@@ -30,6 +30,9 @@ $text-menu: #313131;
 $active-menu-bg: #f3fdff;
 $background: #f5f5f5;
 
+$header-height: 70px;
+$header-height-iso: 120px;
+
 $h1: (
   size: 6rem,
   line-height: 6rem,
@@ -142,7 +145,7 @@ $text-weights: (
 $dimmed-background: rgba(0, 0, 0, 0.4);
 $light-dimmed-background: rgba(255, 255, 255, 0.6);
 
-$separator-color: #999999;
+$separator-color: #e6e6e6;
 $separator-dark-color: rgba(255, 255, 255, 0.28);
 
 $generic-border-radius: 12px;

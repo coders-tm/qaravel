@@ -1,6 +1,7 @@
 <template>
   <div>
     <q-drawer
+      v-if="hasFilter"
       side="right"
       ref="filter"
       bordered
@@ -16,7 +17,11 @@
       <q-card class="bg-transparent" flat square>
         <q-card-section class="row q-col-gutter-md">
           <slot name="advanced-filter" v-bind:syncPagination="syncPagination">
-            <div v-for="(item, index) in filters" :key="index" class="col-12 filter-item">
+            <div
+              v-for="(item, index) in filters"
+              :key="index"
+              class="col-12 filter-item"
+            >
               <div v-if="item.title" class="text-label">{{ item.title }}</div>
               <component
                 :is="item.component"
@@ -29,15 +34,15 @@
         </q-card-section>
       </q-card>
     </q-drawer>
-    <template v-if="syncPagination.loaded">
+    <template v-if="syncPagination.loaded || loaded">
       <q-table
         class="main-table"
         square
-        :grid="grid"
         :rows="rows"
         :columns="columns"
         :bordered="bordered"
-        :hide-header="hideHeader"
+        :grid="grid || $q.screen.lt.md"
+        :hide-header="hideHeader || $q.screen.lt.md"
         :flat="flat"
         row-key="id"
         :hide-pagination="hidePagination"
@@ -50,6 +55,7 @@
         @request="onRequest"
         @row-click="onRowClicked"
         :no-data-label="noDataLabel"
+        :visible-columns="visibleColumns"
       >
         <template v-if="!hideTop" v-slot:top="scope">
           <slot
@@ -78,7 +84,11 @@
                       dense
                     >
                       <template v-slot:append>
-                        <q-icon v-if="!syncPagination.filter" name="fas fa-search" size="16px" />
+                        <q-icon
+                          v-if="!syncPagination.filter"
+                          name="fas fa-search"
+                          size="16px"
+                        />
                       </template>
                     </q-input>
                   </slot>
@@ -104,21 +114,21 @@
                           "
                           icon="fas fa-trash-alt"
                           color="negative"
-                          size="13px"
                           flat
                           @click="
                             onToolbarClicked({
                               action: 'delete',
                             })
                           "
-                          padding="8px 20px"
                           class="toolbar"
                           label="Delete"
                           no-caps
                         />
                       </div>
                       <div
-                        v-else-if="syncPagination.deleted && selected.length > 0"
+                        v-else-if="
+                          syncPagination.deleted && selected.length > 0
+                        "
                         class="toolbar-item"
                       >
                         <q-btn
@@ -129,14 +139,12 @@
                           "
                           icon="fas fa-trash-undo"
                           color="primary"
-                          size="13px"
                           flat
                           @click="
                             onToolbarClicked({
                               action: 'restore',
                             })
                           "
-                          padding="8px 20px"
                           class="toolbar"
                           label="Restore"
                           no-caps
@@ -147,6 +155,7 @@
                         :key="index"
                         v-show="hasPermission(item)"
                         class="toolbar-item"
+                        :width="item.width"
                       >
                         <template v-if="item.component">
                           <component
@@ -154,73 +163,99 @@
                             v-model="syncPagination[item.key]"
                             @update:model-value="onToolbarClicked(item)"
                             v-bind="item"
-                          />
+                          >
+                            <base-tooltip
+                              v-if="item.tooltip"
+                              position="top"
+                            >
+                              {{ item.tooltip }}
+                            </base-tooltip>
+                          </component>
                         </template>
                         <template v-else>
                           <q-btn
-                            size="13px"
                             @click="onToolbarClicked(item)"
-                            padding="9px 20px"
                             v-bind="item"
                             no-caps
-                          />
+                          >
+                            <base-tooltip
+                              v-if="item.tooltip"
+                              position="top"
+                            >
+                              {{ item.tooltip }}
+                            </base-tooltip>
+                          </q-btn>
                         </template>
                       </div>
                     </div>
                   </slot>
                 </div>
               </div>
+              <slot name="top-bottom"></slot>
             </div>
           </slot>
         </template>
 
         <template v-slot:header-selection="scope">
           <slot name="header-selection" v-bind="scope">
-            <q-checkbox size="sm" v-model="scope.selected" />
+            <q-checkbox dense size="sm" v-model="scope.selected" />
           </slot>
         </template>
 
         <template v-slot:body-selection="scope">
           <slot name="body-selection" v-bind="scope">
-            <q-checkbox size="sm" v-model="scope.selected" />
+            <q-checkbox dense size="sm" v-model="scope.selected" />
           </slot>
         </template>
 
-        <template v-for="slot in tableSlots" v-slot:[slot]="props">
-          <slot
-            :name="slot"
-            v-bind="props"
-            v-bind:props="props"
-            v-bind:permissions="permissions"
-            v-bind:actions="actionItems"
-            v-bind:onActionClicked="onActionClicked"
-          >
-            <q-td :props="props">{{ props.value }}</q-td>
-          </slot>
+        <template v-if="!!$slots.body" v-slot:body="props">
+          <slot name="body" v-bind="props"></slot>
+        </template>
+
+        <template v-for="slot in tableSlots" v-slot:[slot]="props" :key="slot">
+          <q-td :props="props">
+            <slot
+              :name="slot"
+              v-bind="props"
+              v-bind:props="props"
+              v-bind:permissions="permissions"
+              v-bind:actions="actionItems"
+              v-bind:onActionClicked="onActionClicked"
+            >
+              <span v-html="props.value"></span>
+            </slot>
+          </q-td>
         </template>
 
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-            <q-btn round flat dense icon="fal fa-ellipsis-h" @click.stop>
-              <q-menu dense>
-                <q-list class="q-pa-sm" dense style="min-width: 100px">
-                  <base-item
-                    v-for="(item, index) in actionItems"
-                    :key="index"
-                    v-show="hasPermission(item, props)"
-                    @click="onActionClicked(item, props)"
-                    :icon="item.icon"
-                    :label="item.label"
-                  />
-                </q-list>
-              </q-menu>
-            </q-btn>
+            <slot name="actions" v-bind="props">
+              <q-btn round flat dense icon="fal fa-ellipsis-h" @click.stop>
+                <q-menu dense>
+                  <q-list
+                    class="q-pa-sm actions"
+                    dense
+                    style="min-width: 100px"
+                  >
+                    <base-item
+                      v-for="(item, index) in actionItems"
+                      :key="index"
+                      v-show="hasPermission(item, props)"
+                      @click="onActionClicked(item, props)"
+                      :icon="getValue(item, props, 'icon')"
+                      :label="getValue(item, props, 'label')"
+                    />
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </slot>
           </q-td>
         </template>
 
         <template v-slot:item="props">
           <slot
             name="item"
+            v-bind="props"
             v-bind:props="props"
             v-bind:permissions="permissions"
             v-bind:actions="actionItems"
@@ -229,17 +264,25 @@
           >
             <div v-bind:class="cardClass" class="col-xs-12 col-sm-12">
               <q-item
-                tag="label"
                 :class="{
+                  'body-item': true,
                   'bg-green-2': props.selected,
                   'bg-white': !props.selected,
                 }"
+                @click.stop="(evt) => $emit('row-clicked', evt, props.row)"
+                clickable
               >
-                <q-item-section v-if="['single', 'multiple'].includes(selection)" avatar>
-                  <q-checkbox dense v-model="props.selected" />
+                <q-item-section
+                  v-if="['single', 'multiple'].includes(selection)"
+                  avatar
+                  class="body-selection"
+                >
+                  <slot name="body-selection" v-bind="props">
+                    <q-checkbox dense size="sm" v-model="props.selected" />
+                  </slot>
                 </q-item-section>
                 <slot
-                  name="item-selection"
+                  name="item-section"
                   v-bind:props="props"
                   v-bind:permissions="permissions"
                   v-bind:actions="actionItems"
@@ -247,47 +290,70 @@
                   v-bind:hasPermission="hasPermission"
                 >
                   <q-item-section>
-                    <slot name="item-body" v-bind="props">
-                      <div
+                    <slot name="section-body" v-bind="props">
+                      <q-item-label
                         class="q-mb-xs"
-                        v-for="col in props.cols.filter(
-                          (item) => !['actions', 'id'].includes(item.name) && item.value
+                        v-for="(col, index) in props.cols.filter(
+                          (item) =>
+                            !['actions'].includes(item.name) &&
+                            canVisiable(item.name)
                         )"
+                        :tabindex="index"
                         :key="col.name"
                       >
-                        <div v-if="!hideItemLabel" class="q-table__grid-item-title">
+                        <div
+                          v-if="!hideItemLabel"
+                          class="q-table__grid-item-title"
+                        >
                           {{ col.label }}
                         </div>
                         <slot
-                          :name="`item-body-${col.name}`"
+                          :name="`body-cell-${col.name}`"
                           v-bind="props"
                           v-bind:value="col.value"
-                          >{{ col.value }}</slot
                         >
-                      </div>
+                          <span v-html="col.value"></span>
+                        </slot>
+                      </q-item-label>
                     </slot>
                   </q-item-section>
                 </slot>
-                <q-item-section v-if="!noActions" side>
-                  <q-btn round flat dense icon="fal fa-ellipsis-h" @click.stop>
-                    <q-menu dense>
-                      <q-list class="q-pa-sm" dense style="min-width: 100px">
-                        <base-item
-                          v-for="(item, index) in actionItems"
-                          :key="index"
-                          v-show="hasPermission(item, props)"
-                          @click="onActionClicked(item, props)"
-                          :icon="item.icon"
-                          :label="item.label"
-                        />
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
+                <q-item-section v-if="canVisiable('actions')" side>
+                  <slot name="actions" v-bind="props">
+                    <q-btn
+                      round
+                      flat
+                      dense
+                      icon="fal fa-ellipsis-h"
+                      @click.stop
+                    >
+                      <q-menu dense>
+                        <q-list
+                          class="q-pa-sm actions"
+                          dense
+                          style="min-width: 100px"
+                        >
+                          <base-item
+                            v-for="(item, index) in actionItems"
+                            :key="index"
+                            v-show="hasPermission(item, props)"
+                            @click="onActionClicked(item, props)"
+                            :icon="getValue(item, props, 'icon')"
+                            :label="getValue(item, props, 'label')"
+                          />
+                        </q-list>
+                      </q-menu>
+                    </q-btn>
+                  </slot>
                 </q-item-section>
               </q-item>
               <q-separator />
             </div>
           </slot>
+        </template>
+
+        <template v-slot:bottom-row="cols">
+          <slot v-bind="cols" name="bottom-row"></slot>
         </template>
 
         <template v-if="!!$slots.bottom" v-slot:bottom="scope">
@@ -304,22 +370,37 @@
 </template>
 
 <script>
-import { map } from 'lodash';
-import TableSkeleton from '../skeleton/TableSkeleton.vue';
+import { map } from "lodash";
+import TableSkeleton from "../skeleton/TableSkeleton.vue";
+
+const getValue = (item, props, key) =>
+  typeof item[key] === "function" ? item[key](props.row) : item[key];
+
+const exportMethod = (item, store) => {
+  if (typeof item.method === "function") {
+    return item.method;
+  } else if (store) {
+    return store.get;
+  } else {
+    return false;
+  }
+};
 
 const exceptSlots = [
-  'advanced-filter',
-  'pre-loader',
-  'header-selection',
-  'body-selection',
-  'body-cell-actions',
-  'bottom',
-  'item',
-  'item-selection',
-  'top',
-  'top-left',
-  'top-right',
-  'top-bottom',
+  "advanced-filter",
+  "pre-loader",
+  "header-selection",
+  "body-selection",
+  "body-cell-actions",
+  "body",
+  "bottom",
+  "bottom-row",
+  "item",
+  "item-selection",
+  "top",
+  "top-left",
+  "top-right",
+  "top-bottom",
 ];
 
 export default {
@@ -327,6 +408,7 @@ export default {
   data() {
     return {
       selected: [],
+      getValue,
     };
   },
   props: {
@@ -347,6 +429,8 @@ export default {
       type: [Array],
       default: () => [],
     },
+    onRequest: Function,
+    onRowClicked: Function,
     toolbar: {
       required: false,
       type: [Array],
@@ -363,8 +447,11 @@ export default {
       default: () => [],
     },
     pagination: {
-      required: true,
+      required: false,
       type: [Object],
+      default: () => ({
+        loaded: false,
+      }),
     },
     grid: {
       required: false,
@@ -443,25 +530,25 @@ export default {
     },
     selection: {
       required: false,
-      description: 'Available options: single, multiple and none',
+      description: "Available options: single, multiple and none",
       type: [String],
-      default: 'none',
+      default: "none",
     },
     filterTitle: {
       required: false,
       type: [String],
-      default: 'Filters',
+      default: "Filters",
     },
     filterIcon: {
       required: false,
       type: [String],
-      default: 'fal fa-filter',
+      default: "fal fa-filter",
     },
     relatedDeleteMessage: {
       required: false,
       type: [String, Boolean],
       default:
-        'Please note that once you permanently delete type module, any related(s) where they have added to will lose them too.',
+        "Please note that once you permanently delete type module, any related(s) where they have added to will lose them too.",
     },
     noDataLabel: {
       type: [String],
@@ -475,38 +562,36 @@ export default {
       required: false,
       type: [Number],
       default: 9,
-      description: 'max value 12 and min value 1',
+      description: "max value 12 and min value 1",
       validator(value) {
         return value <= 12 || value >= 1;
       },
     },
+    visibleColumns: Array,
   },
   watch: {
-    'syncPagination.rowsPerPage'() {
+    "syncPagination.rowsPerPage"() {
       this.sendServerRequest();
     },
   },
   methods: {
-    onRequest(props) {
-      console.func('components/base/base-table:methods.onRequest()', arguments);
-      this.$emit('request', props);
-    },
-    onRowClicked(evt, row) {
-      console.func('components/base/base-table:methods.onRowClicked()', arguments);
-      this.$emit('row-clicked', evt, row);
-    },
     onActionClicked(item, props) {
-      console.func('components/base/base-table:methods.onActionClicked()', arguments);
-      this.$emit('action-clicked', item.action, props.row);
+      console.func(
+        "components/base/base-table:methods.onActionClicked()",
+        arguments
+      );
+      this.$emit("action-clicked", item.action, props.row);
 
       // checked default actions status
       if (this.preventDefault) return false;
 
       switch (item.action) {
-        case 'delete':
+        case "delete":
           this.hasStore();
           this.$core
-            .confirm(`Are you sure you want to delete this ${this.module.singular}?`)
+            .confirm(
+              `Are you sure you want to delete this ${this.module.singular}?`
+            )
             .then(() => {
               this.store
                 .delete(props.row.id)
@@ -514,14 +599,16 @@ export default {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'restore':
+        case "restore":
           this.hasStore();
           this.$core
-            .confirm(`Are you sure you want to restore this ${this.module.singular}?`)
+            .confirm(
+              `Are you sure you want to restore this ${this.module.singular}?`
+            )
             .then(() => {
               this.store
                 .restore(props.row.id)
@@ -529,18 +616,21 @@ export default {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'force-delete':
+        case "force-delete":
           this.hasStore();
           this.$core
-            .confirm(`Are you sure you want to permanently delete this ${this.module.singular}?`, {
-              subTitle: this.relatedDeleteMessage
-                .replace(/type/g, 'this')
-                .replace(/module/g, this.module.singular),
-            })
+            .confirm(
+              `Are you sure you want to permanently delete this ${this.module.singular}?`,
+              {
+                subTitle: this.relatedDeleteMessage
+                  .replace(/type/g, "this")
+                  .replace(/module/g, this.module.singular),
+              }
+            )
             .then(() => {
               this.store
                 .forceDelete(props.row.id)
@@ -548,11 +638,11 @@ export default {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'route':
+        case "route":
           this.$router.push({
             name: item.route,
             params: item.params ? item.params(props.row) : {},
@@ -560,87 +650,109 @@ export default {
           });
           break;
         default:
-          if (typeof item.action === 'function') {
+          if (typeof item.action === "function") {
             item.action(props.row);
           }
           break;
       }
     },
     onToolbarClicked(item) {
-      console.func('components/base/base-table:methods.onToolbarClicked()', arguments);
-      this.$emit('toolbar-clicked', item);
+      console.func(
+        "components/base/base-table:methods.onToolbarClicked()",
+        arguments
+      );
+      this.$emit("toolbar-clicked", item);
 
       // checked default actions status
       if (this.preventDefault) return false;
 
       switch (item.action) {
-        case 'delete':
+        case "delete":
           this.hasStore();
           this.$core
-            .confirm(`Are you sure you want to delete selected ${this.module.plural}?`)
+            .confirm(
+              `Are you sure you want to delete selected ${this.module.plural}?`
+            )
             .then(() => {
               this.store
-                .deleteSelected(map(this.selected, 'id'))
+                .deleteSelected(map(this.selected, "id"))
                 .then(() => {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'restore':
+        case "restore":
           this.hasStore();
           this.$core
-            .confirm(`Are you sure you want to restore selected ${this.module.plural}?`)
+            .confirm(
+              `Are you sure you want to restore selected ${this.module.plural}?`
+            )
             .then(() => {
               this.store
-                .restoreSelected(map(this.selected, 'id'))
+                .restoreSelected(map(this.selected, "id"))
                 .then(() => {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'force-delete':
+        case "force-delete":
           this.hasStore();
           this.$core
             .confirm(
               `Are you sure you want to permanently delete selected ${this.module.plural}?`,
               {
                 subTitle: this.relatedDeleteMessage
-                  .replace(/type/g, 'selected')
+                  .replace(/type/g, "selected")
                   .replace(/module/g, this.module.plural),
               }
             )
             .then(() => {
               this.store
-                .forceDeleteSelected(map(this.selected, 'id'))
+                .forceDeleteSelected(map(this.selected, "id"))
                 .then(() => {
                   this.sendServerRequest();
                 })
                 .catch((error) => {
-                  this.$core.error(error, { title: 'Error' });
+                  this.$core.error(error, { title: "Error" });
                 });
             });
           break;
-        case 'route':
+        case "export":
+          this.$core.exportTable({
+            params: {
+              ...this.syncPagination,
+              rowsPerPage: this.syncPagination.rowsPerPage * 25,
+            },
+            data: this.data,
+            columns: this.columns.filter(
+              (item) => !["actions"].includes(item.name)
+            ),
+            action: exportMethod(item, this.store),
+            name: `table_${this.module.plural}`,
+            type: item.type,
+          });
+          break;
+        case "route":
           this.$router.push({
             name: item.route,
             params: item.params,
             query: item.query,
           });
           break;
-        case 'filter':
+        case "filter":
           this.$refs.filter.show();
           break;
-        case 'request':
+        case "request":
           this.sendServerRequest();
           break;
         default:
-          if (typeof item.action === 'function') {
+          if (typeof item.action === "function") {
             item.action(item);
           }
           break;
@@ -653,7 +765,10 @@ export default {
       });
     },
     showFilter() {
-      console.func('components/base/base-table:methods.showFilter()', arguments);
+      console.func(
+        "components/base/base-table:methods.showFilter()",
+        arguments
+      );
       this.$refs.filter.show();
     },
     hasPermission(item, props = false) {
@@ -672,7 +787,8 @@ export default {
 
       if (item.condition && item.permission && props) {
         return (
-          this.permissions.includes(item.permission) && item.condition(props.row, this.permissions)
+          this.permissions.includes(item.permission) &&
+          item.condition(props.row, this.permissions)
         );
       } else if (item.condition && !item.permission && props) {
         return item.condition(props.row, this.permissions);
@@ -682,6 +798,12 @@ export default {
     },
     hasStore() {
       if (!this.store) return false;
+    },
+    canVisiable(column) {
+      if (this.visibleColumns && this.visibleColumns.length) {
+        return this.visibleColumns.includes(column);
+      }
+      return this.columns.filter((item) => item.name === column).length > 0;
     },
   },
   computed: {
@@ -693,14 +815,19 @@ export default {
         return val;
       },
     },
+    hasFilter() {
+      return this.filters.length;
+    },
     actionItems() {
       return (this.actions || []).filter(
-        (item) => item.deleted === this.syncPagination.deleted || item.deleted === 'all'
+        (item) =>
+          item.deleted === this.syncPagination.deleted || item.deleted === "all"
       );
     },
     toolbarItems() {
       return (this.toolbar || []).filter(
-        (item) => item.deleted === this.syncPagination.deleted || item.deleted === 'all'
+        (item) =>
+          item.deleted === this.syncPagination.deleted || item.deleted === "all"
       );
     },
     permissions() {
@@ -708,7 +835,9 @@ export default {
       return [];
     },
     tableSlots() {
-      return Object.keys(this.$slots).filter((item) => !exceptSlots.includes(item));
+      return Object.keys(this.$slots)
+        .concat(this.columns.map((item) => "body-cell-" + item.name))
+        .filter((item) => !exceptSlots.includes(item));
     },
     topLeftWidth() {
       const width = 12 - this.topRightWidth;

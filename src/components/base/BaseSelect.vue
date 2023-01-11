@@ -8,6 +8,7 @@
     :bgColor="bgColor"
     :useChips="useChips"
     :useInput="useInput"
+    :multiple="multiple"
     :mapOptions="mapOptions"
     :inputDebounce="inputDebounce"
     :debounce="debounce"
@@ -19,6 +20,7 @@
     @update:model-value="onChange"
     @filter="onFilter"
     @new-value="onNewValue"
+    @clear="clear"
   >
     <template v-if="icon" v-slot:prepend>
       <q-icon size="xs" :name="icon" />
@@ -29,7 +31,6 @@
     <template v-if="useFilter" v-slot:before-options>
       <slot name="before-options">
         <q-input
-          v-if="!useInput"
           class="q-mb-sm base-dropdown-filter"
           @update:model-value="onLoadFromServer"
           placeholder="Search"
@@ -96,7 +97,9 @@
           </template>
         </q-input>
         <q-item v-close-popup clickable class="no-options">
-          <q-item-section class="text-grey">{{ noOptionMessage }}</q-item-section>
+          <q-item-section class="text-grey">
+            {{ noOptionMessage }}
+          </q-item-section>
         </q-item>
       </slot>
       <slot name="button" v-bind:onCreate="onCreate">
@@ -120,11 +123,14 @@
     <template v-slot:append>
       <slot name="append"></slot>
     </template>
+    <template v-slot:after>
+      <slot name="after"></slot>
+    </template>
   </q-select>
 </template>
 
 <script>
-const validateNewValueMode = (v) => ['add', 'add-unique', 'toggle'].includes(v);
+const validateNewValueMode = (v) => ["add", "add-unique", "toggle"].includes(v);
 
 export default {
   props: {
@@ -151,7 +157,7 @@ export default {
     noOptionMessage: {
       required: false,
       type: [String],
-      default: 'No option found.',
+      default: "No option found.",
     },
     useInput: Boolean,
     useChips: Boolean,
@@ -171,7 +177,8 @@ export default {
       default: () => (val) => {
         return {
           filter: val,
-          limit: 5,
+          rowsPerPage: 5,
+          active: true,
         };
       },
     },
@@ -186,19 +193,18 @@ export default {
       default: 500,
     },
   },
-  emits: ['update:model-value', 'new-value'],
+  emits: ["update:model-value", "new-value"],
   data() {
     return {
       value: this.modelValue,
       options: [],
-      filter: '',
+      filter: "",
     };
   },
   methods: {
     onFilter(val, update, abort) {
-      console.func('components/base/BaseSelect:methods.onFilter()', arguments);
+      console.func("components/base/BaseSelect:methods.onFilter()", arguments);
       if (!this.filterMethod) return update();
-      if (this.filterMethod && !val) return abort();
       this.filter = val;
       this.filterMethod(this.query(val))
         .then(({ data }) => {
@@ -212,28 +218,31 @@ export default {
     },
     onLoadFromServer(val) {
       if (!this.filterMethod) return false;
-      console.func('components/base/BaseSelect:methods.onLoadFromServer()', arguments);
+      console.func(
+        "components/base/BaseSelect:methods.onLoadFromServer()",
+        arguments
+      );
       this.filterMethod(this.query(val)).then(({ data }) => {
         this.options = data;
       });
     },
     onChange(val) {
-      console.func('components/base/BaseSelect:methods.onChange()', arguments);
-      this.$emit('update:model-value', val);
+      console.func("components/base/BaseSelect:methods.onChange()", arguments);
+      this.$emit("update:model-value", val);
     },
     onCreate() {
-      console.func('components/base/BaseSelect:methods.onCreate()', arguments);
+      console.func("components/base/BaseSelect:methods.onCreate()", arguments);
       if (this.onNewValue !== void 0) {
-        this.$emit('new-value', this.filter, this.done);
+        this.$emit("new-value", this.filter, this.done);
       } else {
         this.done(this.filter);
       }
       this.filter = null;
     },
     clear() {
-      console.func('components/base/BaseSelect:methods.clear()', arguments);
-      this.value = null;
-      this.$emit('update:model-value', null);
+      console.func("components/base/BaseSelect:methods.clear()", arguments);
+      this.value = undefined;
+      this.$emit("update:model-value", undefined);
     },
     done(val, mode) {
       if (mode) {
@@ -248,9 +257,12 @@ export default {
         return;
       }
 
-      this.$refs.baseSelect.updateInputValue('', this.multiple !== true, true);
-      const fn = mode === 'toggle' ? this.$refs.baseSelect.toggleOption : this.$refs.baseSelect.add;
-      fn(val, mode === 'add-unique');
+      this.$refs.baseSelect.updateInputValue("", this.multiple !== true, true);
+      const fn =
+        mode === "toggle"
+          ? this.$refs.baseSelect.toggleOption
+          : this.$refs.baseSelect.add;
+      fn(val, mode === "add-unique");
       if (this.multiple !== true) {
         this.$refs.baseSelect.focus();
         this.$refs.baseSelect.hidePopup();
@@ -259,7 +271,14 @@ export default {
   },
   computed: {
     showPlaceholder() {
-      return (!this.value && !this.useChips) || !this.value || this.value.length < 1;
+      return (
+        (!this.hasValue && !this.useChips) ||
+        !this.hasValue ||
+        (this.multiple && this.value.length < 1)
+      );
+    },
+    hasValue() {
+      return this.value !== undefined;
     },
   },
   watch: {

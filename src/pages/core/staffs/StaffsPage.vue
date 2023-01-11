@@ -1,28 +1,33 @@
 <template>
   <q-page padding>
-    <base-table
-      ref="staff"
-      store="staff"
-      :module="module"
-      :columns="columns"
-      :rows="rows"
-      :actions="actions"
-      :toolbar="toolbar"
-      :loading="loading"
-      :pagination="pagination"
-      @request="onRequest"
-      selection="multiple"
-      @action-clicked="actionClicked"
-      @toolbar-clicked="toolbarClicked"
-      @row-clicked="rowClicked"
-      no-data-label="No staff avaialble"
-    >
-      <template v-slot:body-cell="props">
-        <q-td :props="props">
-          <template v-if="props.col.name == 'first_name'">
+    <q-card>
+      <q-card-section>
+        <base-table
+          :store="useStaffStore"
+          :module="module"
+          :columns="columns"
+          :rows="rows"
+          :actions="actions"
+          :toolbar="toolbar"
+          :filters="filters"
+          :loading="loading"
+          :pagination="pagination"
+          @request="onRequest"
+          @action-clicked="actionClicked"
+          @toolbar-clicked="toolbarClicked"
+          @row-clicked="rowClicked"
+          no-data-label="No staff avaialble"
+          no-permissions
+        >
+          <template v-slot:body-cell-name="props">
             <q-item class="q-pa-none" dense>
               <q-item-section avatar>
-                <avatar rounded class="cursor-pointer" :user="props.row" size="40px" />
+                <base-avatar
+                  rounded
+                  class="cursor-pointer"
+                  :user="props.row"
+                  size="40px"
+                />
               </q-item-section>
               <q-item-section avatar>
                 <base-btn
@@ -31,7 +36,7 @@
                   size="12px"
                   tag="a"
                   :to="{
-                    name: 'staffs.single',
+                    name: 'Single Staff',
                     params: {
                       id: props.row.id,
                     },
@@ -39,87 +44,128 @@
                       action: 'edit',
                     },
                   }"
-                  >{{ props.value }}</base-btn
                 >
+                  {{ props.value }}
+                </base-btn>
               </q-item-section>
             </q-item>
           </template>
-          <template v-else>{{ props.value }}</template>
-        </q-td>
-      </template>
-    </base-table>
+          <template v-slot:body-cell-is_active="props">
+            <q-toggle
+              @update:model-value="changeActive(props.row)"
+              size="sm"
+              dense
+              :model-value="props.row.is_active"
+              color="green"
+            />
+          </template>
+          <template v-slot:body-cell-is_supper_admin="props">
+            <q-toggle
+              @update:model-value="changeAdmin(props.row)"
+              size="sm"
+              dense
+              :model-value="props.row.is_supper_admin"
+              color="green"
+            />
+          </template>
+          <template v-slot:body-cell-groups="props">
+            <q-chip
+              size="12px"
+              v-for="item in props.row.groups"
+              :key="item.id"
+              :label="item.name"
+            />
+          </template>
+        </base-table>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from "pinia";
+import { useStaffStore } from "stores/staff";
+
 export default {
   data() {
     return {
       loading: false,
-      rows: [],
+      loaded: false,
       pagination: {
-        sortBy: 'first_name',
+        sortBy: "name",
         descending: false,
         page: 1,
-        filter: '',
+        filter: "",
         advancedFilter: {},
         deleted: false,
         rowsPerPage: 15,
         rowsNumber: 15,
         loaded: false,
+        active: null,
       },
+      useStaffStore: useStaffStore(),
     };
   },
   methods: {
-    ...mapActions('staff', ['List']),
+    ...mapActions(useStaffStore, ["get", "changeActive", "changeAdmin"]),
     onRequest(props) {
-      console.func('pages/core/staffs/index:methods.onRequest()', arguments);
-      const { page, rowsPerPage, sortBy, descending, deleted, filter, group } = props.pagination;
+      console.func(
+        "pages/core/staffs/StaffsPage:methods.onRequest()",
+        arguments
+      );
+      const { page, rowsPerPage, sortBy, descending } = props.pagination;
       this.loading = true;
 
-      this.List({
-        page: page,
-        limit: rowsPerPage,
-        filter: filter,
-        order: sortBy,
-        group: group,
-        deleted: deleted,
-        descending: descending ? 'desc' : 'asc',
-      }).then(({ meta }) => {
-        // clear out existing data and add new
-        this.rows = this.tableData;
-        // update rowsCount with appropriate value
-        this.pagination.rowsNumber = meta.total;
+      this.get({
+        ...props.pagination,
+        direction: descending ? "desc" : "asc",
+      })
+        .then(({ meta }) => {
+          // clear out existing data and add new
+          // this.rows = this.tableData;
+          // update rowsCount with appropriate value
+          this.pagination.rowsNumber = meta.total;
 
-        // don't forget to update local pagination object
-        this.pagination.page = page;
-        this.pagination.rowsPerPage = rowsPerPage;
-        this.pagination.sortBy = sortBy;
-        this.pagination.descending = descending;
-        this.pagination.loaded = true;
-        this.pagination.from = meta.from;
-        this.pagination.to = meta.to;
+          // don't forget to update local pagination object
+          this.pagination.page = page;
+          this.pagination.rowsPerPage = rowsPerPage;
+          this.pagination.sortBy = sortBy;
+          this.pagination.descending = descending;
+          this.pagination.loaded = true;
+          this.pagination.from = meta.from;
+          this.pagination.to = meta.to;
 
-        // ...and turn of loading indicator
-        this.loading = false;
-      });
+          // ...and turn of loading indicator
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.$core.error(error, { title: "Error" });
+        });
     },
     async actionClicked(action, row) {
-      console.func('pages/core/staffs/index:methods.actionClicked()', arguments);
+      console.func(
+        "pages/core/staffs/StaffsPage:methods.actionClicked()",
+        arguments
+      );
     },
     async toolbarClicked(action, row) {
-      console.func('pages/core/staffs/index:methods.toolbarClicked()', arguments);
+      console.func(
+        "pages/core/staffs/StaffsPage:methods.toolbarClicked()",
+        arguments
+      );
     },
     async rowClicked(evt, row) {
-      console.func('pages/core/staffs/index:methods.rowClicked()', arguments);
+      console.func(
+        "pages/core/staffs/StaffsPage:methods.rowClicked()",
+        arguments
+      );
       this.$router.push({
-        name: 'staffs.single',
+        name: "Single Staff",
         params: {
           id: row.id,
         },
         query: {
-          action: 'edit',
+          action: "edit",
         },
       });
     },
@@ -130,23 +176,16 @@ export default {
     });
   },
   computed: {
-    tableData() {
-      return this.$store.state.staff.data;
-    },
-    module() {
-      return this.$store.state.staff.module;
-    },
-    columns() {
-      return this.$store.state.staff.columns;
-    },
-    actions() {
-      return this.$store.state.staff.actions;
-    },
-    toolbar() {
-      return this.$store.state.staff.toolbar;
-    },
+    ...mapState(useStaffStore, [
+      "actions",
+      "rows",
+      "columns",
+      "module",
+      "toolbar",
+      "filters",
+    ]),
     permissions() {
-      return this.$store.getters['app/getPermissions'](this.module.name);
+      return [];
     },
   },
 };

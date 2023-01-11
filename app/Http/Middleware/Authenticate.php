@@ -14,8 +14,9 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
+        if (!$request->expectsJson()) {
+            // return route('login');
+            abort(403, 'You do not have permission to access. Please contact your administrator to request access.');
         }
     }
 }

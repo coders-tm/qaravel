@@ -1,6 +1,12 @@
-# Qaravel (qaravel)
+# [Qaravel (qaravel)](https://qaravel.coderstm.com/)
 
-Qaravel is a Combination of Laravel and Quasar
+[Qaravel](https://qaravel.coderstm.com/) is a Combination of Laravel and Quasar.
+
+<p>
+    <a href="https://qaravel.coderstm.com/" target="_blank">
+        <img src="./intro.gif">
+    </a>
+</p>
 
 ## 1. Add FontAwesome pro key
 
@@ -26,12 +32,7 @@ authentication system for SPAs (single page applications), mobile applications, 
 based APIs. Sanctum allows each user of your application to generate multiple API tokens for their
 account. These tokens may be granted abilities / scopes which specify which actions the tokens are
 allowed to perform. Please check laravel default
-[sanctum configuration](https://laravel.com/docs/9.x/sanctum#spa-authentication)
-
-```bash
-SANCTUM_STATEFUL_DOMAINS=qaravel.gomedia:9000 (for local you have to include your port)
-SESSION_DOMAIN=.qaravel.gomedia
-```
+[sanctum configuration](https://laravel.com/docs/9.x/sanctum#api-token-authentication)
 
 ## 5. Migrate the Database
 

@@ -62,6 +62,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'members_url' => env('APP_MEMBER_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
 
@@ -201,6 +202,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\PermissionsServiceProvider::class,
 
     ],
 

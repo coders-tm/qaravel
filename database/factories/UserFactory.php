@@ -20,6 +20,7 @@ class UserFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
+            'phone_number' => fake()->phoneNumber(),
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -37,6 +38,34 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the model's status should be deactive.
+     *
+     * @return static
+     */
+    public function deactive()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_active' => false,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the model's user should be admin.
+     *
+     * @return static
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
             ];
         });
     }

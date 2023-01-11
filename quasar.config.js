@@ -28,10 +28,18 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ["i18n", "log", "app", "base-components", "font-awesome-pro", "auth"],
+    boot: [
+      "log",
+      "app",
+      "base-components",
+      "font-awesome-pro",
+      "auth",
+      "unsaved-alert",
+      "v-number",
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: ["app.scss"],
+    css: ["app.scss", "screen--xs.scss", "platform-ios.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -86,30 +94,18 @@ module.exports = configure(function (/* ctx */) {
       },
       // viteVuePluginOptions: {},
 
-      vitePlugins: [
-        require("@originjs/vite-plugin-require-context").default(),
-        [
-          "@intlify/vite-plugin-vue-i18n",
-          {
-            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-            // compositionOnly: false,
-
-            // you need to set i18n resource including paths !
-            include: path.resolve(__dirname, "./src/i18n/**"),
-          },
-        ],
-      ],
+      vitePlugins: [require("@originjs/vite-plugin-require-context").default()],
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      https: {
-        key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
-        cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
-      },
+      // https: {
+      //   key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
+      //   cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
+      // },
       port: 9000,
       open: true, // opens browser window automatically
-      host: "qaravel.gomedia",
+      // host: "admin.qaravel.gomedia",
       proxy: {
         // Using the proxy instance
         "/api/": {
@@ -122,7 +118,28 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        notify: {
+          position: "bottom-right",
+        },
+        loadingBar: {
+          color: "primary",
+          size: "5px",
+          position: "top",
+        },
+        screen: {
+          bodyClasses: true,
+        },
+        capacitor: {
+          iosStatusBarPadding: true, // add the dynamic top padding on iOS mobile devices
+          // Quasar handles app exit on mobile phone back button.
+          backButtonExit: ["/dashboard", "/auth/login"],
+
+          // On the other hand, the following completely
+          // disables Quasar's back button management.
+          backButton: true,
+        },
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -140,6 +157,7 @@ module.exports = configure(function (/* ctx */) {
         "Cookies",
         "Notify",
         "Loading",
+        "LoadingBar",
         "LocalStorage",
         "Meta",
       ],
@@ -206,7 +224,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true,
+      hideSplashscreen: false,
+      appName: "Qaravel",
+      version: "1.0",
+      description: "Qaravel is a Combination of Laravel and Quasar",
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron

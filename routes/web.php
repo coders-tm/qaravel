@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+// Public file download route
+Route::get('files/{path}', 'Core\FileController@download')->name('files.download');
 
+// Frontend routes
 Route::get('{any}', function () {
     return view('app');
-})->where('any','.*')->name('web');
+})->where('any', '.*')->name('web');
