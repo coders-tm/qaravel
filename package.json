@@ -7,7 +7,7 @@
   "private": true,
   "config": {
     "ssl": {
-      "host": "qaravel.gomedia"
+      "host": "*.qaravel.gomedia qaravel.gomedia"
     },
     "ssh": {
       "user": "coderstm.com",

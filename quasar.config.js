@@ -112,13 +112,13 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      // https: {
-      //   key: path.resolve(__dirname, "qaravel.gomedia-key.pem"),
-      //   cert: path.resolve(__dirname, "qaravel.gomedia.pem"),
-      // },
+      https: {
+        key: path.resolve(__dirname, "_wildcard.qaravel.gomedia+1-key.pem"),
+        cert: path.resolve(__dirname, "_wildcard.qaravel.gomedia+1.pem"),
+      },
       port: 9000,
       open: true, // opens browser window automatically
-      // host: "admin.qaravel.gomedia",
+      host: "qaravel.gomedia",
       proxy: {
         // Using the proxy instance
         "/api/": {
