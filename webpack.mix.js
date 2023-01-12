@@ -1,5 +1,14 @@
 const mix = require("laravel-mix");
-const { unlinkSync } = require("fs");
+const { existsSync, unlinkSync } = require("fs");
+
+const removeFiles = (stats, ...files) => {
+  files.forEach((file) => {
+    delete stats.compilation.assets[file];
+    if (existsSync(`public/${file}`)) {
+      unlinkSync(`public/${file}`);
+    }
+  });
+};
 
 /*
  |--------------------------------------------------------------------------
@@ -14,7 +23,7 @@ const { unlinkSync } = require("fs");
 
 mix
   .copy("dist/pwa/index.html", "resources/views/app.blade.php")
-  .copyDirectory("dist/pwa", "public");
-
-// remove index.html from public
-unlinkSync("public/index.html");
+  .copyDirectory("dist/pwa", "public")
+  .then(async (stats) => {
+    await removeFiles(stats, ["/index.html"]);
+  });
