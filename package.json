@@ -13,8 +13,8 @@
       "user": "coderstm.com",
       "server": "ssh.gb.stackcp.com",
       "folders": {
-        "live": "~/qaravel.coderstm.com",
-        "alpha": "~/qaravel.coderstm.com"
+        "live": "~/qaravel-pwa.coderstm.com",
+        "alpha": "~/qaravel-pwa.coderstm.com"
       }
     }
   },
