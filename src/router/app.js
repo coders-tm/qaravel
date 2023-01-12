@@ -43,7 +43,7 @@ export default [
     ],
   },
   {
-    path: "/posts",
+    path: "/blogs",
     component: () => import("layouts/AppLayout.vue"),
     children: [
       {

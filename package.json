@@ -54,7 +54,7 @@
     "@quasar/extras": "^1.0.0",
     "@stripe/stripe-js": "^1.36.0",
     "axios": "^0.27",
-    "idb": "^7.0.2",
+    "idb": "^7.1.1",
     "lodash": "^4.17.19",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
