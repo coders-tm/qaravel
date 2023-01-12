@@ -1,4 +1,5 @@
 const mix = require("laravel-mix");
+const { unlinkSync } = require("fs");
 
 /*
  |--------------------------------------------------------------------------
@@ -14,3 +15,6 @@ const mix = require("laravel-mix");
 mix
   .copy("dist/pwa/index.html", "resources/views/app.blade.php")
   .copyDirectory("dist/pwa", "public");
+
+// remove index.html from public
+unlinkSync("public/index.html");
