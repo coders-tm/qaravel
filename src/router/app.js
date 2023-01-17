@@ -24,9 +24,7 @@ export default [
         name: "Enquiries",
         meta: {
           auth: true,
-          admin: true,
           guard: "users",
-          module: "Enquiries",
           base: "Enquiries",
         },
         component: () => import("pages/core/enquiries/EnquiriesPage.vue"),
@@ -36,10 +34,8 @@ export default [
         name: "Single Enquiry",
         meta: {
           auth: true,
-          admin: true,
           guard: "users",
           title: "Create Enquiry",
-          module: "Enquiries",
           base: "Enquiries",
         },
         component: () => import("pages/core/enquiries/EnquiryPage.vue"),

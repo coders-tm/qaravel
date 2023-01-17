@@ -1,6 +1,8 @@
 import { boot } from "quasar/wrappers";
 import axios from "axios";
 import core from "../services/core";
+import storage, { Storage } from "../services/storage";
+import network from "../services/network";
 import api from "../services/api";
 import { colors } from "quasar";
 import { useAppStore } from "stores/app";
@@ -14,6 +16,7 @@ export default boot(async ({ app, store }) => {
 
   //    app prototypes setup    //
   app.config.globalProperties.$core = core;
+  app.config.globalProperties.$storage = Storage;
   app.config.globalProperties.$api = api;
   app.config.globalProperties.$colors = colors;
   app.config.globalProperties.$app = appStore;
@@ -24,10 +27,13 @@ export default boot(async ({ app, store }) => {
   //    core prototypes setup    //
   core.$axios = axios;
   core.$store = store;
+  core.$storage = Storage;
   core.$appStore = appStore;
 
   console.core("Mode: " + process.env.APP_ENV || "Development");
 
   //    call and wait for initial setup    //
   await core.init();
+  await storage.init();
+  await network.init();
 });

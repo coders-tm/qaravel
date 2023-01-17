@@ -8,3 +8,13 @@
     </div>
   </q-page>
 </template>
+
+<script>
+export default {
+  async created() {
+    this.$storage.set("name", "Dipak Sarkar");
+    const value = await this.$storage.get("name");
+    console.log(`Hello, ${value}!`);
+  },
+};
+</script>

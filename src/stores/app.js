@@ -3,9 +3,7 @@ import Api from "../services/api";
 import { LocalStorage } from "quasar";
 import { map } from "lodash";
 import app from "../../package.json";
-import { Plugins } from "@capacitor/core";
-
-const { Device } = Plugins;
+import { Device } from "@capacitor/device";
 
 const user = LocalStorage.getItem("current_user");
 const token = LocalStorage.getItem("token");
@@ -74,7 +72,7 @@ export const useAppStore = defineStore("app", {
   },
   actions: {
     async login(playload) {
-      const { uuid } = await Device.getInfo();
+      const { uuid } = await Device.getId();
       playload.device_id = uuid;
       return new Promise((resolve, reject) => {
         Api.post(`auth/${playload.guard}/login`, playload)
