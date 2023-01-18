@@ -1,7 +1,7 @@
 import { boot } from "quasar/wrappers";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import core from "../services/core";
-import storage, { Storage } from "../services/storage";
+import storage from "../services/storage";
 import network from "../services/network";
 import api from "../services/api";
 import { colors } from "quasar";
@@ -16,7 +16,7 @@ export default boot(async ({ app, store }) => {
 
   //    app prototypes setup    //
   app.config.globalProperties.$core = core;
-  app.config.globalProperties.$storage = Storage;
+  app.config.globalProperties.$storage = storage;
   app.config.globalProperties.$api = api;
   app.config.globalProperties.$colors = colors;
   app.config.globalProperties.$app = appStore;
@@ -30,26 +30,29 @@ export default boot(async ({ app, store }) => {
       console.log("boot/app.axios.interceptors.response:success", response);
       // Any status code that lie within the range of 2xx cause this function to trigger
       // Do something with response data
-      const { url, params } = response.config;
-      const key = axios.getUri({ url, params });
-      await Storage.set(key, response.data);
+      storage.setResponse(response);
       return response;
     },
     async function (error) {
       console.log("boot/app.axios.interceptors.response:error", error);
-      const { url, params } = error.config;
-      const key = axios.getUri({ url, params });
-      const data = await Storage.get(key);
-      if (data) {
-        return Promise.resolve({
-          ...error,
-          data,
-        });
-      } else {
-        storage.setRequest(error.config);
-      }
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
+      const { code, config } = error;
+      const { method } = config;
+      if (code === AxiosError.ERR_NETWORK) {
+        if (method === "get") {
+          const key = storage.getUri(config);
+          const data = await storage.get(key);
+          if (data) {
+            return Promise.resolve({
+              ...error,
+              data,
+            });
+          }
+        } else {
+          storage.setRequest(config);
+        }
+      }
       return Promise.reject(error);
     }
   );
@@ -57,7 +60,7 @@ export default boot(async ({ app, store }) => {
   //    core prototypes setup    //
   core.$axios = axios;
   core.$store = store;
-  core.$storage = Storage;
+  core.$storage = storage;
   core.$appStore = appStore;
 
   console.core("Mode: " + process.env.APP_ENV || "Development");

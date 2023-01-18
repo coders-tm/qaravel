@@ -30,19 +30,17 @@ export const showStatusMessage = ({ connected }) => {
 };
 
 Network.addListener("networkStatusChange", (status) => {
-  console.log("Network status changed", status);
   showStatusMessage(status);
 });
 
-export const getNetworkStatus = async () => {
-  const status = await Network.getStatus();
-  return status;
+export const getStatus = async () => {
+  return Network.getStatus();
 };
 
 export default {
   async init() {
     console.func("network/core:init()", arguments);
   },
-  getNetworkStatus,
+  getStatus,
   showStatusMessage,
 };
