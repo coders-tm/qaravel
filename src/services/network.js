@@ -18,6 +18,7 @@ export const showStatusMessage = ({ connected }) => {
     message: message,
     icon: icon,
     timeout: timeout,
+    position: "bottom-left",
     actions: [
       {
         icon: "fas fa-circle-xmark",

@@ -128,6 +128,7 @@ export default {
         })
         .catch((error) => {
           this.$core.error(error, { title: "Error" });
+          this.loading = false;
         });
     },
     async actionClicked(action, row) {
