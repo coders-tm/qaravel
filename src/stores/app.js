@@ -19,6 +19,7 @@ export const useAppStore = defineStore("app", {
     isLoading: false,
     stats: {},
     title: null,
+    isOffline: false,
   }),
   getters: {
     hasPermission(state) {
@@ -250,6 +251,9 @@ export const useAppStore = defineStore("app", {
     },
     setTitle(playload) {
       this.title = playload;
+    },
+    setIsOffline(playload) {
+      this.isOffline = playload;
     },
   },
 });

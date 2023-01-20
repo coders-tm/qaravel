@@ -187,7 +187,11 @@ export default {
         })
         .catch((error) => {
           this.submited = false;
-          this.$core.error(error, { title: "Error" });
+          if (this.$app.isOffline) {
+            this.onReset();
+          } else {
+            this.$core.error(error, { title: "Error" });
+          }
         });
     },
     onReset(props) {

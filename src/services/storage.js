@@ -84,8 +84,9 @@ export const getUri = (playload) => {
 };
 
 export const setResponse = async (playload) => {
-  const key = getUri(playload.config);
-  const value = await set(key, playload.data);
+  const { config, data } = playload;
+  const key = getUri(config);
+  const value = await set(key, data);
   return value;
 };
 

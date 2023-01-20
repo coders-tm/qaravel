@@ -1,6 +1,8 @@
 import { Network } from "@capacitor/network";
 import { Notify } from "quasar";
+import { useAppStore } from "stores/app";
 
+const appStore = useAppStore();
 const OFFLINE_MESSAGE = "You are currently offline.";
 const ONLINE_MESSAGE = "Your Internet connection was restored.";
 
@@ -10,6 +12,8 @@ export const showStatusMessage = ({ connected }) => {
   const message = connected ? ONLINE_MESSAGE : OFFLINE_MESSAGE;
   const icon = connected ? "fas fa-wifi" : "fas fa-wifi-slash";
   const timeout = connected ? 5000 : 0;
+
+  appStore.setIsOffline(!connected);
 
   // remove offline notification
   if (connected && notificaion) notificaion();
