@@ -923,22 +923,22 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@capacitor/core@^4.6.2":
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.6.2.tgz#9ea189218131ccf58f2b23fd3bdd69ed124dfe5b"
-  integrity sha512-M/KpAg+peft/HTb7svLiKHxjbll67ybs1vEqhZuvjXlwro53NxNXR4YJS7+wNXZSiA4Kxjtf+a754xGgZcMarA==
+"@capacitor/core@^5.0.0":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-5.5.1.tgz#bd2a969a1149a480aed3483d8867677e85606058"
+  integrity sha512-VG6Iv8Q7ZAbvjodxpvjcSe0jfxUwZXnvjbi93ehuJ6eYP8U926qLSXyrT/DToZq+F6v/HyGyVgn3mrE/9jW2Tg==
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/device@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-4.1.0.tgz#b9f73368f6f6f1194181bcd7bc4b8a021c67f33e"
-  integrity sha512-BlcYb6e6m+vC1SxeyUDIUGfuNXdKEcpFPDCs/kxk2SByFc/BkvXeoy4NjY4qmTderGELofX9bta5Iy9JV7rGUg==
+"@capacitor/device@^5.0.0":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-5.0.6.tgz#11322a9c737196f2df8f82abbe6d1a5b32e35fb7"
+  integrity sha512-tmjK0H8IKbDLMcmzZzJPbV+9yLkKJ76QOdz4A7fZAOYx2GnFHsFngxldq/wKotGAJuDX/ih3ZzHNrzVguzlv2g==
 
-"@capacitor/network@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-4.1.0.tgz#0b64a6f53ab34a7525a54feb1538ba1194dfe9c9"
-  integrity sha512-GMJ6LmxmrFA55rAaYxgm4tKSZyUmuLRreQz5Gdu0P09Ja8abSjmXa/DX16gOu1I1+wqHWm2rRI6nPkeUH55Ibw==
+"@capacitor/network@^5.0.0":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-5.0.6.tgz#6c109f053bcf6eefbae0337426e8b9e7c2334a3b"
+  integrity sha512-E//cq9NEvFFiLyptK0ha4B8OytdWpSqvtUo5L2uiqcoADWUnl5d7aK45M09eyd347HchICeEdIkO31n6CNxyYA==
 
 "@coders-tm/vue-number-format@^3.2.0":
   version "3.2.0"
