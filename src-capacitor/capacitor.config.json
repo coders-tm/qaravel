@@ -1,5 +1,5 @@
 {
-  "appId": "com.coderstm.qaravelmembers",
+  "appId": "com.coderstm.qaravel.app",
   "appName": "Qaravel",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
